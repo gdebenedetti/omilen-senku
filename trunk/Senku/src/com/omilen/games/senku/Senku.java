@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnKeyListener;
@@ -83,14 +84,15 @@ public class Senku extends Activity  implements OnKeyListener {
         menu.add(0, MENU_SOUND_ON, 0, R.string.menu_sound_on).setIcon(R.drawable.soundon);
         menu.add(0, MENU_SOUND_OFF, 0, R.string.menu_sound_off).setIcon(R.drawable.soundoff);
 //      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.soundoff);
-        menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.soundoff);
-        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 10, 0, "Cruz (piece of cake)");
-        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 11, 1, "Mas (very easy)");
-        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 12, 2, "Hogar (easy)");
-        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 13, 3, "Piramide (not so easy)");
-        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 13, 4, "Diamante (medium)");
-        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 13, 4, "Normal (difficult)");
-        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 13, 4, "Muerte Europea (Very hard)");
+        SubMenu subMenuPegType = menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.soundoff);
+        SubMenu subMenuGameType = menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_game_type);
+        subMenuGameType.add(1, 10, 0, "Cruz (piece of cake)");
+        subMenuGameType.add(1, 11, 1, "Mas (very easy)");
+        subMenuGameType.add(1, 12, 2, "Hogar (easy)");
+        subMenuGameType.add(1, 13, 3, "Piramide (not so easy)");
+        subMenuGameType.add(1, 13, 4, "Diamante (medium)");
+        subMenuGameType.add(1, 13, 4, "Normal (difficult)");
+        subMenuGameType.add(1, 13, 4, "Muerte Europea (Very hard)");
         return true;
     }
     
