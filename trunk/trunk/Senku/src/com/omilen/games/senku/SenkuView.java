@@ -16,8 +16,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.omilen.games.senku.score.ScoreUtil;
@@ -53,28 +51,21 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         /*
          * Member (state) fields
          */
-        /** The drawable to use as the background of the animation canvas */
+        /** The drawable to use as the background*/
         private Bitmap mBackgroundImage; 
         
         /** Message handler used by thread to interact with TextView */
         private Handler mHandler;
         
-       //# private int mFichaHeight;
-       //# private int mFichaWidth;
-        
-        //#private Drawable[][] mFichas = new Drawable[SenkuModel.ANCHO][SenkuModel.LARGO];
-        
-        /*Posiciones de cada grilla para empezar a dibujar, como es simetrica vale para x e y*/
+        /*Position in pixels of each board position, the board is symmetric so we calculate for only one dimension
+         * this will be calculated when the screen changes its size (at start) */
         private int[] startPosition = new int[SenkuModel.ANCHO];
         private int[] startPositionCursor = new int[SenkuModel.ANCHO];
-               
-        //#private Drawable mFichaSelected;
-//#        private Drawable[] mCursor = new Drawable[4];        
+
         private Bitmap mGrilla;
         private Drawable mFondoCarteles;
         private Bitmap mFicha;
-        private Bitmap mSombraFicha;        
-        //#private Bitmap mCursorBasic;
+        private Bitmap mSombraFicha;
         private Bitmap[] mCursor = new Bitmap[5];
         
         private Paint mLinePaint;
@@ -87,8 +78,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         /** Indicate whether the surface has been created & is ready to draw */
         private boolean mRun = false;
         private int cursorImage = 0;
-//#        private boolean animCorrection = false;
-        private boolean alreadySetScore = false; //this avoid that the score write twice        
+        private boolean alreadySetScore = false; //flag to avoid score be writen twice        
         double mLastTime = System.currentTimeMillis();
 
         private int startX = 0;
@@ -117,24 +107,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             mHandler = handler;
             mContext = context;
             this.game = new SenkuModel();
-            Resources res = context.getResources();
-            // cache handles to our key sprites & other drawables
-//#            for(int i =0;i<SenkuModel.ANCHO;i++){
-//#            	for(int j=0;j<SenkuModel.LARGO;j++){
-//#           		if(game.getCelda(i,j)!=-1)
-//#            			((Drawable)mFichas[i][j]). 
-//#            				//context.getResources().getDrawable(R.drawable.ficha_plastico_roja);
-//#            		
-//#            	}
-//#            }            
-           //# mFichaSelected = context.getResources().getDrawable(R.drawable.ficha_selected);
-                        
-//#            mCursor[0] = context.getResources().getDrawable(R.drawable.cursor_01);
-//#            mCursor[1] = context.getResources().getDrawable(R.drawable.cursor_02);
-//#            mCursor[2] = context.getResources().getDrawable(R.drawable.cursor_04);
-//#            mCursor[3] = context.getResources().getDrawable(R.drawable.cursor_05);
-            	
-            //mGrilla = context.getResources().getDrawable(R.drawable.board);            		  
+            Resources res = context.getResources();                   		  
             mGrilla = BitmapFactory.decodeResource(res,R.drawable.board);
             mFicha = BitmapFactory.decodeResource(res,R.drawable.ficha_plastico_roja);
             mSombraFicha = BitmapFactory.decodeResource(res,R.drawable.sombra_circular);
@@ -144,13 +117,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             
             
             mFondoCarteles = context.getResources().getDrawable(R.drawable.fondocarteles);
-
-            // load background image as a Bitmap instead of a Drawable b/c
-            // we don't need to transform it and it's faster to draw this way
             mBackgroundImage = BitmapFactory.decodeResource(res,R.drawable.fondo);
-          
-           //# mFichaWidth = mFichaSelected.getIntrinsicWidth();
-            //#mFichaHeight = mFichaSelected.getIntrinsicHeight();
           
             mLinePaint = new Paint();
             mLinePaint.setAntiAlias(true);
@@ -166,7 +133,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         /**
-         * Starts the game, setting parameters for the current difficulty.
+         * Starts the game
          */
         public void doStart() {
             synchronized (mSurfaceHolder) {
@@ -199,8 +166,6 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             
             synchronized (mSurfaceHolder) {
             	setState(STATE_PAUSE);               
-//#                mFichaWidth  = savedState.getInt(KEY_FICHA_WIDTH);
-//#                mFichaHeight = savedState.getInt(KEY_FICHA_HEIGHT);
                 alreadySetScore = savedState.getBoolean(ALREADY_SET_SCORE);
                 this.sounds.setSoundOn(savedState.getBoolean(SOUND_ON));        
                 this.finalCount = savedState.getInt(FINAL_COUNT);
@@ -264,8 +229,6 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         public Bundle saveState(Bundle map) {
             synchronized (mSurfaceHolder) {
                 if (map != null) {
-//#                    map.putInt(KEY_FICHA_WIDTH, Integer.valueOf(mFichaWidth));
-//#                    map.putInt(KEY_FICHA_HEIGHT, Integer.valueOf(mFichaHeight));
                     map.putBoolean(ALREADY_SET_SCORE, alreadySetScore);
                     map.putBoolean(SOUND_ON, this.sounds.isSoundOn());
                     map.putInt(FINAL_COUNT, this.finalCount);                     
@@ -413,45 +376,23 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                 lengthFicha = (int)Math.round(mFicha.getWidth()*percent);
                 lengthSombra= (int)Math.round(mSombraFicha.getWidth()*percent);
                 corrimientoAlSeleccionar = (int)Math.round(20.0*percent);
-                
-                // don't forget to resize the background image
+               
+
                 mBackgroundImage = mBackgroundImage.createScaledBitmap(mBackgroundImage, width, height, true);
                 mGrilla = mGrilla.createScaledBitmap(mGrilla, lengthGrilla, lengthGrilla, true);
                 mFicha = mFicha.createScaledBitmap(mFicha, lengthFicha, lengthFicha, true);
                 mSombraFicha = mFicha.createScaledBitmap(mSombraFicha, lengthSombra, lengthSombra, true);
                 
                 int halfAnim = (int)Math.round((this.mCursor.length+1.0) /2.0);
-                //#int pasoCursor = (lengthSombra - lengthFicha)/halfAnim;
-//#             int size = lengthFicha;
                 for(int i=0; i<halfAnim;i++){
                 	mCursor[i] = mCursor[i].createScaledBitmap(mCursor[i], (int)cellLength, (int)cellLength, true);
-//#                	size = size+pasoCursor;
                 }                
                 mCursor[3] = mCursor[2];
                 mCursor[4] = mCursor[1];
                 
             }
         }
-       
-        
-        /*//#private void playSounds(boolean eatSuccess, boolean moveSuccess, boolean keyPressed){
-            if(eatSuccess){
-         	   sounds.playSound(SenkuSoundPool.SOUND_EAT);            	   
-            }else if(!moveSuccess){
-         	   if(keyPressed){
-			        	   if(game.isSelected())
-			        		   sounds.playSound(SenkuSoundPool.SOUND_SELECT);
-			        	   else{
-			        		   try{
-			        			   sounds.playSound(SenkuSoundPool.SOUND_DONT);
-			        		   }catch(Exception e){
-			        			   
-			        		   }
-			        	   }			         
-         	   }
-            }
-        }*/
-
+     
         /**
          * Handles a key-down event.
          * 
@@ -459,7 +400,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
          * @param msg the original event object
          * @return true
          */
-        boolean doKeyDown(int keyCode, KeyEvent msg) {      	
+        boolean doKeyDown(int keyCode, KeyEvent msg) {
         	
             synchronized (mSurfaceHolder) {
             	
@@ -554,22 +495,15 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 	            		this.cursorImage = (this.cursorImage+1) % this.mCursor.length;
 	            		
 	            	}
-//#	            	mCursor[this.cursorImage].setBounds(xStart,yStart,xStart+lengthFicha,yStart+lengthFicha);
-//#	            	mCursor[this.cursorImage].draw(canvas);
 	            	canvas.drawBitmap(mCursor[this.cursorImage], xStartCursor, yStartCursor, null);
 	            
         	
         	}
             
-//#            mGrilla.setBounds(startX,startY,startX+mGrilla.getIntrinsicWidth(),startY+mGrilla.getIntrinsicHeight());
-//#            mGrilla.draw(canvas);
-            
             for(int i =0;i<SenkuModel.ANCHO;i++){
             	for(int j=0;j<SenkuModel.LARGO;j++){
             		if(game.getCelda(i,j)==1 && (!gameSelected || (i!=currentX || j!= currentY))){
             			canvas.drawBitmap(mFicha, startX+startPosition[i], startY+startPosition[j], null);
-//#            			((Drawable)mFichas[i][j]).setBounds(startX+startPosition[i],startY+startPosition[j],startX+startPosition[i]+mFichaWidth,startY+startPosition[j]+mFichaHeight);
-//#            			((Drawable)mFichas[i][j]).draw(canvas);
             		}
             	}            	
             }            
@@ -607,35 +541,6 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 			
 		}
 		
-		/*//#private int decodeGrillaPosition(int position,boolean isX){
-			
-			int BoardCells = game.LARGO;
-			int offset = this.startY;
-			if(isX){
-				BoardCells = game.ANCHO;
-				offset = this.startX;
-			}
-			position -= offset;*/ 
-			/*int k = (int)Math.round(BoardCells/2.0) - 1;			
-			//#for(int j=0;j<3;j++){
-				if(position >this.startPositionCursor[k]){
-					if(position<=this.startPositionCursor[k]+this.lengthSombra){
-						return k;
-					}else{
-						k = k+(int)Math.round(k/2.0);
-					}
-				}else{
-					k = (int)Math.round(k/2.0) - 1;
-				}
-			}*/
-			/*for(int i=0;i<BoardCells;i++){
-				if(position >this.startPositionCursor[i] && position<=(this.startPositionCursor[i]+this.lengthSombra)){
-						return i;
-					}
-			}
-			return -1;
-		}*/
-
 		public boolean doTouch(MotionEvent event) {
 			   synchronized (mSurfaceHolder) {
 				 
@@ -758,14 +663,6 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         return thread.doKeyDown(keyCode, msg);
     }
     
-        
-//    @Override
-//	public boolean onTouchEvent(MotionEvent event) {
-//		// TODO Auto-generated method stub
-//		//return super.onTouchEvent(event);
-//    	
-//    	return this.thread.doTouch(event);
-//	}
 
 	/**
      * Standard override for key-up. We actually care about these, so we can
