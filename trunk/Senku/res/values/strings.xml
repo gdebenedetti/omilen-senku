@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Senku</string>
+
+    <string name="menu_start">Start Game</string>
+    <string name="menu_undo">Undo</string>
+    <string name="menu_score">Scores</string>
+    <string name="menu_help">How to play</string>
+    <string name="menu_sound_on">Sound On</string>
+    <string name="menu_sound_off">Sound Off</string>
+    
+
+    <string name="mode_ready">Senku\nPress Up To Play</string>
+	<string name="mode_pause">Paused</string>	
+	<string name="mode_end2">Select Start to\nPlay Again</string>
+	
+	<string name="message_stopped">Stopped</string>
+	<string name="gameover">Game Over</string>
+	<string name="youwin">You Win</string>
+	
+	<string name="perfect" >Game: Perfect!!!</string>
+	<string name="veryGood">Game: Very Good!</string>
+	<string name="good"    >Game: Good</string>
+	<string name="regular" >Game: Regular</string>
+	<string name="bad"     >Game: Bad</string>
+	<string name="remaining_chips">pegs: </string>
+
+     <!-- HighScoreListActivity -->
+    <string name="scores_title">High Scores</string>
+    <string name="name_header">Date</string>
+    <string name="chips_header">Pegs</string>
+    <string name="menu_clear">Reset scores</string>
+    <string name="delete_dialog_title">Reset</string>
+    <string name="delete_dialog_msg">All scores will be lost.</string>
+    <string name="dialog_yes">OK</string>
+    <string name="dialog_no">Cancel</string>
+    <string name="new_high_score">New high score!</string>
+    <string name="dialog_close">Close</string>
+	<!--  Help -->
+	<string name="help_dialog_title">How to Play</string>
+	<string name="help_dialog_msg">The object of the game is to leave only one peg.\n Select a peg that can jump over another to an empty space to "eat" the jumped one.\n\nMove across the board using the phone pad and then press the center key of the pad to select a peg. Finally select a direction to "eat" using the phone pad.</string>
+
+
+    <string name="senku_layout_text_text"></string>
+</resources>
