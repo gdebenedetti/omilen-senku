@@ -36,6 +36,8 @@ public class Senku extends Activity  implements OnKeyListener {
 	private static final int MENU_HELP  = 3;
 	private static final int MENU_SOUND_ON  = 4;
 	private static final int MENU_SOUND_OFF  = 5;
+	private static final int MENU_GAME_TYPE  = 6;
+	private static final int MENU_PEG_TYPE  = 7;
 		
 	/** A handle to the thread that's actually running the animation. */
     private SenkuThread mSenkuThread;
@@ -80,6 +82,15 @@ public class Senku extends Activity  implements OnKeyListener {
         menu.add(0, MENU_HELP, 0, R.string.menu_help).setIcon(R.drawable.help);
         menu.add(0, MENU_SOUND_ON, 0, R.string.menu_sound_on).setIcon(R.drawable.soundon);
         menu.add(0, MENU_SOUND_OFF, 0, R.string.menu_sound_off).setIcon(R.drawable.soundoff);
+//      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.soundoff);
+        menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.soundoff);
+        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 10, 0, "Cruz (piece of cake)");
+        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 11, 1, "Mas (very easy)");
+        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 12, 2, "Hogar (easy)");
+        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 13, 3, "Piramide (not so easy)");
+        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 13, 4, "Diamante (medium)");
+        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 13, 4, "Normal (difficult)");
+        menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_peg_type).add(1, 13, 4, "Muerte Europea (Very hard)");
         return true;
     }
     
@@ -102,6 +113,12 @@ public class Senku extends Activity  implements OnKeyListener {
             	mSenkuThread.turnOnSound();
             	break;
             case MENU_SOUND_OFF:
+            	mSenkuThread.turnOffSound();
+            	break;
+            case MENU_GAME_TYPE: 
+            	mSenkuThread.turnOnSound();
+            	break;
+            case MENU_PEG_TYPE:
             	mSenkuThread.turnOffSound();
             	break;
         }
