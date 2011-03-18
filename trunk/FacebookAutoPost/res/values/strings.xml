@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Auto POST</string>
+    <string name="app_name2">Auto POST</string>
+    <string name="request">Request!</string>
+    <string name="hello">Hola Mundo</string>
+    <string name="upload">Upload Photo</string><string name="post">Wall Post!</string>
+    <string name="delete">Delete Post</string>
+    <string name="magicPost">Magic Post</string>
+</resources>
