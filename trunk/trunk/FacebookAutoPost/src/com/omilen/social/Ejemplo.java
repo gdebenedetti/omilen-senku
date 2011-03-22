@@ -15,6 +15,7 @@ import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import com.omilen.social.SessionEvents.AuthListener;
 import com.omilen.social.SessionEvents.LogoutListener;
+//import com.facebook.stream.AsyncRequestListener;
 import com.facebook.stream.Dispatcher;
 import com.facebook.stream.Session;
 import com.facebook.stream.StreamHandler;
@@ -42,10 +43,10 @@ public class Ejemplo extends Activity {
     private Button mDeleteButton;
     private Button mUploadButton;
     private Button mMagicPost;
-    private Dispatcher dispatcher;  
-
+    private Dispatcher dispatcher;
     private Facebook mFacebook;
     private AsyncFacebookRunner mAsyncRunner;
+    private final StreamHandler streamHandler = new StreamHandler();
 
     /** Called when the activity is first created. */
     @Override
@@ -196,11 +197,36 @@ public class Ejemplo extends Activity {
                         mText.setText("Hello there, " + name + "!");
                     }
                 });
+                /********************Make the POST*****************************/
+                Bundle params = new Bundle();
+                params.putString("message", "Me gusta el Senku!");
+                mAsyncRunner.request("stream.publish", params,new SampleRequestListenerFeed(),null);
+                
+                //String html;
+                //                    html = renderStatus(json,  "A "+name+" le gusta el Senku!");
+				//                    html = html.replace("'", "\\\'");
+				                	//callJs("onStatusUpdated('" + "A "+name+" le gusta el Senku!" + "');");
+//            	String js = "onStatusUpdated('" + "A "+name+" le gusta el Senku!" + "');";
+//            	streamHandler.getWebView().loadUrl("javascript:" + js);
+                
+                
+                /*************************************************************/
             } catch (JSONException e) {
                 Log.w("Facebook-Example", "JSON Error in response");
             } catch (FacebookError e) {
                 Log.w("Facebook-Example", "Facebook Error: " + e.getMessage());
             }
+        }
+    }
+    
+    public class SampleRequestListenerFeed extends BaseRequestListener {
+
+        public void onComplete(final String response, final Object state) {
+            Ejemplo.this.runOnUiThread(new Runnable() {
+			    public void run() {
+			        mText.setText("Listo el POST");
+			    }
+			});
         }
     }
 
