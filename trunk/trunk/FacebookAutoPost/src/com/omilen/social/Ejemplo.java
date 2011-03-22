@@ -86,6 +86,7 @@ public class Ejemplo extends Activity {
                 params.putString("link","http://www.androidpit.com/en/android/market/apps/app/com.omilen.games.senku/Senkul");
                 params.putString("picture","http://fs01.androidpit.info/ass/x03/183503.jpg");
                 params.putString("name","Omilen Android Senku");
+                params.putString("description","Senku is simple addictive game for Android Devices, powered by Omilen IT Solutions");
                 params.putString("caption","Senku");
                 mAsyncRunner.request("me/feed",params,"POST",new SampleRequestListener(),null);
             }
@@ -214,7 +215,7 @@ public class Ejemplo extends Activity {
                 //String html;
                 //                    html = renderStatus(json,  "A "+name+" le gusta el Senku!");
 				//                    html = html.replace("'", "\\\'");
-				                	//callJs("onStatusUpdated('" + "A "+name+" le gusta el Senku!" + "');");
+				//callJs("onStatusUpdated('" + "A "+name+" le gusta el Senku!" + "');");
 //            	String js = "onStatusUpdated('" + "A "+name+" le gusta el Senku!" + "');";
 //            	streamHandler.getWebView().loadUrl("javascript:" + js);
                 
