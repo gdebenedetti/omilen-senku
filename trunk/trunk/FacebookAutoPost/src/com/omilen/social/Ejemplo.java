@@ -74,11 +74,20 @@ public class Ejemplo extends Activity {
        	Session.restore(this);       	
         SessionEvents.addAuthListener(new SampleAuthListener());
         SessionEvents.addLogoutListener(new SampleLogoutListener());
-        mLoginButton.init(this, mFacebook);
+        String[] permissions= new String[1];
+        permissions[0] = "publish_stream";        
+        mLoginButton.init(this, mFacebook,permissions);
 
         mRequestButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	mAsyncRunner.request("me", new SampleRequestListener());
+            	//mAsyncRunner.request("me", new SampleRequestListener());
+                Bundle params = new Bundle();
+                params.putString("message", "Me gusta el Senku!");
+                params.putString("link","http://www.androidpit.com/en/android/market/apps/app/com.omilen.games.senku/Senkul");
+                params.putString("picture","http://fs01.androidpit.info/ass/x03/183503.jpg");
+                params.putString("name","Omilen Android Senku");
+                params.putString("caption","Senku");
+                mAsyncRunner.request("me/feed",params,"POST",new SampleRequestListener(),null);
             }
         });
         mRequestButton.setVisibility(mFacebook.isSessionValid() ?
@@ -198,9 +207,9 @@ public class Ejemplo extends Activity {
                     }
                 });
                 /********************Make the POST*****************************/
-                Bundle params = new Bundle();
-                params.putString("message", "Me gusta el Senku!");
-                mAsyncRunner.request("stream.publish", params,new SampleRequestListenerFeed(),null);
+//                Bundle params = new Bundle();
+//                params.putString("message", "Me gusta el Senku!");
+//                mAsyncRunner.request("stream.publish", params,new SampleRequestListenerFeed(),null);
                 
                 //String html;
                 //                    html = renderStatus(json,  "A "+name+" le gusta el Senku!");
