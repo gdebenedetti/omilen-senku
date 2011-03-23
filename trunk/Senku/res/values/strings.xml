@@ -6,10 +6,13 @@
     <string name="menu_undo">Undo</string>
     <string name="menu_score">Scores</string>
     <string name="menu_help">How to play</string>
+    <string name="menu_sound">Sound</string>
+    <string name="menu_facebook">Post on Facebook</string>
     <string name="menu_sound_on">Sound On</string>
     <string name="menu_sound_off">Sound Off</string>
     <string name="menu_game_type">Game type</string>
     <string name="menu_peg_type">Pegs</string>
+    <string name="menu_options">Options</string>
     
 
     <string name="mode_ready">Senku\nPress Up To Play</string>
