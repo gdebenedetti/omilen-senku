@@ -316,7 +316,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 	                    		sounds.playSound(SenkuSoundPool.SOUND_GAMEOVER);
 	                    	else
 	                    		sounds.playSound(SenkuSoundPool.SOUND_WIN);
-		                    if(ScoreUtil.getInstance(mContext).updateScores(finalCount, null)){
+		                    if(ScoreUtil.getInstance(mContext).updateScores(finalCount, 1,1,1)){
 		                    	//the score was added
 		                    	str = str+"\n"+res.getText(R.string.new_high_score);
 		                    }		                    

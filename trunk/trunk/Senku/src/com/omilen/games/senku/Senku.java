@@ -35,10 +35,12 @@ public class Senku extends Activity  implements OnKeyListener {
 	private static final int MENU_UNDO    = 1;
 	private static final int MENU_SCORES  = 2;
 	private static final int MENU_HELP  = 3;
-	private static final int MENU_SOUND_ON  = 4;
+	private static final int MENU_SOUND  = 4;
 	private static final int MENU_SOUND_OFF  = 5;
 	private static final int MENU_GAME_TYPE  = 6;
 	private static final int MENU_PEG_TYPE  = 7;
+	private static final int MENU_OPTIONS  = 8;
+	private static final int MENU_FACEBOOK  = 9;
 		
 	/** A handle to the thread that's actually running the animation. */
     private SenkuThread mSenkuThread;
@@ -80,19 +82,31 @@ public class Senku extends Activity  implements OnKeyListener {
         menu.add(0, MENU_START, 0, R.string.menu_start).setIcon(R.drawable.start);
         menu.add(0, MENU_UNDO, 0, R.string.menu_undo).setIcon(R.drawable.undo);
         menu.add(0, MENU_SCORES, 0, R.string.menu_score).setIcon(R.drawable.hiscores);
-        menu.add(0, MENU_HELP, 0, R.string.menu_help).setIcon(R.drawable.help);
-        menu.add(0, MENU_SOUND_ON, 0, R.string.menu_sound_on).setIcon(R.drawable.soundon);
-        menu.add(0, MENU_SOUND_OFF, 0, R.string.menu_sound_off).setIcon(R.drawable.soundoff);
+//      menu.add(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.options);        
+//      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.board);
 //      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.soundoff);
-        SubMenu subMenuPegType = menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.soundoff);
-        SubMenu subMenuGameType = menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_game_type);
+        SubMenu subMenuPegType  = menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.peg);
+        SubMenu subMenuGameType = menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.board);
+        SubMenu subMenuoptions  = menu.addSubMenu(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.options);
         subMenuGameType.add(1, 10, 0, "Cruz (piece of cake)");
         subMenuGameType.add(1, 11, 1, "Mas (very easy)");
         subMenuGameType.add(1, 12, 2, "Hogar (easy)");
         subMenuGameType.add(1, 13, 3, "Piramide (not so easy)");
-        subMenuGameType.add(1, 13, 4, "Diamante (medium)");
-        subMenuGameType.add(1, 13, 4, "Normal (difficult)");
-        subMenuGameType.add(1, 13, 4, "Muerte Europea (Very hard)");
+        subMenuGameType.add(1, 14, 4, "Diamante (medium)");
+        subMenuGameType.add(1, 15, 5, "Normal (difficult)");
+        subMenuGameType.add(1, 16, 6, "Muerte Europea (Very hard)");
+        
+        subMenuPegType.add(2, 17, 0, "plastic");
+        subMenuPegType.add(2, 18, 1, "wood");
+        subMenuPegType.add(2, 19, 2, "silver");
+        subMenuPegType.add(2, 20, 3, "gold");
+        subMenuPegType.add(2, 21, 4, "emerald");
+        subMenuPegType.add(2, 22, 5, "diamond");
+        subMenuPegType.add(2, 23, 6, "eigth ball");
+        
+        subMenuoptions.add(3, MENU_HELP,     0, R.string.menu_help).setIcon(R.drawable.help);
+        subMenuoptions.add(3, MENU_SOUND,    1, R.string.menu_sound).setIcon(R.drawable.sound);
+        subMenuoptions.add(3, MENU_FACEBOOK, 2, R.string.menu_facebook).setIcon(R.drawable.facebook);
         return true;
     }
     
@@ -111,7 +125,7 @@ public class Senku extends Activity  implements OnKeyListener {
             case MENU_HELP:
             	showHelpDialog();
                 break;
-            case MENU_SOUND_ON: 
+            case MENU_SOUND: 
             	mSenkuThread.turnOnSound();
             	break;
             case MENU_SOUND_OFF:

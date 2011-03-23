@@ -6,12 +6,27 @@ public class SenkuModel implements Cloneable {
 	
 	public static int ANCHO = 7;
 	public static int LARGO = 7;
+	
+	
 	protected int[][] grilla  = { { -1, -1, 1, 1, 1, -1, -1 }, { -1, -1, 1, 1, 1, -1, -1 }, { 1, 1, 1, 1, 1, 1, 1 }, { 1, 1, 1, 0, 1, 1, 1 }, { 1, 1, 1, 1, 1, 1, 1 }, { -1, -1, 1, 1, 1, -1, -1 }, { -1, -1, 1, 1, 1, -1, -1 } };	
 	protected int currentKeyX = 3;
 	protected int currentKeyY = 3;
+	protected int currentGameType = 6;
+	
+	public int getCurrentGameType() {
+		return currentGameType;
+	}
+
+	public void setCurrentGameType(int currentGameType) {
+		if(currentGameType<0 || currentGameType>SenkuGames.GAME_TYPES){
+			return;
+		}
+		this.currentGameType = currentGameType;		
+	}
+
 	protected boolean selected = false;
 	/*Backup Atributes*/
-	protected int[][] grillaPrevia = null;	
+	protected int[][] grillaPrevia = null;
 	protected int currentKeyXPrevia = 3;
 	protected int currentKeyYPrevia = 3;
 	protected boolean selectedPrevia = true;

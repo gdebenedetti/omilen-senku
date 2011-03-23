@@ -107,19 +107,17 @@ public class ScoreUtil {
         return mScores;
     }
         
-    public boolean updateScores(int chips, String name) {
+    public boolean updateScores(int chips, int score,int pegtype,int board) {
     	
     	Collections.sort(mScores);
     	ScoreItem a = mScores.get(mScores.size()-1);    	
     	if(a.getChips()<chips) return false;
-    	if(name==null){
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-            java.util.Date date = new java.util.Date();
-            String datetime = dateFormat.format(date);
-            name = datetime;
 
-    	}
-    	mScores.add(new ScoreItem(name, chips));
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        java.util.Date date = new java.util.Date();
+        String datetime = dateFormat.format(date);
+    
+    	mScores.add(new ScoreItem(datetime, chips));
     	Collections.sort(mScores);
     	mScores.remove(mScores.size()-1);   	
            
