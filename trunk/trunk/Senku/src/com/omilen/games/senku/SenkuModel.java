@@ -53,19 +53,15 @@ public class SenkuModel implements Cloneable {
 	}
 	public void start(){
 		
+		
+		int[][] aux = SenkuGames.GAMES[this.currentGameType];
+		
 		for(int i=0;i<ANCHO;i++){
 			for(int j=0;j<LARGO;j++){
-				if(		((i==0 || i==1) && (j==0 || j==1)) || 
-						((i==0 || i==1) && (j==5 || j==6)) || 
-						((i==5 || i==6) && (j==0 || j==1)) || 
-						((i==5 || i==6) && (j==5 || j==6))    )
-					this.grilla[i][j] = -1;
-				else if(i==3 && j==3)
-					this.grilla[i][j] = 0;
-				else
-					this.grilla[i][j] = 1;
+				this.grilla[i][j] = aux[i][j];
 			}
 		}
+		
 		currentKeyX = 3;
 		currentKeyY = 3;
 		selected = false;		
