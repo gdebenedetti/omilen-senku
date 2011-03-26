@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -87,7 +90,8 @@ public class Senku extends Activity  implements OnKeyListener {
 //      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.soundoff);
         SubMenu subMenuPegType  = menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.ic_menu_peg);
         SubMenu subMenuGameType = menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.ic_menu_board);
-        SubMenu subMenuoptions  = menu.addSubMenu(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.ic_menu_options);
+        //SubMenu subMenuoptions  = menu.addSubMenu(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.ic_menu_options);
+        menu.add(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.ic_menu_options);
         subMenuGameType.add(1, 10, 0, "Cruz (piece of cake)").setIcon(R.drawable.ic_menu_board_00);
         subMenuGameType.add(1, 11, 1, "Mas (very easy)").setIcon(R.drawable.ic_menu_board_01);
         subMenuGameType.add(1, 12, 2, "Hogar (easy)");
@@ -104,9 +108,10 @@ public class Senku extends Activity  implements OnKeyListener {
         subMenuPegType.add(2, 22, 5, "diamond");
         subMenuPegType.add(2, 23, 6, "eigth ball");
         
-        subMenuoptions.add(3, MENU_HELP,     0, R.string.menu_help).setIcon(R.drawable.ic_menu_help);
-        subMenuoptions.add(3, MENU_SOUND,    1, R.string.menu_sound).setIcon(R.drawable.ic_menu_sound);
-        subMenuoptions.add(3, MENU_FACEBOOK, 2, R.string.menu_facebook).setIcon(R.drawable.ic_menu_facebook);
+        //subMenuoptions.add(3, MENU_HELP,     0, R.string.menu_help).setIcon(R.drawable.ic_menu_help);
+        //subMenuoptions.add(3, MENU_SOUND,    1, R.string.menu_sound).setIcon(R.drawable.ic_menu_sound);
+        //subMenuoptions.add(3, MENU_FACEBOOK, 2, R.string.menu_facebook).setIcon(R.drawable.ic_menu_facebook);
+        
         return true;
     }
     
@@ -136,6 +141,9 @@ public class Senku extends Activity  implements OnKeyListener {
             	break;
             case MENU_PEG_TYPE:
             	mSenkuThread.turnOffSound();
+            	break;
+            case MENU_OPTIONS:
+            	showOptionsDialog();
             	break;
         }
 
@@ -188,6 +196,20 @@ public class Senku extends Activity  implements OnKeyListener {
         }
     }
     
+    private class OptionsListener implements OnClickListener {
+        public void onClick(DialogInterface dialog, int whichButton ) {
+            switch (whichButton) {
+                case AlertDialog.BUTTON1: {
+                    showConfirmDeleteDialog();
+                    return;
+                }
+                case AlertDialog.BUTTON2: {          
+                    return;
+                }
+            }
+        }
+    }
+    
     private class HelpListener implements OnClickListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             switch (whichButton) {
@@ -216,6 +238,21 @@ public class Senku extends Activity  implements OnKeyListener {
         builder.setNegativeButton(R.string.dialog_close, listener);
         builder.setOnCancelListener(new ScoresCancelListener());
         builder.show();        
+    }
+    
+    public void showOptionsDialog() {
+    	
+        Context mContext = getApplicationContext();
+        Dialog dialog = new Dialog(mContext);
+        dialog.setContentView(R.layout.options_layout);
+        dialog.setTitle(R.string.menu_options);
+//      TextView text = (TextView) dialog.findViewById(R.id.text);
+//      text.setText("Hello, this is a custom dialog!");
+        ImageView image = (ImageView) dialog.findViewById(R.id.ImageViewHelp);
+        image.setImageResource(R.drawable.ic_menu_help);
+    	
+       // builder.setOnCancelListener(new OptionsListener());
+        dialog.show();        
     }
     
     private void showConfirmDeleteDialog() {
