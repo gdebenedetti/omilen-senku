@@ -11,7 +11,7 @@ public class SenkuModel implements Cloneable {
 	protected int[][] grilla  = { { -1, -1, 1, 1, 1, -1, -1 }, { -1, -1, 1, 1, 1, -1, -1 }, { 1, 1, 1, 1, 1, 1, 1 }, { 1, 1, 1, 0, 1, 1, 1 }, { 1, 1, 1, 1, 1, 1, 1 }, { -1, -1, 1, 1, 1, -1, -1 }, { -1, -1, 1, 1, 1, -1, -1 } };	
 	protected int currentKeyX = 3;
 	protected int currentKeyY = 3;
-	protected int currentGameType = 6;
+	protected int currentGameType = 5;
 	
 	public int getCurrentGameType() {
 		return currentGameType;

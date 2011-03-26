@@ -63,7 +63,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         private int[] startPositionCursor = new int[SenkuModel.ANCHO];
 
         private Bitmap mGrilla;
-        private Drawable mFondoCarteles;
+        private Bitmap mFondoCarteles;
         private Bitmap mFicha;
         private Bitmap mSombraFicha;
         private Bitmap[] mCursor = new Bitmap[5];
@@ -114,9 +114,8 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             mCursor[0] =  BitmapFactory.decodeResource(res,R.drawable.bcursor_01);
             mCursor[1] =  BitmapFactory.decodeResource(res,R.drawable.bcursor_02);
             mCursor[2] =  BitmapFactory.decodeResource(res,R.drawable.bcursor_03);
-            
-            
-            mFondoCarteles = context.getResources().getDrawable(R.drawable.fondocarteles);
+                        
+            mFondoCarteles = BitmapFactory.decodeResource(res,R.drawable.fondocarteles);
             mBackgroundImage = BitmapFactory.decodeResource(res,R.drawable.fondo);
           
             mLinePaint = new Paint();
@@ -380,6 +379,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 
                 mBackgroundImage = mBackgroundImage.createScaledBitmap(mBackgroundImage, width, height, true);
                 mGrilla = mGrilla.createScaledBitmap(mGrilla, lengthGrilla, lengthGrilla, true);
+                mFondoCarteles = mFondoCarteles.createScaledBitmap(mFondoCarteles, (int)(lengthGrilla*0.83), (int)(lengthGrilla*0.83), true);
                 mFicha = mFicha.createScaledBitmap(mFicha, lengthFicha, lengthFicha, true);
                 mSombraFicha = mFicha.createScaledBitmap(mSombraFicha, lengthSombra, lengthSombra, true);
                 
@@ -525,10 +525,9 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             	 
 	            }
             }else if(mMode == STATE_END){
-            	int xCartel = (lengthGrilla-mFondoCarteles.getIntrinsicWidth())/2 + startX;  
-            	int yCartel = (lengthGrilla-mFondoCarteles.getIntrinsicHeight())/2 + startY;
-            	mFondoCarteles.setBounds(xCartel,yCartel,xCartel+mFondoCarteles.getIntrinsicWidth(),yCartel+mFondoCarteles.getIntrinsicHeight());
-            	mFondoCarteles.draw(canvas);
+            	int xCartel = (lengthGrilla-mFondoCarteles.getWidth())/2 + startX;  
+            	int yCartel = (lengthGrilla-mFondoCarteles.getHeight())/2 + startY;
+            	canvas.drawBitmap(mFondoCarteles,xCartel, yCartel, null);            	
             }
         }
 
