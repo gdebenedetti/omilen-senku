@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -189,7 +191,7 @@ public class Senku extends Activity  implements OnKeyListener {
                     showConfirmDeleteDialog();
                     return;
                 }
-                case AlertDialog.BUTTON2: {          
+                case AlertDialog.BUTTON2: {       
                     return;
                 }
             }
@@ -199,11 +201,12 @@ public class Senku extends Activity  implements OnKeyListener {
     private class OptionsListener implements OnClickListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             switch (whichButton) {
-                case AlertDialog.BUTTON1: {
-                    showConfirmDeleteDialog();
+                case R.id.ButtonCloseOptions: {
+                    dialog.cancel();
                     return;
                 }
-                case AlertDialog.BUTTON2: {          
+                case R.id.ButtonHelp: {
+                	showHelpDialog();
                     return;
                 }
             }
@@ -242,17 +245,29 @@ public class Senku extends Activity  implements OnKeyListener {
     
     public void showOptionsDialog() {
     	
-        Context mContext = getApplicationContext();
-        Dialog dialog = new Dialog(mContext);
+        Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.options_layout);
         dialog.setTitle(R.string.menu_options);
+        OptionsListener listener = new OptionsListener();
+        //dialog.setOnKeyListener( new OptionsListener() );
 //      TextView text = (TextView) dialog.findViewById(R.id.text);
 //      text.setText("Hello, this is a custom dialog!");
-        ImageView image = (ImageView) dialog.findViewById(R.id.ImageViewHelp);
-        image.setImageResource(R.drawable.ic_menu_help);
-    	
+        ImageView imageh = (ImageView) dialog.findViewById(R.id.ImageViewHelp);
+        imageh.setImageResource(R.drawable.ic_menu_help);
+        
+        ImageView images = (ImageView) dialog.findViewById(R.id.ImageViewSound);
+        images.setImageResource(R.drawable.ic_menu_sound);
+        
+        ImageView imagef = (ImageView) dialog.findViewById(R.id.ImageViewFacebook);
+        imagef.setImageResource(R.drawable.ic_menu_facebook);
+    	Button close = (Button) dialog.findViewById(R.id.ButtonCloseOptions);
+    	close.setOnClickListener((android.view.View.OnClickListener) listener);
+        
+    	Button help = (Button) dialog.findViewById(R.id.ButtonHelp);
+    	help.setOnClickListener((android.view.View.OnClickListener) listener);
        // builder.setOnCancelListener(new OptionsListener());
-        dialog.show();        
+        dialog.show();
+        
     }
     
     private void showConfirmDeleteDialog() {

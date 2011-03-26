@@ -2,7 +2,8 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="wrap_content"
-  android:layout_height="wrap_content">
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
 	<LinearLayout  
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
@@ -11,8 +12,9 @@
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" >
 		</ImageView>		
-		<TextView android:text="@+id/menu_help" 
-			android:id="@+id/TextViewHelp" 
+		
+		<Button android:text="@string/menu_help" 
+			android:id="@+id/ButtonHelp" 
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content"
 			android:gravity="center"
@@ -20,7 +22,37 @@
             android:textColor="#ffffffff"            
             android:textSize="16sp"
 			>
-		</TextView>
-	</LinearLayout>
+		</Button>	
+	
 
+</LinearLayout>
+	<LinearLayout  
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<ImageView android:id="@+id/ImageViewSound" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" >
+		</ImageView>	
+		<CheckBox android:text="@string/menu_sound" android:id="@+id/CheckBoxSound" 
+		android:layout_width="wrap_content" android:layout_height="wrap_content">
+		</CheckBox>
+	</LinearLayout>
+	<LinearLayout  
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<ImageView android:id="@+id/ImageViewFacebook" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" >
+		</ImageView>
+		
+		<CheckBox android:text="@string/menu_facebook" android:id="@+id/CheckBoxFacebook" 
+		android:layout_width="wrap_content" android:layout_height="wrap_content">
+		</CheckBox>
+	</LinearLayout>
+	
+<Button android:text="@string/dialog_close" android:id="@+id/ButtonCloseOptions"
+ android:layout_width="wrap_content" android:layout_height="wrap_content"
+ android:gravity="right"></Button>
 </LinearLayout>
