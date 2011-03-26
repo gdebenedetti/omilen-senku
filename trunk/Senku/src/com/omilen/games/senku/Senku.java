@@ -79,17 +79,17 @@ public class Senku extends Activity  implements OnKeyListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);    	
-        menu.add(0, MENU_START, 0, R.string.menu_start).setIcon(R.drawable.start);
-        menu.add(0, MENU_UNDO, 0, R.string.menu_undo).setIcon(R.drawable.undo);
-        menu.add(0, MENU_SCORES, 0, R.string.menu_score).setIcon(R.drawable.hiscores);
+        menu.add(0, MENU_START, 0, R.string.menu_start).setIcon(R.drawable.ic_menu_start);
+        menu.add(0, MENU_UNDO, 0, R.string.menu_undo).setIcon(R.drawable.ic_menu_undo);
+        menu.add(0, MENU_SCORES, 0, R.string.menu_score).setIcon(R.drawable.ic_menu_hiscores);
 //      menu.add(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.options);        
 //      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.board);
 //      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.soundoff);
-        SubMenu subMenuPegType  = menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.peg);
-        SubMenu subMenuGameType = menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.board);
-        SubMenu subMenuoptions  = menu.addSubMenu(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.options);
-        subMenuGameType.add(1, 10, 0, "Cruz (piece of cake)");
-        subMenuGameType.add(1, 11, 1, "Mas (very easy)");
+        SubMenu subMenuPegType  = menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.ic_menu_peg);
+        SubMenu subMenuGameType = menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.ic_menu_board);
+        SubMenu subMenuoptions  = menu.addSubMenu(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.ic_menu_options);
+        subMenuGameType.add(1, 10, 0, "Cruz (piece of cake)").setIcon(R.drawable.ic_menu_board_00);
+        subMenuGameType.add(1, 11, 1, "Mas (very easy)").setIcon(R.drawable.ic_menu_board_01);
         subMenuGameType.add(1, 12, 2, "Hogar (easy)");
         subMenuGameType.add(1, 13, 3, "Piramide (not so easy)");
         subMenuGameType.add(1, 14, 4, "Diamante (medium)");
@@ -104,9 +104,9 @@ public class Senku extends Activity  implements OnKeyListener {
         subMenuPegType.add(2, 22, 5, "diamond");
         subMenuPegType.add(2, 23, 6, "eigth ball");
         
-        subMenuoptions.add(3, MENU_HELP,     0, R.string.menu_help).setIcon(R.drawable.help);
-        subMenuoptions.add(3, MENU_SOUND,    1, R.string.menu_sound).setIcon(R.drawable.sound);
-        subMenuoptions.add(3, MENU_FACEBOOK, 2, R.string.menu_facebook).setIcon(R.drawable.facebook);
+        subMenuoptions.add(3, MENU_HELP,     0, R.string.menu_help).setIcon(R.drawable.ic_menu_help);
+        subMenuoptions.add(3, MENU_SOUND,    1, R.string.menu_sound).setIcon(R.drawable.ic_menu_sound);
+        subMenuoptions.add(3, MENU_FACEBOOK, 2, R.string.menu_facebook).setIcon(R.drawable.ic_menu_facebook);
         return true;
     }
     
@@ -233,7 +233,7 @@ public class Senku extends Activity  implements OnKeyListener {
     	HelpListener listener = new HelpListener();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.help_dialog_title);
-        builder.setIcon(R.drawable.help);
+        builder.setIcon(R.drawable.ic_menu_help);
         builder.setCancelable(true);        
         builder.setNegativeButton(R.string.dialog_close, listener);
         builder.setMessage(R.string.help_dialog_msg);
