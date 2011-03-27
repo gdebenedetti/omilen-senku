@@ -260,11 +260,14 @@ public class Senku extends Activity  implements OnKeyListener {
         
         ImageView imagef = (ImageView) dialog.findViewById(R.id.ImageViewFacebook);
         imagef.setImageResource(R.drawable.ic_menu_facebook);
-    	Button close = (Button) dialog.findViewById(R.id.ButtonCloseOptions);
+    	
+        
+        
+        /*Button close = (Button) dialog.findViewById(R.id.ButtonCloseOptions);
     	close.setOnClickListener((android.view.View.OnClickListener) listener);
         
     	Button help = (Button) dialog.findViewById(R.id.ButtonHelp);
-    	help.setOnClickListener((android.view.View.OnClickListener) listener);
+    	help.setOnClickListener((android.view.View.OnClickListener) listener);*/
        // builder.setOnCancelListener(new OptionsListener());
         dialog.show();
         

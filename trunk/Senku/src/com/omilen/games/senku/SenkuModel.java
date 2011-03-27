@@ -12,6 +12,9 @@ public class SenkuModel implements Cloneable {
 	protected int currentKeyX = 3;
 	protected int currentKeyY = 3;
 	protected int currentGameType = 5;
+	protected int currentPegType = 0;
+	protected int pegcount = -1;
+	protected int score = 0;
 	
 	public int getCurrentGameType() {
 		return currentGameType;
@@ -61,7 +64,8 @@ public class SenkuModel implements Cloneable {
 				this.grilla[i][j] = aux[i][j];
 			}
 		}
-		
+		pegcount = -1;
+		score = 0;
 		currentKeyX = 3;
 		currentKeyY = 3;
 		selected = false;		
@@ -291,7 +295,18 @@ public class SenkuModel implements Cloneable {
 				}
 			}
 		}
+		pegcount = count;
 		return count;
+	}
+	
+	public int getScore(){
+		if(this.pegcount == -1){
+			this.getCountOfFichas();
+		}		
+		int restedpegs = SenkuGames.BOARD_TOTAL_PEGS[this.currentGameType] - this.pegcount; 
+		this.score = (int) ((1.0/(this.pegcount*1.0))*SenkuGames.BOARD_SCORE[this.currentGameType]);
+		this.score += restedpegs*SenkuPegs.getInstance().getPegs()[this.currentPegType].getScoreValue();
+		return this.score;
 	}
 	
 	/*
