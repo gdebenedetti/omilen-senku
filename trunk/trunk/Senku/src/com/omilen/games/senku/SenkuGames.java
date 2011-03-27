@@ -3,6 +3,8 @@ package com.omilen.games.senku;
 public class SenkuGames {
 
 	public static final int GAME_TYPES = 7;
+	public static final int[] BOARD_SCORE = {100,200,300,400,500,800,1000};
+	public static final int[] BOARD_TOTAL_PEGS = {6,9,11,16,24,32,36};
 	
 	public static final int[][] GAME_BOARD_01 ={ { -1, -1, 0, 0, 0, -1, -1 }, 
 											     { -1, -1, 0, 1, 0, -1, -1 }, 
