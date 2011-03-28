@@ -83,7 +83,7 @@ public class StoreProperties {
             out.writeChars("sound=1\n");
             out.writeChars("facebook=1\n");
             mproperties.put("sound", "1");
-            mproperties.put("facebook", "1");
+            mproperties.put("facebook", "-1"); //not defined
                 
         } catch(IOException ioe) {
         } finally {

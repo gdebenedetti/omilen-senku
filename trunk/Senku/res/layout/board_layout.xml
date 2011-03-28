@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  android:id="@+id/board_layout" 
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:scrollbars="vertical"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  <ScrollView android:id="@+id/ScrollViewBoard"
+ android:layout_width="wrap_content" 
+ android:layout_height="wrap_content"
+ >
+  <LinearLayout 
+  android:layout_width="wrap_content" 
+  android:layout_height="wrap_content"
+   android:orientation="vertical"
+  android:scrollbars="vertical">
+
+  	<LinearLayout  
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<ImageView android:id="@+id/ImageBoard00" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" >
+		</ImageView>		
+		
+		<RadioButton 
+			android:text="@string/board_name_00" 
+			android:id="@+id/ButtonBoard00" 
+			android:layout_height="wrap_content"
+			
+            android:singleLine="true"
+            android:textColor="#ff000000"            
+            android:textSize="14sp"
+			android:layout_width="wrap_content">
+		</RadioButton>
+	
+
+</LinearLayout>
+	<LinearLayout  
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<ImageView android:id="@+id/ImageBoard01" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" >
+		</ImageView>		
+		
+		<RadioButton android:text="@string/board_name_01" 
+			android:id="@+id/ButtonBoard01" 
+			android:layout_height="wrap_content"
+			
+            android:singleLine="true"
+            android:textColor="#ff000000"            
+            android:textSize="14sp" android:layout_width="wrap_content">
+		</RadioButton>
+	</LinearLayout>
+<LinearLayout  
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<ImageView android:id="@+id/ImageBoard02" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" >
+		</ImageView>		
+		
+		<RadioButton android:text="@string/board_name_02" 
+			android:id="@+id/ButtonBoard02" 
+			android:layout_height="wrap_content"
+			
+            android:singleLine="true"
+            android:textColor="#ff000000"            
+            android:textSize="14sp"
+			android:layout_width="wrap_content">
+		</RadioButton>
+	</LinearLayout>
+	<LinearLayout  
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<ImageView android:id="@+id/ImageBoard03" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" >
+		</ImageView>		
+		
+		<RadioButton android:text="@string/board_name_03" 
+			android:id="@+id/ButtonBoard03" 
+			android:layout_height="wrap_content"
+			
+            android:singleLine="true"
+            android:textColor="#ff000000"            
+            android:textSize="14sp"
+			android:layout_width="wrap_content">
+		</RadioButton>
+	</LinearLayout>
+	<LinearLayout  
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<ImageView android:id="@+id/ImageBoard04" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" >
+		</ImageView>		
+		
+		<RadioButton android:text="@string/board_name_04" 
+			android:id="@+id/ButtonBoard04" 
+			android:layout_height="wrap_content"
+			
+            android:singleLine="true"
+            android:textColor="#ff000000"            
+            android:textSize="14sp"
+			android:layout_width="wrap_content">
+		</RadioButton>
+	</LinearLayout>
+	<LinearLayout  
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<ImageView android:id="@+id/ImageBoard05" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" >
+		</ImageView>		
+		
+		<RadioButton android:text="@string/board_name_05" 
+			android:id="@+id/ButtonBoard05" 
+			android:layout_height="wrap_content"
+			
+            android:singleLine="true"
+            android:textColor="#ff000000"            
+            android:textSize="14sp"
+			android:layout_width="wrap_content">
+		</RadioButton>
+	</LinearLayout>
+	<LinearLayout  
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<ImageView android:id="@+id/ImageBoard06" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" >
+		</ImageView>		
+		
+		<RadioButton android:text="@string/board_name_06" 
+			android:id="@+id/ButtonBoard06" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			
+            android:singleLine="true"
+            android:textColor="#ff000000"            
+            android:textSize="14sp">
+		</RadioButton>
+	</LinearLayout>
+
+</LinearLayout>
+</ScrollView>
+</LinearLayout>

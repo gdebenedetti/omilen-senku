@@ -55,13 +55,11 @@ public class SenkuModel implements Cloneable {
 		return -1;
 	}
 	public void start(){
-		
-		
 		int[][] aux = SenkuGames.GAMES[this.currentGameType];
 		
-		for(int i=0;i<ANCHO;i++){
-			for(int j=0;j<LARGO;j++){
-				this.grilla[i][j] = aux[i][j];
+		for (int i = 0; i < ANCHO; i++) {
+			for (int j = 0; j < LARGO; j++) {
+				this.grilla[i][j] = aux[j][i];
 			}
 		}
 		pegcount = -1;

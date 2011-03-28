@@ -12,20 +12,24 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.omilen.games.senku.SenkuView.SenkuThread;
@@ -40,19 +44,16 @@ public class Senku extends Activity  implements OnKeyListener {
 	private static final int MENU_UNDO    = 1;
 	private static final int MENU_SCORES  = 2;
 	private static final int MENU_HELP  = 3;
-	private static final int MENU_SOUND  = 4;
-	private static final int MENU_SOUND_OFF  = 5;
 	private static final int MENU_GAME_TYPE  = 6;
 	private static final int MENU_PEG_TYPE  = 7;
 	private static final int MENU_OPTIONS  = 8;
-	private static final int MENU_FACEBOOK  = 9;
 		
 	/** A handle to the thread that's actually running the animation. */
     private SenkuThread mSenkuThread;
 
     /** A handle to the View in which the game is running. */
     private SenkuView mSenkuView;
-	
+    private StoreProperties instanceProp = null;
        
     /** Called when the activity is first created. */
     @Override
@@ -79,8 +80,26 @@ public class Senku extends Activity  implements OnKeyListener {
         	mSenkuThread.restoreState(savedInstanceState);           
         }
        
-        mSenkuThread.doStart();
+        //set the current-Options
+        instanceProp = StoreProperties.getInstance(this);
+        final String sound = instanceProp.getProperty("sound");
+        if(sound.compareTo("1")==0){
+    		mSenkuThread.turnOnSound();
+        }else{    
+        	mSenkuThread.turnOffSound();
+        }
+    	
+        final String gameStr = instanceProp.getProperty("currentGame");
+        
+        if(gameStr!=null){
+        	 mSenkuThread.doStart(Integer.valueOf(gameStr));
+        }else{
+        	 mSenkuThread.doStart();
+        }
+       
+       
     }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);    	
@@ -91,16 +110,10 @@ public class Senku extends Activity  implements OnKeyListener {
 //      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.board);
 //      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.soundoff);
         SubMenu subMenuPegType  = menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.ic_menu_peg);
-        SubMenu subMenuGameType = menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.ic_menu_board);
+        //SubMenu subMenuGameType = menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.ic_menu_board);
         //SubMenu subMenuoptions  = menu.addSubMenu(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.ic_menu_options);
         menu.add(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.ic_menu_options);
-        subMenuGameType.add(1, 10, 0, "Cruz (piece of cake)").setIcon(R.drawable.ic_menu_board_00);
-        subMenuGameType.add(1, 11, 1, "Mas (very easy)").setIcon(R.drawable.ic_menu_board_01);
-        subMenuGameType.add(1, 12, 2, "Hogar (easy)");
-        subMenuGameType.add(1, 13, 3, "Piramide (not so easy)");
-        subMenuGameType.add(1, 14, 4, "Diamante (medium)");
-        subMenuGameType.add(1, 15, 5, "Normal (difficult)");
-        subMenuGameType.add(1, 16, 6, "Muerte Europea (Very hard)");
+        menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.ic_menu_board);
         
         subMenuPegType.add(2, 17, 0, "plastic");
         subMenuPegType.add(2, 18, 1, "wood");
@@ -131,15 +144,9 @@ public class Senku extends Activity  implements OnKeyListener {
             	break;
             case MENU_HELP:
             	showHelpDialog();
-                break;
-            case MENU_SOUND: 
-            	mSenkuThread.turnOnSound();
-            	break;
-            case MENU_SOUND_OFF:
-            	mSenkuThread.turnOffSound();
-            	break;
+                break;           
             case MENU_GAME_TYPE: 
-            	mSenkuThread.turnOnSound();
+            	showGameTypeDialog();
             	break;
             case MENU_PEG_TYPE:
             	mSenkuThread.turnOffSound();
@@ -168,7 +175,7 @@ public class Senku extends Activity  implements OnKeyListener {
 	public boolean onTouchEvent(MotionEvent event) {
 		return mSenkuThread.doTouch(event);
 	}
-
+        
 	/********* CLASSES PRIVADAS *************/
     private class ScoresCancelListener implements OnCancelListener {
         public void onCancel(DialogInterface dialog) {
@@ -198,21 +205,64 @@ public class Senku extends Activity  implements OnKeyListener {
         }
     }
     
-    private class OptionsListener implements OnClickListener {
-        public void onClick(DialogInterface dialog, int whichButton ) {
-            switch (whichButton) {
-                case R.id.ButtonCloseOptions: {
-                    dialog.cancel();
-                    return;
-                }
-                case R.id.ButtonHelp: {
-                	showHelpDialog();
-                    return;
-                }
-            }
-        }
+    private class BoardDialogListener implements View.OnClickListener {
+
+    	protected int previusChecked = -1;  	
+    	
+		@Override
+		public void onClick(View v) {
+			
+			previusChecked = Integer.parseInt(instanceProp.getProperty("currentGame"));
+			
+			mSenkuThread = mSenkuView.getThread();
+			RadioButton[] buttonBoardArray = new RadioButton[7]; 
+			buttonBoardArray[0] = (RadioButton) findViewById(R.id.ButtonBoard00);
+			buttonBoardArray[1] = (RadioButton) findViewById(R.id.ButtonBoard01);
+			buttonBoardArray[2] = (RadioButton) findViewById(R.id.ButtonBoard02);
+			buttonBoardArray[3] = (RadioButton) findViewById(R.id.ButtonBoard03);
+			buttonBoardArray[4] = (RadioButton) findViewById(R.id.ButtonBoard04);
+			buttonBoardArray[5] = (RadioButton) findViewById(R.id.ButtonBoard05);
+			buttonBoardArray[6] = (RadioButton) findViewById(R.id.ButtonBoard06);
+	        	        
+			switch (v.getId()) {
+			case R.id.ButtonBoard00:
+				instanceProp.setProperty("currentGame", "00");
+				mSenkuThread.setCurrentGame(0);			
+				break;
+			case R.id.ButtonBoard01:
+				instanceProp.setProperty("currentGame", "01");
+				mSenkuThread.setCurrentGame(1);			
+				break;
+			case R.id.ButtonBoard02:
+				instanceProp.setProperty("currentGame", "02");
+				mSenkuThread.setCurrentGame(2);				
+				break;
+			case R.id.ButtonBoard03:
+				instanceProp.setProperty("currentGame", "03");
+				mSenkuThread.setCurrentGame(3);				
+				break;
+			case R.id.ButtonBoard04:
+				instanceProp.setProperty("currentGame", "04");
+				mSenkuThread.setCurrentGame(4);				
+				break;
+			case R.id.ButtonBoard05:
+				instanceProp.setProperty("currentGame", "05");
+				mSenkuThread.setCurrentGame(5);				
+				break;
+			case R.id.ButtonBoard06:
+				instanceProp.setProperty("currentGame", "06");
+				mSenkuThread.setCurrentGame(6);				
+				break;		
+			default:
+				break;
+			}
+			if(previusChecked != Integer.parseInt(instanceProp.getProperty("currentGame"))){
+				buttonBoardArray[previusChecked].setChecked(false);
+			}
+		}
+    	
     }
-    
+   
     private class HelpListener implements OnClickListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             switch (whichButton) {
@@ -243,33 +293,136 @@ public class Senku extends Activity  implements OnKeyListener {
         builder.show();        
     }
     
-    public void showOptionsDialog() {
+    public void showGameTypeDialog(){
     	
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.options_layout);
-        dialog.setTitle(R.string.menu_options);
-        OptionsListener listener = new OptionsListener();
-        //dialog.setOnKeyListener( new OptionsListener() );
-//      TextView text = (TextView) dialog.findViewById(R.id.text);
-//      text.setText("Hello, this is a custom dialog!");
-        ImageView imageh = (ImageView) dialog.findViewById(R.id.ImageViewHelp);
+    	HelpListener listener = new HelpListener();    
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.menu_game_type);
+        builder.setIcon(R.drawable.ic_menu_board);
+        builder.setCancelable(true);        
+        builder.setNegativeButton(R.string.dialog_close, listener);
+        LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.board_layout, null);
+        builder.setView(layout);
+        BoardDialogListener boardListener = new BoardDialogListener();
+        
+        final ImageView imageboard00 = (ImageView) layout.findViewById(R.id.ImageBoard00);
+        final ImageView imageboard01 = (ImageView) layout.findViewById(R.id.ImageBoard01);
+        final ImageView imageboard02 = (ImageView) layout.findViewById(R.id.ImageBoard02);
+        final ImageView imageboard03 = (ImageView) layout.findViewById(R.id.ImageBoard03);
+        final ImageView imageboard04 = (ImageView) layout.findViewById(R.id.ImageBoard04);
+        final ImageView imageboard05 = (ImageView) layout.findViewById(R.id.ImageBoard05);
+        final ImageView imageboard06 = (ImageView) layout.findViewById(R.id.ImageBoard06);
+        
+        imageboard00.setImageResource(R.drawable.ic_menu_board_00);
+        imageboard01.setImageResource(R.drawable.ic_menu_board_01);
+        imageboard02.setImageResource(R.drawable.ic_menu_board_02);
+        imageboard03.setImageResource(R.drawable.ic_menu_board_03);
+        imageboard04.setImageResource(R.drawable.ic_menu_board_04);
+        imageboard05.setImageResource(R.drawable.ic_menu_board);
+        imageboard06.setImageResource(R.drawable.ic_menu_board_06);
+        
+        final RadioButton buttonBoard00 = (RadioButton) layout.findViewById(R.id.ButtonBoard00);
+        final RadioButton buttonBoard01 = (RadioButton) layout.findViewById(R.id.ButtonBoard01);
+        final RadioButton buttonBoard02 = (RadioButton) layout.findViewById(R.id.ButtonBoard02);
+        final RadioButton buttonBoard03 = (RadioButton) layout.findViewById(R.id.ButtonBoard03);
+        final RadioButton buttonBoard04 = (RadioButton) layout.findViewById(R.id.ButtonBoard04);
+        final RadioButton buttonBoard05 = (RadioButton) layout.findViewById(R.id.ButtonBoard05);
+        final RadioButton buttonBoard06 = (RadioButton) layout.findViewById(R.id.ButtonBoard06);
+        buttonBoard00.setOnClickListener(boardListener);
+        buttonBoard01.setOnClickListener(boardListener);
+        buttonBoard02.setOnClickListener(boardListener);
+        buttonBoard03.setOnClickListener(boardListener);
+        buttonBoard04.setOnClickListener(boardListener);
+        buttonBoard05.setOnClickListener(boardListener);
+        buttonBoard06.setOnClickListener(boardListener);
+        String selected = instanceProp.getProperty("currentGame");
+        if(selected == null){
+        	selected = "05";
+        }
+        switch (Integer.parseInt(selected)) {
+		case 0:	buttonBoard00.setChecked(true);		
+			break;
+		case 1:	buttonBoard01.setChecked(true);		
+		    break;
+		case 2:	buttonBoard02.setChecked(true);		
+			break;
+		case 3:	buttonBoard03.setChecked(true);		
+			break;
+		case 4:	buttonBoard04.setChecked(true);		
+			break;
+		case 5:	buttonBoard05.setChecked(true);		
+			break;  
+		case 6:	buttonBoard06.setChecked(true);		
+			break;
+		default:
+			break;
+		}
+        builder.show(); 
+    }
+    
+    public void showOptionsDialog() {
+    	        
+    	HelpListener listener = new HelpListener();    	
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.menu_options);
+        builder.setIcon(R.drawable.ic_menu_options);
+        builder.setCancelable(true);        
+        builder.setNegativeButton(R.string.dialog_close, listener);
+        LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.options_layout, null);
+        builder.setView(layout);
+        
+        String sound = StoreProperties.getInstance(this).getProperty("sound");
+        String facebook = StoreProperties.getInstance(this).getProperty("facebook");
+        
+        final CheckBox checkSound = (CheckBox)  layout.findViewById(R.id.CheckBoxSound);
+        checkSound.setChecked(sound.equals("1"));
+        
+        final CheckBox checkFacebook = (CheckBox)  layout.findViewById(R.id.CheckBoxFacebook);
+        checkFacebook.setChecked(facebook.equals("1"));
+        
+        final ImageView imageh = (ImageView) layout.findViewById(R.id.ImageViewHelp);
         imageh.setImageResource(R.drawable.ic_menu_help);
         
-        ImageView images = (ImageView) dialog.findViewById(R.id.ImageViewSound);
+        final ImageView images = (ImageView) layout.findViewById(R.id.ImageViewSound);
         images.setImageResource(R.drawable.ic_menu_sound);
         
-        ImageView imagef = (ImageView) dialog.findViewById(R.id.ImageViewFacebook);
+        final ImageView imagef = (ImageView) layout.findViewById(R.id.ImageViewFacebook);
         imagef.setImageResource(R.drawable.ic_menu_facebook);
-    	
         
+        final Button button2 = (Button) layout.findViewById(R.id.ButtonHelp);
+        button2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	 showHelpDialog();
+            }
+        });
+        checkFacebook.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {				
+				if(checkFacebook.isChecked()){
+					instanceProp.setProperty("facebook", "1");					
+				}else{
+					instanceProp.setProperty("facebook", "0");					
+				}
+			}
+        });
         
-        /*Button close = (Button) dialog.findViewById(R.id.ButtonCloseOptions);
-    	close.setOnClickListener((android.view.View.OnClickListener) listener);
+        checkSound.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+				if(checkSound.isChecked()){
+					instanceProp.setProperty("sound", "1");
+					mSenkuThread.turnOnSound();
+				}else{
+					instanceProp.setProperty("sound", "0");
+					mSenkuThread.turnOffSound();
+				}
+				
+				
+			}
+        });
         
-    	Button help = (Button) dialog.findViewById(R.id.ButtonHelp);
-    	help.setOnClickListener((android.view.View.OnClickListener) listener);*/
-       // builder.setOnCancelListener(new OptionsListener());
-        dialog.show();
+        builder.show();
         
     }
     
