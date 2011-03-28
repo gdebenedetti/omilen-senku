@@ -14,21 +14,38 @@
     <string name="menu_peg_type">Pegs</string>
     <string name="menu_options">Options</string>
     
-
     <string name="mode_ready">Senku\nPress Up To Play</string>
 	<string name="mode_pause">Paused</string>	
 	<string name="mode_end2">Select Start to\nPlay Again</string>
+	<string name="mode_loading">Loading...</string>
 	
 	<string name="message_stopped">Stopped</string>
 	<string name="gameover">Game Over</string>
 	<string name="youwin">You Win</string>
 	
-	<string name="perfect" >Game: Perfect!!!</string>
-	<string name="veryGood">Game: Very Good!</string>
-	<string name="good"    >Game: Good</string>
-	<string name="regular" >Game: Regular</string>
-	<string name="bad"     >Game: Bad</string>
+	<string name="perfect" >Play: Perfect!!!</string>
+	<string name="veryGood">Play: Very Good!</string>
+	<string name="good"    >Play: Good</string>
+	<string name="regular" >Play: Regular</string>
+	<string name="bad"     >Play: Bad</string>
 	<string name="remaining_chips">pegs: </string>
+	
+	<string name="board_name_00">Arrow (very easy)</string>
+    <string name="board_name_01">Plus (easy)</string>
+    <string name="board_name_02">Home (medium)</string>
+    <string name="board_name_03">Pyramid (difficult)</string>
+    <string name="board_name_04">Diamond (very difficult)</string>
+    <string name="board_name_05">Normal (hard)</string>
+    <string name="board_name_06">European death (hardest)</string>
+    
+    <string name="peg_name_00">Plastic</string>
+    <string name="peg_name_01">Wood</string>
+    <string name="peg_name_02">Silver</string>
+    <string name="peg_name_03">Gold</string>
+    <string name="peg_name_04">Sapphire</string>
+    <string name="peg_name_05">Emerald</string>
+    <string name="peg_name_06">Diamond</string>
+    <string name="peg_name_07">Eight ball</string>
 
      <!-- HighScoreListActivity -->
     <string name="scores_title">High Scores</string>
