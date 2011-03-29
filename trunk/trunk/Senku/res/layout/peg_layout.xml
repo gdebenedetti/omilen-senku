@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+ android:id="@+id/peg_layout" >
+    <ScrollView android:layout_width="fill_parent" android:id="@+id/scrollViewPeg" android:layout_height="fill_parent">
+        <LinearLayout android:layout_width="fill_parent" 
+        android:id="@+id/innerlinearLayoutPegs" 
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+            <RadioGroup android:id="@+id/radioGroupPegs" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <RadioButton android:layout_width="wrap_content" android:text="@string/peg_name_00" 
+                android:id="@+id/radioPeg0" android:layout_height="wrap_content" android:checked="true"></RadioButton>
+                <RadioButton android:layout_width="wrap_content" android:text="@string/peg_name_01" 
+                android:id="@+id/radioPeg1" android:layout_height="wrap_content"></RadioButton>
+                <RadioButton android:layout_width="wrap_content" android:text="@string/peg_name_02"
+                android:id="@+id/radioPeg2" android:layout_height="wrap_content"></RadioButton>
+                 <RadioButton android:layout_width="wrap_content" android:text="@string/peg_name_03" 
+                android:id="@+id/radioPeg3" android:layout_height="wrap_content"></RadioButton>
+                <RadioButton android:layout_width="wrap_content" android:text="@string/peg_name_04"
+                android:id="@+id/radioPeg4" android:layout_height="wrap_content"></RadioButton>
+                <RadioButton android:layout_width="wrap_content" android:text="@string/peg_name_05" 
+                android:id="@+id/radioPeg5" android:layout_height="wrap_content"></RadioButton>
+                <RadioButton android:layout_width="wrap_content" android:text="@string/peg_name_06"
+                android:id="@+id/radioPeg6" android:layout_height="wrap_content"></RadioButton>
+                 <RadioButton android:layout_width="wrap_content" android:text="@string/peg_name_07" 
+                android:id="@+id/radioPeg7" android:layout_height="wrap_content"></RadioButton>                
+            </RadioGroup>        
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
