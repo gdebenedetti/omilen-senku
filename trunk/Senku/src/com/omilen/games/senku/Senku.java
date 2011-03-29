@@ -109,19 +109,20 @@ public class Senku extends Activity  implements OnKeyListener {
 //      menu.add(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.options);        
 //      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.board);
 //      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.soundoff);
-        SubMenu subMenuPegType  = menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.ic_menu_peg);
+       // SubMenu subMenuPegType  = menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.ic_menu_peg);
         //SubMenu subMenuGameType = menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.ic_menu_board);
         //SubMenu subMenuoptions  = menu.addSubMenu(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.ic_menu_options);
+        menu.add(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.ic_menu_peg);
         menu.add(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.ic_menu_options);
         menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.ic_menu_board);
         
-        subMenuPegType.add(2, 17, 0, "plastic");
-        subMenuPegType.add(2, 18, 1, "wood");
-        subMenuPegType.add(2, 19, 2, "silver");
-        subMenuPegType.add(2, 20, 3, "gold");
-        subMenuPegType.add(2, 21, 4, "emerald");
-        subMenuPegType.add(2, 22, 5, "diamond");
-        subMenuPegType.add(2, 23, 6, "eigth ball");
+//        subMenuPegType.add(2, 17, 0, "plastic");
+//        subMenuPegType.add(2, 18, 1, "wood");
+//        subMenuPegType.add(2, 19, 2, "silver");
+//        subMenuPegType.add(2, 20, 3, "gold");
+//        subMenuPegType.add(2, 21, 4, "emerald");
+//        subMenuPegType.add(2, 22, 5, "diamond");
+//        subMenuPegType.add(2, 23, 6, "eigth ball");
         
         //subMenuoptions.add(3, MENU_HELP,     0, R.string.menu_help).setIcon(R.drawable.ic_menu_help);
         //subMenuoptions.add(3, MENU_SOUND,    1, R.string.menu_sound).setIcon(R.drawable.ic_menu_sound);
@@ -149,7 +150,7 @@ public class Senku extends Activity  implements OnKeyListener {
             	showGameTypeDialog();
             	break;
             case MENU_PEG_TYPE:
-            	mSenkuThread.turnOffSound();
+            	showPegTypeDialog();
             	break;
             case MENU_OPTIONS:
             	showOptionsDialog();
@@ -205,24 +206,67 @@ public class Senku extends Activity  implements OnKeyListener {
         }
     }
     
+    private class PegDialogListener implements View.OnClickListener {
+    
+    	@Override
+		public void onClick(View v) {
+    	switch (v.getId()) {
+		case R.id.radioPeg0:
+			instanceProp.setProperty("currentPeg", "00-"+SenkuPegs.getInstance().getPegs()[0].getCodeName());
+			mSenkuThread.setCurrentPeg(0);
+			break;
+		case R.id.radioPeg1:
+			instanceProp.setProperty("currentPeg", "01-"+SenkuPegs.getInstance().getPegs()[1].getCodeName());
+			mSenkuThread.setCurrentPeg(1);			
+			break;
+		case R.id.radioPeg2:
+			instanceProp.setProperty("currentPeg", "02-"+SenkuPegs.getInstance().getPegs()[2].getCodeName());
+			mSenkuThread.setCurrentPeg(2);				
+			break;
+		case R.id.radioPeg3:
+			instanceProp.setProperty("currentPeg", "03-"+SenkuPegs.getInstance().getPegs()[3].getCodeName());
+			mSenkuThread.setCurrentPeg(3);				
+			break;
+		case R.id.radioPeg4:
+			instanceProp.setProperty("currentPeg", "04-"+SenkuPegs.getInstance().getPegs()[4].getCodeName());
+			mSenkuThread.setCurrentPeg(4);				
+			break;
+		case R.id.radioPeg5:
+			instanceProp.setProperty("currentPeg", "05-"+SenkuPegs.getInstance().getPegs()[5].getCodeName());
+			mSenkuThread.setCurrentPeg(5);				
+			break;
+		case R.id.radioPeg6:
+			instanceProp.setProperty("currentPeg", "06-"+SenkuPegs.getInstance().getPegs()[6].getCodeName());
+			mSenkuThread.setCurrentPeg(6);				
+			break;		
+		case R.id.radioPeg7:
+			instanceProp.setProperty("currentPeg", "07-"+SenkuPegs.getInstance().getPegs()[7].getCodeName());
+			mSenkuThread.setCurrentPeg(7);				
+			break;			
+		default:
+			break;
+		}
+    	}
+    }
+    
     private class BoardDialogListener implements View.OnClickListener {
 
-    	protected int previusChecked = -1;  	
+//    	protected int previusChecked = -1;  	
     	
 		@Override
 		public void onClick(View v) {
 			
-			previusChecked = Integer.parseInt(instanceProp.getProperty("currentGame"));
+//			previusChecked = Integer.parseInt(instanceProp.getProperty("currentGame"));
 			
 			mSenkuThread = mSenkuView.getThread();
-			RadioButton[] buttonBoardArray = new RadioButton[7]; 
-			buttonBoardArray[0] = (RadioButton) findViewById(R.id.ButtonBoard00);
-			buttonBoardArray[1] = (RadioButton) findViewById(R.id.ButtonBoard01);
-			buttonBoardArray[2] = (RadioButton) findViewById(R.id.ButtonBoard02);
-			buttonBoardArray[3] = (RadioButton) findViewById(R.id.ButtonBoard03);
-			buttonBoardArray[4] = (RadioButton) findViewById(R.id.ButtonBoard04);
-			buttonBoardArray[5] = (RadioButton) findViewById(R.id.ButtonBoard05);
-			buttonBoardArray[6] = (RadioButton) findViewById(R.id.ButtonBoard06);
+//			RadioButton[] buttonBoardArray = new RadioButton[7]; 
+//			buttonBoardArray[0] = (RadioButton) findViewById(R.id.ButtonBoard00);
+//			buttonBoardArray[1] = (RadioButton) findViewById(R.id.ButtonBoard01);
+//			buttonBoardArray[2] = (RadioButton) findViewById(R.id.ButtonBoard02);
+//			buttonBoardArray[3] = (RadioButton) findViewById(R.id.ButtonBoard03);
+//			buttonBoardArray[4] = (RadioButton) findViewById(R.id.ButtonBoard04);
+//			buttonBoardArray[5] = (RadioButton) findViewById(R.id.ButtonBoard05);
+//			buttonBoardArray[6] = (RadioButton) findViewById(R.id.ButtonBoard06);
 	        	        
 			switch (v.getId()) {
 			case R.id.ButtonBoard00:
@@ -256,9 +300,9 @@ public class Senku extends Activity  implements OnKeyListener {
 			default:
 				break;
 			}
-			if(previusChecked != Integer.parseInt(instanceProp.getProperty("currentGame"))){
-				buttonBoardArray[previusChecked].setChecked(false);
-			}
+//			if(previusChecked != Integer.parseInt(instanceProp.getProperty("currentGame"))){
+//				buttonBoardArray[previusChecked].setChecked(false);
+//			}
 		}
     	
     }
@@ -293,6 +337,70 @@ public class Senku extends Activity  implements OnKeyListener {
         builder.show();        
     }
     
+    public void showPegTypeDialog(){
+    	
+    	HelpListener listener = new HelpListener();    
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.menu_peg_type);
+        builder.setIcon(R.drawable.ic_menu_peg);
+        builder.setCancelable(true);        
+        builder.setNegativeButton(R.string.dialog_close, listener);
+        LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.peg_layout, null);
+        builder.setView(layout);
+        PegDialogListener pegListener = new PegDialogListener();
+                       
+        final RadioButton buttonBoard00 = (RadioButton) layout.findViewById(R.id.radioPeg0);
+        final RadioButton buttonBoard01 = (RadioButton) layout.findViewById(R.id.radioPeg1);
+        final RadioButton buttonBoard02 = (RadioButton) layout.findViewById(R.id.radioPeg2);
+        final RadioButton buttonBoard03 = (RadioButton) layout.findViewById(R.id.radioPeg3);
+        final RadioButton buttonBoard04 = (RadioButton) layout.findViewById(R.id.radioPeg4);
+        final RadioButton buttonBoard05 = (RadioButton) layout.findViewById(R.id.radioPeg5);
+        final RadioButton buttonBoard06 = (RadioButton) layout.findViewById(R.id.radioPeg6);
+        final RadioButton buttonBoard07 = (RadioButton) layout.findViewById(R.id.radioPeg7);        
+        buttonBoard00.setOnClickListener(pegListener);
+        buttonBoard01.setOnClickListener(pegListener);
+        buttonBoard02.setOnClickListener(pegListener);
+        buttonBoard03.setOnClickListener(pegListener);
+        buttonBoard04.setOnClickListener(pegListener);
+        buttonBoard05.setOnClickListener(pegListener);
+        buttonBoard06.setOnClickListener(pegListener);
+        buttonBoard07.setOnClickListener(pegListener);
+       
+        String selected = instanceProp.getProperty("currentPeg");
+        if(selected == null){
+        	selected = "00";
+        }else{
+        	try{
+	        	String aux[] = selected.split("-");
+	        	selected = aux[0]; 
+	        	if(!aux[1].equals(SenkuPegs.getInstance().getPegs()[Integer.parseInt(selected)].getCodeName() )){
+	        		selected = "00";
+	        	}
+        	}catch (Exception e) {
+        		selected = "00";
+			}
+        }
+        switch (Integer.parseInt(selected)) {
+		case 0:	buttonBoard00.setChecked(true);		
+			break;
+		case 1:	buttonBoard01.setChecked(true);		
+		    break;
+		case 2:	buttonBoard02.setChecked(true);		
+			break;
+		case 3:	buttonBoard03.setChecked(true);		
+			break;
+		case 4:	buttonBoard04.setChecked(true);		
+			break;
+		case 5:	buttonBoard05.setChecked(true);		
+			break;  
+		case 6:	buttonBoard06.setChecked(true);		
+			break;
+		default:
+			break;
+		}
+        builder.show(); 
+    }
+    
     public void showGameTypeDialog(){
     	
     	HelpListener listener = new HelpListener();    
@@ -305,21 +413,21 @@ public class Senku extends Activity  implements OnKeyListener {
         builder.setView(layout);
         BoardDialogListener boardListener = new BoardDialogListener();
         
-        final ImageView imageboard00 = (ImageView) layout.findViewById(R.id.ImageBoard00);
-        final ImageView imageboard01 = (ImageView) layout.findViewById(R.id.ImageBoard01);
-        final ImageView imageboard02 = (ImageView) layout.findViewById(R.id.ImageBoard02);
-        final ImageView imageboard03 = (ImageView) layout.findViewById(R.id.ImageBoard03);
-        final ImageView imageboard04 = (ImageView) layout.findViewById(R.id.ImageBoard04);
-        final ImageView imageboard05 = (ImageView) layout.findViewById(R.id.ImageBoard05);
-        final ImageView imageboard06 = (ImageView) layout.findViewById(R.id.ImageBoard06);
-        
-        imageboard00.setImageResource(R.drawable.ic_menu_board_00);
-        imageboard01.setImageResource(R.drawable.ic_menu_board_01);
-        imageboard02.setImageResource(R.drawable.ic_menu_board_02);
-        imageboard03.setImageResource(R.drawable.ic_menu_board_03);
-        imageboard04.setImageResource(R.drawable.ic_menu_board_04);
-        imageboard05.setImageResource(R.drawable.ic_menu_board);
-        imageboard06.setImageResource(R.drawable.ic_menu_board_06);
+//        final ImageView imageboard00 = (ImageView) layout.findViewById(R.id.ImageBoard00);
+//        final ImageView imageboard01 = (ImageView) layout.findViewById(R.id.ImageBoard01);
+//        final ImageView imageboard02 = (ImageView) layout.findViewById(R.id.ImageBoard02);
+//        final ImageView imageboard03 = (ImageView) layout.findViewById(R.id.ImageBoard03);
+//        final ImageView imageboard04 = (ImageView) layout.findViewById(R.id.ImageBoard04);
+//        final ImageView imageboard05 = (ImageView) layout.findViewById(R.id.ImageBoard05);
+//        final ImageView imageboard06 = (ImageView) layout.findViewById(R.id.ImageBoard06);
+//        
+//        imageboard00.setImageResource(R.drawable.ic_menu_board_00);
+//        imageboard01.setImageResource(R.drawable.ic_menu_board_01);
+//        imageboard02.setImageResource(R.drawable.ic_menu_board_02);
+//        imageboard03.setImageResource(R.drawable.ic_menu_board_03);
+//        imageboard04.setImageResource(R.drawable.ic_menu_board_04);
+//        imageboard05.setImageResource(R.drawable.ic_menu_board);
+//        imageboard06.setImageResource(R.drawable.ic_menu_board_06);
         
         final RadioButton buttonBoard00 = (RadioButton) layout.findViewById(R.id.ButtonBoard00);
         final RadioButton buttonBoard01 = (RadioButton) layout.findViewById(R.id.ButtonBoard01);
@@ -328,6 +436,7 @@ public class Senku extends Activity  implements OnKeyListener {
         final RadioButton buttonBoard04 = (RadioButton) layout.findViewById(R.id.ButtonBoard04);
         final RadioButton buttonBoard05 = (RadioButton) layout.findViewById(R.id.ButtonBoard05);
         final RadioButton buttonBoard06 = (RadioButton) layout.findViewById(R.id.ButtonBoard06);
+        buttonBoard00.setBackgroundResource(R.drawable.ic_menu_board_00);
         buttonBoard00.setOnClickListener(boardListener);
         buttonBoard01.setOnClickListener(boardListener);
         buttonBoard02.setOnClickListener(boardListener);
@@ -335,6 +444,7 @@ public class Senku extends Activity  implements OnKeyListener {
         buttonBoard04.setOnClickListener(boardListener);
         buttonBoard05.setOnClickListener(boardListener);
         buttonBoard06.setOnClickListener(boardListener);
+        
         String selected = instanceProp.getProperty("currentGame");
         if(selected == null){
         	selected = "05";

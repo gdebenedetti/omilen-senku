@@ -63,8 +63,8 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         private int[] startPositionCursor = new int[SenkuModel.ANCHO];
 
         private Bitmap[] mBoard = new Bitmap[3];
-        private Bitmap mFondoCarteles;
-        private Bitmap mFicha;
+        private Bitmap[] mPegs = new Bitmap[SenkuPegs.NUMBER_OF_PEGS];
+        private Bitmap mFondoCarteles;        
         private Bitmap mSombraFicha;
         private Bitmap[] mCursor = new Bitmap[5];
         
@@ -99,6 +99,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 		private float percent = 1;
 		private int cellLength = 0;
 		private int boardSelected = 0;
+		private int pegSelected = 0;
 		
         public SenkuThread(SurfaceHolder surfaceHolder, Context context,
                 Handler handler) {
@@ -112,7 +113,17 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             mBoard[0] = BitmapFactory.decodeResource(res,R.drawable.board);
             mBoard[1] = BitmapFactory.decodeResource(res,R.drawable.board_easy);
             mBoard[2] = BitmapFactory.decodeResource(res,R.drawable.board_euro);
-            mFicha = BitmapFactory.decodeResource(res,R.drawable.ficha_plastico_roja);
+            
+            mPegs[0] = BitmapFactory.decodeResource(res,R.drawable.ficha_plastico_roja);
+            mPegs[1] = BitmapFactory.decodeResource(res,R.drawable.ficha_madera);
+            mPegs[2] = BitmapFactory.decodeResource(res,R.drawable.ficha_metalica);
+            mPegs[3] = BitmapFactory.decodeResource(res,R.drawable.ficha_oro);
+            mPegs[4] = BitmapFactory.decodeResource(res,R.drawable.ficha_gema_azul);
+            mPegs[5] = BitmapFactory.decodeResource(res,R.drawable.ficha_gema_rosa);
+            mPegs[6] = BitmapFactory.decodeResource(res,R.drawable.ficha_bola_ocho);
+            mPegs[7] = BitmapFactory.decodeResource(res,R.drawable.ficha_gema_amarilla);
+            
+            
             mSombraFicha = BitmapFactory.decodeResource(res,R.drawable.sombra_circular);
             mCursor[0] =  BitmapFactory.decodeResource(res,R.drawable.bcursor_01);
             mCursor[1] =  BitmapFactory.decodeResource(res,R.drawable.bcursor_02);
@@ -164,6 +175,12 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             synchronized (mSurfaceHolder) {
             	this.sounds.setSoundOn(true);
             }
+        }
+        
+        public void setCurrentPeg(int pegtype){
+        	synchronized (mSurfaceHolder) {
+        		this.pegSelected = pegtype;
+        	}
         }
         
         public void setCurrentGame(int currentGameType) {
@@ -406,7 +423,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                 	startPositionCursor[i] = startPositionCursor[i-1]+(int)cellLength;
                 }
            	 	
-                lengthFicha = (int)Math.round(mFicha.getWidth()*percent);
+                lengthFicha = (int)Math.round(mPegs[0].getWidth()*percent);
                 lengthSombra= (int)Math.round(mSombraFicha.getWidth()*percent);
                 corrimientoAlSeleccionar = (int)Math.round(20.0*percent);
                
@@ -415,7 +432,9 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                 mBoard[1] = Bitmap.createScaledBitmap(mBoard[1], lengthGrilla, lengthGrilla, true);
                 mBoard[2] = Bitmap.createScaledBitmap(mBoard[2], lengthGrilla, lengthGrilla, true);
                 mFondoCarteles = Bitmap.createScaledBitmap(mFondoCarteles, (int)(lengthGrilla*0.83), (int)(lengthGrilla*0.90), true);
-                mFicha = Bitmap.createScaledBitmap(mFicha, lengthFicha, lengthFicha, true);
+                for(int i=0;i<mPegs.length;i++){
+                	mPegs[i] = Bitmap.createScaledBitmap(mPegs[i], lengthFicha, lengthFicha, true);
+                }
                 mSombraFicha = Bitmap.createScaledBitmap(mSombraFicha, lengthSombra, lengthSombra, true);
                 
                 int halfAnim = (int)Math.round((this.mCursor.length+1.0) /2.0);
@@ -539,7 +558,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             for(int i =0;i<SenkuModel.ANCHO;i++){
             	for(int j=0;j<SenkuModel.LARGO;j++){
             		if(game.getCelda(i,j)==1 && (!gameSelected || (i!=currentX || j!= currentY))){
-            			canvas.drawBitmap(mFicha, startX+startPosition[i], startY+startPosition[j], null);
+            			canvas.drawBitmap(mPegs[this.pegSelected], startX+startPosition[i], startY+startPosition[j], null);
             		}
             	}            	
             }            
@@ -548,13 +567,13 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 	            if(gameSelected){
 	            	if(controlMode == MODE_CURSOR){
 	            		canvas.drawBitmap(mSombraFicha, xStartCursor, yStartCursor, null);
-	            		canvas.drawBitmap(mFicha, xStart+this.corrimientoAlSeleccionar, yStart+this.corrimientoAlSeleccionar, null);
+	            		canvas.drawBitmap(mPegs[this.pegSelected], xStart+this.corrimientoAlSeleccionar, yStart+this.corrimientoAlSeleccionar, null);
 	            	}else{
 	            		if(this.fingerCursorGrillaX >= 0 && this.fingerCursorGrillaX < SenkuModel.ANCHO 
 								   && fingerCursorGrillaY>= 0 && fingerCursorGrillaY < SenkuModel.LARGO){
 	            			canvas.drawBitmap(mSombraFicha, startX+ startPositionCursor[this.fingerCursorGrillaX], startY+ startPositionCursor[this.fingerCursorGrillaY], null);							   
 						}	            		
-	            		canvas.drawBitmap(mFicha, this.fingerCursorX, this.fingerCursorY, null);	
+	            		canvas.drawBitmap(mPegs[this.pegSelected], this.fingerCursorX, this.fingerCursorY, null);	
 	            	}
 	            	
 	            	

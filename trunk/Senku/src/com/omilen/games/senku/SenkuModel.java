@@ -16,6 +16,11 @@ public class SenkuModel implements Cloneable {
 	protected int pegcount = -1;
 	protected int score = 0;
 	
+	
+	public int getCurrentPegType(){
+		return this.currentPegType;
+	}
+	
 	public int getCurrentGameType() {
 		return currentGameType;
 	}
@@ -25,6 +30,13 @@ public class SenkuModel implements Cloneable {
 			return;
 		}
 		this.currentGameType = currentGameType;		
+	}
+	
+	public void setCurrentPegType(int currentPegType) {
+		if(currentPegType<0 || currentPegType>=SenkuPegs.NUMBER_OF_PEGS){
+			return;
+		}
+		this.currentPegType = currentPegType;		
 	}
 
 	protected boolean selected = false;
