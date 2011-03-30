@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   android:id="@+id/board_layout" 
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
-  android:orientation="vertical"
   android:scrollbars="vertical"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+  xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+    <LinearLayout android:id="@+id/linearLayoutBoardSup" 
+    android:layout_height="wrap_content"
+	android:layout_width="fill_parent">
+        <TextView android:layout_gravity="center" android:text="@string/board_selected" android:layout_height="wrap_content" android:id="@+id/textViewBoardSelected" android:layout_width="wrap_content" android:layout_marginLeft="10dip" android:textColor="#ffffffff" android:textSize="16sp">
+        </TextView>
+        <ImageView android:layout_height="wrap_content" android:id="@+id/board_image" 
+        android:src="@drawable/icon" android:layout_width="wrap_content" android:layout_marginLeft="10dip">
+        </ImageView>
+    
+    </LinearLayout>
+
   <ScrollView android:id="@+id/ScrollViewBoard"
  android:layout_width="fill_parent" 
  android:layout_height="fill_parent"
@@ -16,7 +24,7 @@
    android:orientation="vertical"
   android:scrollbars="vertical">
 
-		<RadioGroup android:id="@+id/radioGroupBoard" android:layout_width="wrap_content" android:layout_height="wrap_content">
+		<RadioGroup android:id="@+id/radioGroupBoard" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_gravity="fill">
 		<RadioButton android:text="@string/board_name_00" 
 			android:id="@+id/ButtonBoard00" 
 			android:layout_height="wrap_content"          

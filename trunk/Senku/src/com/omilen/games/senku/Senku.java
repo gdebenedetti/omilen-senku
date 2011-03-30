@@ -1,6 +1,7 @@
 package com.omilen.games.senku;
 
 import java.util.Collections;
+import java.util.Currency;
 import java.util.List;
 
 import android.app.Activity;
@@ -54,6 +55,8 @@ public class Senku extends Activity  implements OnKeyListener {
     /** A handle to the View in which the game is running. */
     private SenkuView mSenkuView;
     private StoreProperties instanceProp = null;
+    private int selectedGame = 5;
+    private int selectedPeg = 0;
        
     /** Called when the activity is first created. */
     @Override
@@ -251,58 +254,65 @@ public class Senku extends Activity  implements OnKeyListener {
     
     private class BoardDialogListener implements View.OnClickListener {
 
-//    	protected int previusChecked = -1;  	
+    	protected ImageView image = null;
+    	    	
+    	public BoardDialogListener(ImageView image){
+    		super();
+    		this.image = image;    		
+    	}
     	
-		@Override
+    	@Override
 		public void onClick(View v) {
 			
-//			previusChecked = Integer.parseInt(instanceProp.getProperty("currentGame"));
-			
 			mSenkuThread = mSenkuView.getThread();
-//			RadioButton[] buttonBoardArray = new RadioButton[7]; 
-//			buttonBoardArray[0] = (RadioButton) findViewById(R.id.ButtonBoard00);
-//			buttonBoardArray[1] = (RadioButton) findViewById(R.id.ButtonBoard01);
-//			buttonBoardArray[2] = (RadioButton) findViewById(R.id.ButtonBoard02);
-//			buttonBoardArray[3] = (RadioButton) findViewById(R.id.ButtonBoard03);
-//			buttonBoardArray[4] = (RadioButton) findViewById(R.id.ButtonBoard04);
-//			buttonBoardArray[5] = (RadioButton) findViewById(R.id.ButtonBoard05);
-//			buttonBoardArray[6] = (RadioButton) findViewById(R.id.ButtonBoard06);
 	        	        
 			switch (v.getId()) {
 			case R.id.ButtonBoard00:
-				instanceProp.setProperty("currentGame", "00");
-				mSenkuThread.setCurrentGame(0);			
+				//instanceProp.setProperty("currentGame", "00");
+				selectedGame=0;
+				mSenkuThread.setCurrentGame(0);
+				image.setImageResource(R.drawable.ic_menu_board_00);
 				break;
 			case R.id.ButtonBoard01:
-				instanceProp.setProperty("currentGame", "01");
-				mSenkuThread.setCurrentGame(1);			
+				//instanceProp.setProperty("currentGame", "01");
+				selectedGame=1;
+				mSenkuThread.setCurrentGame(1);
+				image.setImageResource(R.drawable.ic_menu_board_01);
 				break;
 			case R.id.ButtonBoard02:
-				instanceProp.setProperty("currentGame", "02");
-				mSenkuThread.setCurrentGame(2);				
+				//instanceProp.setProperty("currentGame", "02");
+				selectedGame=2;
+				mSenkuThread.setCurrentGame(2);
+				image.setImageResource(R.drawable.ic_menu_board_02);
 				break;
 			case R.id.ButtonBoard03:
-				instanceProp.setProperty("currentGame", "03");
-				mSenkuThread.setCurrentGame(3);				
+				//instanceProp.setProperty("currentGame", "03");
+				selectedGame=3;
+				mSenkuThread.setCurrentGame(3);
+				image.setImageResource(R.drawable.ic_menu_board_03);
 				break;
 			case R.id.ButtonBoard04:
-				instanceProp.setProperty("currentGame", "04");
-				mSenkuThread.setCurrentGame(4);				
+				//instanceProp.setProperty("currentGame", "04");
+				selectedGame=4;
+				mSenkuThread.setCurrentGame(4);
+				image.setImageResource(R.drawable.ic_menu_board_04);
 				break;
 			case R.id.ButtonBoard05:
-				instanceProp.setProperty("currentGame", "05");
-				mSenkuThread.setCurrentGame(5);				
+				//instanceProp.setProperty("currentGame", "05");
+				selectedGame=5;
+				mSenkuThread.setCurrentGame(5);
+				image.setImageResource(R.drawable.ic_menu_board);
 				break;
 			case R.id.ButtonBoard06:
-				instanceProp.setProperty("currentGame", "06");
-				mSenkuThread.setCurrentGame(6);				
+				//instanceProp.setProperty("currentGame", "06");
+				selectedGame=6;
+				mSenkuThread.setCurrentGame(6);
+				image.setImageResource(R.drawable.ic_menu_board_06);
 				break;		
 			default:
 				break;
 			}
-//			if(previusChecked != Integer.parseInt(instanceProp.getProperty("currentGame"))){
-//				buttonBoardArray[previusChecked].setChecked(false);
-//			}
+
 		}
     	
     }
@@ -311,6 +321,17 @@ public class Senku extends Activity  implements OnKeyListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             switch (whichButton) {
                 case AlertDialog.BUTTON1: {                  
+                    return;
+                }
+            }
+        }
+    }
+    
+    private class BoardCloseListener implements OnClickListener {
+        public void onClick(DialogInterface dialog, int whichButton ) {
+            switch (whichButton) {
+                case AlertDialog.BUTTON2: {
+                	instanceProp.setProperty("currentGame", String.valueOf(selectedGame));
                     return;
                 }
             }
@@ -403,40 +424,24 @@ public class Senku extends Activity  implements OnKeyListener {
     
     public void showGameTypeDialog(){
     	
-    	HelpListener listener = new HelpListener();    
+    	BoardCloseListener listener = new BoardCloseListener();    	
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.menu_game_type);
-        builder.setIcon(R.drawable.ic_menu_board);
+        builder.setTitle(R.string.menu_game_type);       
         builder.setCancelable(true);        
         builder.setNegativeButton(R.string.dialog_close, listener);
         LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.board_layout, null);
         builder.setView(layout);
-        BoardDialogListener boardListener = new BoardDialogListener();
-        
-//        final ImageView imageboard00 = (ImageView) layout.findViewById(R.id.ImageBoard00);
-//        final ImageView imageboard01 = (ImageView) layout.findViewById(R.id.ImageBoard01);
-//        final ImageView imageboard02 = (ImageView) layout.findViewById(R.id.ImageBoard02);
-//        final ImageView imageboard03 = (ImageView) layout.findViewById(R.id.ImageBoard03);
-//        final ImageView imageboard04 = (ImageView) layout.findViewById(R.id.ImageBoard04);
-//        final ImageView imageboard05 = (ImageView) layout.findViewById(R.id.ImageBoard05);
-//        final ImageView imageboard06 = (ImageView) layout.findViewById(R.id.ImageBoard06);
-//        
-//        imageboard00.setImageResource(R.drawable.ic_menu_board_00);
-//        imageboard01.setImageResource(R.drawable.ic_menu_board_01);
-//        imageboard02.setImageResource(R.drawable.ic_menu_board_02);
-//        imageboard03.setImageResource(R.drawable.ic_menu_board_03);
-//        imageboard04.setImageResource(R.drawable.ic_menu_board_04);
-//        imageboard05.setImageResource(R.drawable.ic_menu_board);
-//        imageboard06.setImageResource(R.drawable.ic_menu_board_06);
-        
+        final ImageView imageView = (ImageView) layout.findViewById(R.id.board_image);
+        BoardDialogListener boardListener = new BoardDialogListener(imageView);
+                
         final RadioButton buttonBoard00 = (RadioButton) layout.findViewById(R.id.ButtonBoard00);
         final RadioButton buttonBoard01 = (RadioButton) layout.findViewById(R.id.ButtonBoard01);
         final RadioButton buttonBoard02 = (RadioButton) layout.findViewById(R.id.ButtonBoard02);
         final RadioButton buttonBoard03 = (RadioButton) layout.findViewById(R.id.ButtonBoard03);
         final RadioButton buttonBoard04 = (RadioButton) layout.findViewById(R.id.ButtonBoard04);
         final RadioButton buttonBoard05 = (RadioButton) layout.findViewById(R.id.ButtonBoard05);
-        final RadioButton buttonBoard06 = (RadioButton) layout.findViewById(R.id.ButtonBoard06);
-        buttonBoard00.setBackgroundResource(R.drawable.ic_menu_board_00);
+        final RadioButton buttonBoard06 = (RadioButton) layout.findViewById(R.id.ButtonBoard06);        
+        
         buttonBoard00.setOnClickListener(boardListener);
         buttonBoard01.setOnClickListener(boardListener);
         buttonBoard02.setOnClickListener(boardListener);
@@ -450,19 +455,26 @@ public class Senku extends Activity  implements OnKeyListener {
         	selected = "05";
         }
         switch (Integer.parseInt(selected)) {
-		case 0:	buttonBoard00.setChecked(true);		
+		case 0:	buttonBoard00.setChecked(true);
+				imageView.setImageResource(R.drawable.ic_menu_board_00);
 			break;
-		case 1:	buttonBoard01.setChecked(true);		
+		case 1:	buttonBoard01.setChecked(true);
+				imageView.setImageResource(R.drawable.ic_menu_board_01);
 		    break;
-		case 2:	buttonBoard02.setChecked(true);		
+		case 2:	buttonBoard02.setChecked(true);
+				imageView.setImageResource(R.drawable.ic_menu_board_02);
 			break;
-		case 3:	buttonBoard03.setChecked(true);		
+		case 3:	buttonBoard03.setChecked(true);
+				imageView.setImageResource(R.drawable.ic_menu_board_03);
 			break;
-		case 4:	buttonBoard04.setChecked(true);		
+		case 4:	buttonBoard04.setChecked(true);
+				imageView.setImageResource(R.drawable.ic_menu_board_04);
 			break;
-		case 5:	buttonBoard05.setChecked(true);		
+		case 5:	buttonBoard05.setChecked(true);
+				imageView.setImageResource(R.drawable.ic_menu_board);
 			break;  
-		case 6:	buttonBoard06.setChecked(true);		
+		case 6:	buttonBoard06.setChecked(true);
+				imageView.setImageResource(R.drawable.ic_menu_board_06);
 			break;
 		default:
 			break;
