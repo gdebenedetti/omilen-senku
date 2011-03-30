@@ -666,7 +666,16 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 			   return false;
 		}
 
-    }
+		public Bitmap getPegImage(int pegIndex) {
+			   synchronized (mSurfaceHolder) {
+				   if(pegIndex<0 || pegIndex>=SenkuPegs.NUMBER_OF_PEGS)
+					   return null;
+				   return this.mPegs[pegIndex];
+			   }		
+		}
+		
+		
+    } //end thread
 
     /** Handle to the application context, used to e.g. fetch Drawables. */
     private Context mContext;
@@ -737,7 +746,6 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
     	 else thread.unpause();
     }
     
-
     /**
      * Installs a pointer to the text view used for messages.
      */
