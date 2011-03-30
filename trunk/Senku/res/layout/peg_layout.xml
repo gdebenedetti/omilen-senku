@@ -3,7 +3,19 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
+  android:orientation="vertical"
  android:id="@+id/peg_layout" >
+ 
+     <LinearLayout android:id="@+id/linearLayoutPegSup" 
+    android:layout_height="wrap_content" android:layout_width="fill_parent">
+        <TextView android:layout_gravity="center" android:text="@string/peg_selected" android:layout_height="wrap_content" android:id="@+id/textViewPegSelected" android:layout_width="wrap_content" android:textColor="#ffffffff" android:textSize="16sp" android:layout_marginLeft="20dip">
+        </TextView>
+        <ImageView android:layout_height="wrap_content" android:id="@+id/peg_image" 
+        android:src="@drawable/icon" android:layout_width="wrap_content" android:layout_marginLeft="10dip">
+        </ImageView>
+    
+    </LinearLayout>
+ 
     <ScrollView android:layout_width="fill_parent" android:id="@+id/scrollViewPeg" android:layout_height="fill_parent">
         <LinearLayout android:layout_width="fill_parent" 
         android:id="@+id/innerlinearLayoutPegs" 

@@ -37,7 +37,9 @@
     <string name="board_name_04">Diamond (very difficult)</string>
     <string name="board_name_05">Normal (hard)</string>
     <string name="board_name_06">European death (hardest)</string>
+    
     <string name="board_selected">Game selected:</string>
+    <string name="peg_selected">Peg selected:</string>
     
     <string name="peg_name_00">Plastic</string>
     <string name="peg_name_01">Wood</string>

@@ -109,27 +109,9 @@ public class Senku extends Activity  implements OnKeyListener {
         menu.add(0, MENU_START, 0, R.string.menu_start).setIcon(R.drawable.ic_menu_start);
         menu.add(0, MENU_UNDO, 0, R.string.menu_undo).setIcon(R.drawable.ic_menu_undo);
         menu.add(0, MENU_SCORES, 0, R.string.menu_score).setIcon(R.drawable.ic_menu_hiscores);
-//      menu.add(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.options);        
-//      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.board);
-//      menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.soundoff);
-       // SubMenu subMenuPegType  = menu.addSubMenu(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.ic_menu_peg);
-        //SubMenu subMenuGameType = menu.addSubMenu(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.ic_menu_board);
-        //SubMenu subMenuoptions  = menu.addSubMenu(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.ic_menu_options);
         menu.add(0, MENU_PEG_TYPE, 0, R.string.menu_peg_type).setIcon(R.drawable.ic_menu_peg);
         menu.add(0, MENU_OPTIONS, 0, R.string.menu_options).setIcon(R.drawable.ic_menu_options);
-        menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.ic_menu_board);
-        
-//        subMenuPegType.add(2, 17, 0, "plastic");
-//        subMenuPegType.add(2, 18, 1, "wood");
-//        subMenuPegType.add(2, 19, 2, "silver");
-//        subMenuPegType.add(2, 20, 3, "gold");
-//        subMenuPegType.add(2, 21, 4, "emerald");
-//        subMenuPegType.add(2, 22, 5, "diamond");
-//        subMenuPegType.add(2, 23, 6, "eigth ball");
-        
-        //subMenuoptions.add(3, MENU_HELP,     0, R.string.menu_help).setIcon(R.drawable.ic_menu_help);
-        //subMenuoptions.add(3, MENU_SOUND,    1, R.string.menu_sound).setIcon(R.drawable.ic_menu_sound);
-        //subMenuoptions.add(3, MENU_FACEBOOK, 2, R.string.menu_facebook).setIcon(R.drawable.ic_menu_facebook);
+        menu.add(0, MENU_GAME_TYPE, 0, R.string.menu_game_type).setIcon(R.drawable.ic_menu_board);      
         
         return true;
     }
@@ -211,44 +193,62 @@ public class Senku extends Activity  implements OnKeyListener {
     
     private class PegDialogListener implements View.OnClickListener {
     
+    	protected ImageView imageView = null;
+    	
+    	public PegDialogListener(ImageView image){
+    		super();
+    		this.imageView = image;    		
+    	}
+    	
     	@Override
 		public void onClick(View v) {
     	switch (v.getId()) {
 		case R.id.radioPeg0:
-			instanceProp.setProperty("currentPeg", "00-"+SenkuPegs.getInstance().getPegs()[0].getCodeName());
-			mSenkuThread.setCurrentPeg(0);
+			selectedPeg = 0;
+//			instanceProp.setProperty("currentPeg", "00-"+SenkuPegs.getInstance().getPegs()[0].getCodeName());
+//			mSenkuThread.setCurrentPeg(0);
 			break;
 		case R.id.radioPeg1:
-			instanceProp.setProperty("currentPeg", "01-"+SenkuPegs.getInstance().getPegs()[1].getCodeName());
-			mSenkuThread.setCurrentPeg(1);			
+			selectedPeg = 1;
+//			instanceProp.setProperty("currentPeg", "01-"+SenkuPegs.getInstance().getPegs()[1].getCodeName());
+//			mSenkuThread.setCurrentPeg(1);			
 			break;
 		case R.id.radioPeg2:
-			instanceProp.setProperty("currentPeg", "02-"+SenkuPegs.getInstance().getPegs()[2].getCodeName());
-			mSenkuThread.setCurrentPeg(2);				
+			selectedPeg = 2;
+//			instanceProp.setProperty("currentPeg", "02-"+SenkuPegs.getInstance().getPegs()[2].getCodeName());
+//			mSenkuThread.setCurrentPeg(2);				
 			break;
 		case R.id.radioPeg3:
-			instanceProp.setProperty("currentPeg", "03-"+SenkuPegs.getInstance().getPegs()[3].getCodeName());
-			mSenkuThread.setCurrentPeg(3);				
+			selectedPeg = 3;
+//			instanceProp.setProperty("currentPeg", "03-"+SenkuPegs.getInstance().getPegs()[3].getCodeName());
+//			mSenkuThread.setCurrentPeg(3);				
 			break;
 		case R.id.radioPeg4:
-			instanceProp.setProperty("currentPeg", "04-"+SenkuPegs.getInstance().getPegs()[4].getCodeName());
-			mSenkuThread.setCurrentPeg(4);				
+			selectedPeg = 4;
+//			instanceProp.setProperty("currentPeg", "04-"+SenkuPegs.getInstance().getPegs()[4].getCodeName());
+//			mSenkuThread.setCurrentPeg(4);				
 			break;
 		case R.id.radioPeg5:
-			instanceProp.setProperty("currentPeg", "05-"+SenkuPegs.getInstance().getPegs()[5].getCodeName());
-			mSenkuThread.setCurrentPeg(5);				
+			selectedPeg = 5;
+//			instanceProp.setProperty("currentPeg", "05-"+SenkuPegs.getInstance().getPegs()[5].getCodeName());
+//			mSenkuThread.setCurrentPeg(5);				
 			break;
 		case R.id.radioPeg6:
-			instanceProp.setProperty("currentPeg", "06-"+SenkuPegs.getInstance().getPegs()[6].getCodeName());
-			mSenkuThread.setCurrentPeg(6);				
+			selectedPeg = 6;
+//			instanceProp.setProperty("currentPeg", "06-"+SenkuPegs.getInstance().getPegs()[6].getCodeName());
+//			mSenkuThread.setCurrentPeg(6);				
 			break;		
 		case R.id.radioPeg7:
-			instanceProp.setProperty("currentPeg", "07-"+SenkuPegs.getInstance().getPegs()[7].getCodeName());
-			mSenkuThread.setCurrentPeg(7);				
+			selectedPeg = 7;
+//			instanceProp.setProperty("currentPeg", "07-"+SenkuPegs.getInstance().getPegs()[7].getCodeName());
+//			mSenkuThread.setCurrentPeg(7);				
 			break;			
 		default:
 			break;
 		}
+    	imageView.setImageBitmap(Senku.this.mSenkuThread.getPegImage(selectedPeg));
+    	mSenkuThread.setCurrentPeg(selectedPeg);
+    	
     	}
     }
     
@@ -337,6 +337,17 @@ public class Senku extends Activity  implements OnKeyListener {
             }
         }
     }
+    
+    private class PegDialogCloseListener implements OnClickListener {
+        public void onClick(DialogInterface dialog, int whichButton ) {
+            switch (whichButton) {
+                case AlertDialog.BUTTON2: {                	
+                	instanceProp.setProperty("currentPeg", String.valueOf(selectedPeg)+"-"+SenkuPegs.getInstance().getPegs()[selectedPeg].getCodeName());
+                    return;
+                }
+            }
+        }
+    }
     /**********************/
     public void showHighScoreListDialog() {
         LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.high_score_list, null);
@@ -360,7 +371,7 @@ public class Senku extends Activity  implements OnKeyListener {
     
     public void showPegTypeDialog(){
     	
-    	HelpListener listener = new HelpListener();    
+    	PegDialogCloseListener listener = new PegDialogCloseListener();    
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.menu_peg_type);
         builder.setIcon(R.drawable.ic_menu_peg);
@@ -368,7 +379,8 @@ public class Senku extends Activity  implements OnKeyListener {
         builder.setNegativeButton(R.string.dialog_close, listener);
         LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.peg_layout, null);
         builder.setView(layout);
-        PegDialogListener pegListener = new PegDialogListener();
+        final ImageView imageView = (ImageView) layout.findViewById(R.id.peg_image);
+        PegDialogListener pegListener = new PegDialogListener(imageView);
                        
         final RadioButton buttonBoard00 = (RadioButton) layout.findViewById(R.id.radioPeg0);
         final RadioButton buttonBoard01 = (RadioButton) layout.findViewById(R.id.radioPeg1);
@@ -401,7 +413,10 @@ public class Senku extends Activity  implements OnKeyListener {
         		selected = "00";
 			}
         }
-        switch (Integer.parseInt(selected)) {
+        
+        int selectedPegAux = Integer.parseInt(selected);
+        imageView.setImageBitmap(Senku.this.mSenkuThread.getPegImage(selectedPegAux));
+        switch (selectedPegAux) {
 		case 0:	buttonBoard00.setChecked(true);		
 			break;
 		case 1:	buttonBoard01.setChecked(true);		
