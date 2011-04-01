@@ -351,6 +351,7 @@ public class Senku extends Activity  implements OnKeyListener {
     /**********************/
     public void showHighScoreListDialog() {
         LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.high_score_list, null);
+        layout.setBackgroundResource(R.drawable.background_dialogs);
         ListView listView = (ListView) layout.findViewById(R.id.score_list);
         ScoresListener listener = new ScoresListener();
         List<ScoreItem> scoreAux = ScoreUtil.getInstance(this).getAllScores();             
@@ -358,6 +359,7 @@ public class Senku extends Activity  implements OnKeyListener {
         listView.setAdapter(new HighScoreListAdapter(this, scoreAux));
         /*********************************/
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.ic_menu_hiscores);
         
         builder.setTitle(R.string.scores_title);
         builder.setCancelable(true);
@@ -371,13 +373,14 @@ public class Senku extends Activity  implements OnKeyListener {
     
     public void showPegTypeDialog(){
     	
-    	PegDialogCloseListener listener = new PegDialogCloseListener();    
+    	PegDialogCloseListener listener = new PegDialogCloseListener();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.menu_peg_type);
         builder.setIcon(R.drawable.ic_menu_peg);
-        builder.setCancelable(true);        
-        builder.setNegativeButton(R.string.dialog_close, listener);
+        builder.setCancelable(true);
+        builder.setNegativeButton(R.string.dialog_close, listener);        
         LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.peg_layout, null);
+        layout.setBackgroundResource(R.drawable.background_dialogs);
         builder.setView(layout);
         final ImageView imageView = (ImageView) layout.findViewById(R.id.peg_image);
         PegDialogListener pegListener = new PegDialogListener(imageView);
@@ -445,6 +448,7 @@ public class Senku extends Activity  implements OnKeyListener {
         builder.setCancelable(true);        
         builder.setNegativeButton(R.string.dialog_close, listener);
         LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.board_layout, null);
+        layout.setBackgroundResource(R.drawable.background_dialogs);
         builder.setView(layout);
         final ImageView imageView = (ImageView) layout.findViewById(R.id.board_image);
         BoardDialogListener boardListener = new BoardDialogListener(imageView);
@@ -506,6 +510,7 @@ public class Senku extends Activity  implements OnKeyListener {
         builder.setCancelable(true);        
         builder.setNegativeButton(R.string.dialog_close, listener);
         LinearLayout layout = (LinearLayout) getLayoutInflater().inflate(R.layout.options_layout, null);
+        layout.setBackgroundResource(R.drawable.background_dialogs);
         builder.setView(layout);
         
         String sound = StoreProperties.getInstance(this).getProperty("sound");
