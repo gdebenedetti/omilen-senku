@@ -42,8 +42,8 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         public static final String FINAL_COUNT = "FINAL_COUNT";
         
         public static final int MAX_GRILL_LENGTH = 480;
-        public static final double PERCENT_OF_PEG = 0.17;
-        public static final double PERCENT_OF_CURSOR = 0.08;
+//        public static final double PERCENT_OF_PEG = 0.17;
+//        public static final double PERCENT_OF_CURSOR = 0.08;
         
         protected SenkuSoundPool sounds;        
         protected SenkuModel game = null;
@@ -95,6 +95,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 		private int lengthGrilla = 0;
 		private int lengthFicha = 0;
 		private int lengthSombra = 0;
+		private int lengthCursor = 0;
 		private int corrimientoAlSeleccionar = 0;
 		private float percent = 1;
 		private int cellLength = 0;
@@ -417,19 +418,20 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                 
                 //Set the positions            	
                 cellLength  = lengthGrilla/7;
-                long cellBorder = Math.round(cellLength *PERCENT_OF_PEG);
-                long cursorBorder = Math.round(cellLength *PERCENT_OF_CURSOR);
+                lengthFicha = (int)Math.round(mPegs[0].getWidth()*percent);
+                lengthSombra = (int)Math.round(mSombraFicha[0].getWidth()*percent);
+                lengthCursor = cellLength; //(int)Math.round(mCursor[0].getWidth()*percent);
+                
+                long cellBorder   = Math.round((cellLength-lengthFicha)/2.0); //Math.round(cellLength *PERCENT_OF_PEG);
+                //long shadowBorder = Math.round((cellLength-lengthSombra)/2.0);// Math.round(cellLength *PERCENT_OF_CURSOR);
+                //long cursorBorder = Math.round((cellLength-lengthCursor)/2.0);
                 startPosition[0] = (int) cellBorder;
-                startPositionCursor[0] = (int) cursorBorder;
+                startPositionCursor[0] = 0;//(int) cursorBorder;
                 for(int i=1;i<7;i++){
                 	startPosition[i] = startPosition[i-1]+(int)cellLength;
                 	startPositionCursor[i] = startPositionCursor[i-1]+(int)cellLength;
                 }
            	 	
-                lengthFicha = (int)Math.round(mPegs[0].getWidth()*percent);
-                
-                lengthSombra = (int)Math.round(mSombraFicha[0].getWidth()*percent);
-                
                 corrimientoAlSeleccionar = (int)Math.round(20.0*percent);
                
                 mBackgroundImage = Bitmap.createScaledBitmap(mBackgroundImage, width, height, true);
@@ -580,12 +582,12 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 	            
 	            if(gameSelected){
 	            	if(controlMode == MODE_CURSOR){
-	            		canvas.drawBitmap(mSombraFicha[getSombraIndex()], xStartCursor, yStartCursor, null);
+	            		canvas.drawBitmap(mSombraFicha[getSombraIndex()], xStart, yStart, null);
 	            		canvas.drawBitmap(mPegs[this.pegSelected], xStart+this.corrimientoAlSeleccionar, yStart+this.corrimientoAlSeleccionar, null);
 	            	}else{
 	            		if(this.fingerCursorGrillaX >= 0 && this.fingerCursorGrillaX < SenkuModel.ANCHO 
 								   && fingerCursorGrillaY>= 0 && fingerCursorGrillaY < SenkuModel.LARGO){
-	            			canvas.drawBitmap(mSombraFicha[getSombraIndex()], startX+ startPositionCursor[this.fingerCursorGrillaX], startY+ startPositionCursor[this.fingerCursorGrillaY], null);							   
+	            			canvas.drawBitmap(mSombraFicha[getSombraIndex()], startX+ startPosition[this.fingerCursorGrillaX], startY+ startPosition[this.fingerCursorGrillaY], null);							   
 						}	            		
 	            		canvas.drawBitmap(mPegs[this.pegSelected], this.fingerCursorX, this.fingerCursorY, null);	
 	            	}
