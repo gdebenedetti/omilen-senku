@@ -1,32 +1,23 @@
 package com.omilen.games.senku;
 
 import java.util.Collections;
-import java.util.Currency;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.text.Layout;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SubMenu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnKeyListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -67,14 +58,14 @@ public class Senku extends Activity  implements OnKeyListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.senku_layout);
-        
-        // get handles to the LunarView from XML, and its LunarThread
+
         mSenkuView = (SenkuView) findViewById(R.id.senku);
         mSenkuThread = mSenkuView.getThread();
 
         // give the SenkuView a handle to the TextView used for messages
         mSenkuView.setTextView((TextView) findViewById(R.id.text));
-
+        instanceProp = StoreProperties.getInstance(this);
+        
         if (savedInstanceState == null) {
             // we were just launched: set up a new game
         	mSenkuThread.setState(SenkuThread.STATE_RUNNING);            
@@ -84,7 +75,7 @@ public class Senku extends Activity  implements OnKeyListener {
         }
        
         //set the current-Options
-        instanceProp = StoreProperties.getInstance(this);
+        
         final String sound = instanceProp.getProperty("sound");
         if(sound.compareTo("1")==0){
     		mSenkuThread.turnOnSound();
@@ -93,14 +84,31 @@ public class Senku extends Activity  implements OnKeyListener {
         }
     	
         final String gameStr = instanceProp.getProperty("currentGame");
-        
         if(gameStr!=null){
-        	 mSenkuThread.doStart(Integer.valueOf(gameStr));
-        }else{
-        	 mSenkuThread.doStart();
+        	this.selectedGame = Integer.valueOf(gameStr);
         }
-       
-       
+        
+		if (instanceProp.getProperty("currentPeg") != null) {
+			try {
+				final String[] pegStr = instanceProp.getProperty("currentPeg")
+						.split("-");
+				if (SenkuPegs.getInstance().getPegs()[Integer
+						.valueOf(pegStr[0])].getCodeName().equals(pegStr[1])
+						&& instanceProp.getProperty(pegStr[1]).equals("1")) {
+					this.selectedPeg = Integer.valueOf(pegStr[0]);
+				}
+			} catch (Exception e) {
+				this.selectedPeg = 0;
+			}
+		}
+        	
+        if (savedInstanceState == null) {
+	        if(gameStr!=null){
+	        	 mSenkuThread.doStart(selectedGame);
+	        }else{
+	        	 mSenkuThread.doStart();
+	        }
+        }
     }
     
     @Override
@@ -205,43 +213,27 @@ public class Senku extends Activity  implements OnKeyListener {
     	switch (v.getId()) {
 		case R.id.radioPeg0:
 			selectedPeg = 0;
-//			instanceProp.setProperty("currentPeg", "00-"+SenkuPegs.getInstance().getPegs()[0].getCodeName());
-//			mSenkuThread.setCurrentPeg(0);
 			break;
 		case R.id.radioPeg1:
 			selectedPeg = 1;
-//			instanceProp.setProperty("currentPeg", "01-"+SenkuPegs.getInstance().getPegs()[1].getCodeName());
-//			mSenkuThread.setCurrentPeg(1);			
 			break;
 		case R.id.radioPeg2:
-			selectedPeg = 2;
-//			instanceProp.setProperty("currentPeg", "02-"+SenkuPegs.getInstance().getPegs()[2].getCodeName());
-//			mSenkuThread.setCurrentPeg(2);				
+			selectedPeg = 2;				
 			break;
 		case R.id.radioPeg3:
-			selectedPeg = 3;
-//			instanceProp.setProperty("currentPeg", "03-"+SenkuPegs.getInstance().getPegs()[3].getCodeName());
-//			mSenkuThread.setCurrentPeg(3);				
+			selectedPeg = 3;				
 			break;
 		case R.id.radioPeg4:
-			selectedPeg = 4;
-//			instanceProp.setProperty("currentPeg", "04-"+SenkuPegs.getInstance().getPegs()[4].getCodeName());
-//			mSenkuThread.setCurrentPeg(4);				
+			selectedPeg = 4;				
 			break;
 		case R.id.radioPeg5:
-			selectedPeg = 5;
-//			instanceProp.setProperty("currentPeg", "05-"+SenkuPegs.getInstance().getPegs()[5].getCodeName());
-//			mSenkuThread.setCurrentPeg(5);				
+			selectedPeg = 5;				
 			break;
 		case R.id.radioPeg6:
-			selectedPeg = 6;
-//			instanceProp.setProperty("currentPeg", "06-"+SenkuPegs.getInstance().getPegs()[6].getCodeName());
-//			mSenkuThread.setCurrentPeg(6);				
+			selectedPeg = 6;				
 			break;		
 		case R.id.radioPeg7:
-			selectedPeg = 7;
-//			instanceProp.setProperty("currentPeg", "07-"+SenkuPegs.getInstance().getPegs()[7].getCodeName());
-//			mSenkuThread.setCurrentPeg(7);				
+			selectedPeg = 7;				
 			break;			
 		default:
 			break;
@@ -356,7 +348,7 @@ public class Senku extends Activity  implements OnKeyListener {
         ScoresListener listener = new ScoresListener();
         List<ScoreItem> scoreAux = ScoreUtil.getInstance(this).getAllScores();             
         Collections.sort(scoreAux);
-        listView.setAdapter(new HighScoreListAdapter(this, scoreAux));
+        listView.setAdapter(new HighScoreListAdapter(this, scoreAux,Senku.this.mSenkuThread.getPegImages()));
         /*********************************/
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.ic_menu_hiscores);

@@ -16,12 +16,12 @@
     
     <string name="mode_ready">Senku\nPress Up To Play</string>
 	<string name="mode_pause">Paused</string>	
-	<string name="mode_end2">Select Start to\nPlay Again</string>
+	<string name="mode_end2">Press "Menu" and select "Start Game" to\nplay again</string>
 	<string name="mode_loading">Loading...</string>
 	
 	<string name="message_stopped">Stopped</string>
 	<string name="gameover">Game Over</string>
-	<string name="youwin">You Win</string>
+	<string name="youwin">You Win!</string>
 	
 	<string name="perfect" >Play: Perfect!!!</string>
 	<string name="veryGood">Play: Very Good!</string>
@@ -41,19 +41,23 @@
     <string name="board_selected">Game selected:</string>
     <string name="peg_selected">Peg selected:</string>
     
-    <string name="peg_name_00">Plastic</string>
-    <string name="peg_name_01">Wood</string>
-    <string name="peg_name_02">Silver</string>
-    <string name="peg_name_03">Gold</string>
-    <string name="peg_name_04">Sapphire</string>
-    <string name="peg_name_05">Emerald</string>
-    <string name="peg_name_06">Diamond</string>
-    <string name="peg_name_07">Eight ball</string>
+    <string name="peg_name_00">Plastic (10p)</string>
+    <string name="peg_name_01">Wood (20p)</string>
+    <string name="peg_name_02">Silver (50p)</string>
+    <string name="peg_name_03">Gold (100p)</string>
+    <string name="peg_name_04">Sapphire (250p)</string>
+    <string name="peg_name_05">Emerald (500p)</string>
+    <string name="peg_name_06">Diamond (1000p)</string>
+    <string name="peg_name_07">Eight ball (800p)</string>
 
      <!-- HighScoreListActivity -->
     <string name="scores_title">High Scores</string>
     <string name="name_header">Date</string>
     <string name="chips_header">Pegs</string>
+    <string name="score_header">Score</string>
+    <string name="board_header">Game</string>
+    <string name="peg_header">Peg</string>
+        
     <string name="menu_clear">Reset scores</string>
     <string name="delete_dialog_title">Reset</string>
     <string name="delete_dialog_msg">All scores will be lost.</string>
@@ -63,7 +67,7 @@
     <string name="dialog_close">Close</string>
 	<!--  Help -->
 	<string name="help_dialog_title">How to Play</string>
-	<string name="help_dialog_msg">The object of the game is to leave only one peg.\n Select a peg that can jump over another to an empty space to "eat" the jumped one.\n\nMove across the board using the phone pad and then press the center key of the pad to select a peg. Finally select a direction to "eat" using the phone pad.</string>
+	<string name="help_dialog_msg">The object of the game is to leave only one peg.\n Select a peg that can jump over another to an empty space to "eat" the jumped one.\n\nUse the touchscreen to drag and drop pegs to empty spaces or move across the board using the phone pad and then press the center key of the pad to select a peg. Finally select a direction to "eat" using the phone pad.\nIf you can left just a few pegs (1,2 or 3) in each different board, new pegs will be available for get more score points.</string>
 
 
     <string name="senku_layout_text_text"></string>

@@ -59,7 +59,10 @@ public class ScoreUtil {
             for (int i = 0; i < MAX_SCORE_ENTRIES; i++) {
             	String line = in.readLine();
             	String[] arrayAux = line.split(";");
-            	ScoreItem si = new ScoreItem(arrayAux[0], Integer.parseInt(arrayAux[1]));
+            	ScoreItem si = new ScoreItem(arrayAux[0], Integer.parseInt(arrayAux[1]),
+            			Integer.parseInt(arrayAux[2]),Integer.parseInt(arrayAux[3]),
+            			Integer.parseInt(arrayAux[4])
+            	);
                 mScores.add(si);                
             }
         } catch(FileNotFoundException fnfe) {
@@ -89,7 +92,7 @@ public class ScoreUtil {
             DataOutputStream out = new DataOutputStream(fout);
             for (int i = 0; i < len; i++) {
                 out.writeChars("no date yet;32\n");
-                ScoreItem si = new ScoreItem("no date yet", 32);
+                ScoreItem si = new ScoreItem("no date yet", 26,32,0,0);
                 mScores.add(si);                
             }
         } catch(IOException ioe) {
@@ -107,17 +110,17 @@ public class ScoreUtil {
         return mScores;
     }
         
-    public boolean updateScores(int chips, int score,int pegtype,int board) {
+    public boolean updateScores(int pegs, int score,int pegtype,int board) {
     	
     	Collections.sort(mScores);
     	ScoreItem a = mScores.get(mScores.size()-1);    	
-    	if(a.getChips()<chips) return false;
+    	if(a.getScore()<score) return false;
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         java.util.Date date = new java.util.Date();
         String datetime = dateFormat.format(date);
     
-    	mScores.add(new ScoreItem(datetime, chips));
+    	mScores.add(new ScoreItem(datetime,pegs,score,board,pegtype));
     	Collections.sort(mScores);
     	mScores.remove(mScores.size()-1);   	
            
@@ -129,7 +132,11 @@ public class ScoreUtil {
 	        ScoreItem aux;
 	        while(it.hasNext()){
 	        	aux = it.next();	        	 
-	        	out.writeChars(aux.getName()+";"+String.valueOf(aux.getChips())+"\n");
+	        	out.writeChars(aux.getDate()+";"+
+	        			       String.valueOf(aux.getPegs())+";"+
+	        			       String.valueOf(aux.getScore())+";"+
+	        			       String.valueOf(aux.getGameNum())+";"+
+	        			       String.valueOf(aux.getPegNum())+"\n");
 	        }	
 	    } catch(IOException ioe) {
 	    } finally {

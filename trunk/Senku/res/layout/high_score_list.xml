@@ -29,6 +29,27 @@
             android:textStyle="bold"
             android:textColor="#ffffffff"
             android:text="@string/chips_header"/>
+         <TextView
+            android:singleLine="true"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#ffffffff"
+            android:text="@string/score_header"/>
+          <TextView
+            android:singleLine="true"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#ffffffff"
+            android:text="@string/board_header"/>
+           <TextView
+            android:singleLine="true"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#ffffffff"
+            android:text="@string/peg_header"/>         
     </TableRow>
 </TableLayout>
 
