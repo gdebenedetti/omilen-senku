@@ -15,8 +15,13 @@ public class SenkuModel implements Cloneable {
 	protected int currentPegType = 0;
 	protected int pegcount = -1;
 	protected int score = 0;
-	
-	
+	protected boolean selected = false;
+	/*Backup Atributes*/
+	protected int[][] grillaPrevia = null;
+	protected int currentKeyXPrevia = 3;
+	protected int currentKeyYPrevia = 3;
+	protected boolean selectedPrevia = true;
+		
 	public int getCurrentPegType(){
 		return this.currentPegType;
 	}
@@ -38,14 +43,7 @@ public class SenkuModel implements Cloneable {
 		}
 		this.currentPegType = currentPegType;		
 	}
-
-	protected boolean selected = false;
-	/*Backup Atributes*/
-	protected int[][] grillaPrevia = null;
-	protected int currentKeyXPrevia = 3;
-	protected int currentKeyYPrevia = 3;
-	protected boolean selectedPrevia = true;
-		
+	
 	public int getCurrentKeyX() {
 		return currentKeyX;
 	}
@@ -365,8 +363,13 @@ public class SenkuModel implements Cloneable {
 				 map.putInt("GRILLA_"+String.valueOf(i)+"_"+String.valueOf(j), Integer.valueOf(this.grilla[i][j]));
 			}
 		}
-		map.putInt("CURRENT_X", Integer.valueOf(this.currentKeyX));
-		map.putInt("CURRENT_Y", Integer.valueOf(this.currentKeyY));		
+		map.putInt("CURRENT_X", this.currentKeyX);
+		map.putInt("CURRENT_Y", this.currentKeyY);
+		map.putInt("CURRENT_GAME_TYPE", this.currentGameType);
+		map.putInt("CURRENT_PEG_TYPE", this.currentPegType);
+		map.putInt("CURRENT_PEG_COUNT", this.pegcount);
+		map.putInt("CURRENT_SCORE", this.score);
+		map.putBoolean("SELECTED", this.selected);
 		return map;		
 	}
 	
@@ -379,7 +382,11 @@ public class SenkuModel implements Cloneable {
 			}
 			this.currentKeyX = savedState.getInt("CURRENT_X");
 			this.currentKeyY = savedState.getInt("CURRENT_Y");
-			this.selected = false;        
+			this.currentGameType = savedState.getInt("CURRENT_GAME_TYPE");
+			this.currentPegType = savedState.getInt("CURRENT_PEG_TYPE");
+			this.pegcount = savedState.getInt("CURRENT_PEG_COUNT");
+			this.score = savedState.getInt("CURRENT_SCORE");
+			this.selected = savedState.getBoolean("SELECTED");        
     }
 
 	

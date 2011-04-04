@@ -1,49 +1,69 @@
 package com.omilen.games.senku.score;
 
-import android.graphics.Bitmap;
 
 public class ScoreItem implements Comparable<ScoreItem>{
-    private int chips;
-    private int score;
-    private String name;
-    private Bitmap PegRef;
-    private Bitmap BoardRef;
+	public String getDate() {
+		return date;
+	}
+
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+
+	public int getPegs() {
+		return pegs;
+	}
+
+
+	public void setPegs(int pegs) {
+		this.pegs = pegs;
+	}
+
+
+	public int getGameNum() {
+		return gameNum;
+	}
+
+
+	public void setGameNum(int gameNum) {
+		this.gameNum = gameNum;
+	}
+
+
+	public int getPegNum() {
+		return pegNum;
+	}
+
+
+	public void setPegNum(int pegNum) {
+		this.pegNum = pegNum;
+	}
+
+	private String date;
+	private int pegs;
+    private int score;    
+    private int gameNum;
+    private int pegNum;
     
-    public ScoreItem(String pname, int pchip) {
-    	this.chips = pchip;
-    	this.name = pname;        
+    public ScoreItem(String name, int ppegs,int pscore, int pgameNum, int ppegNum) {
+    	this.date = name;
+    	this.pegs    = ppegs;
+    	this.score   = pscore;
+    	this.gameNum = pgameNum;
+    	this.pegNum  = ppegNum;
     }
     
-    public int getChips() {
-        return this.chips;
-    }
-    public String getName() {
-        return this.name;
-    }
 
 	@Override
 	public int compareTo(ScoreItem another) {
-		if(another.getChips()>this.chips)
+		if(another.getScore()>this.score)
 			return -1;
 		else
 			return 1;	
 	}
 
-	public void setPegRef(Bitmap pegRef) {
-		PegRef = pegRef;
-	}
-
-	public Bitmap getPegRef() {
-		return PegRef;
-	}
-
-	public void setBoardRef(Bitmap boardRef) {
-		BoardRef = boardRef;
-	}
-
-	public Bitmap getBoardRef() {
-		return BoardRef;
-	}
 
 	public void setScore(int score) {
 		this.score = score;
