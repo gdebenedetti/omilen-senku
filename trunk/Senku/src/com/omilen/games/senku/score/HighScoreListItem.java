@@ -18,17 +18,20 @@ public class HighScoreListItem extends TableLayout {
     private ImageView mBoardView;
     
     protected static Bitmap[] pegs = null;
+    protected static Bitmap[] boards = null;
     
-	public static void setBitmap(Bitmap[] ppegs){
+	public static void setBitmap(Bitmap[] ppegs,Bitmap[] pboards){
 		pegs = ppegs;
+		boards = pboards;		
 	}
     
 	public HighScoreListItem(Context context) {
-		super(context);
+		super(context);		
 	}
 	
+		
 	public HighScoreListItem(Context context, AttributeSet attrs) {
-		super(context, attrs);
+		super(context, attrs);		
 	}
 	
 	@Override
@@ -46,22 +49,7 @@ public class HighScoreListItem extends TableLayout {
 		mDate.setText(score.getDate());
 		mPegs.setText(String.valueOf(score.getPegs()));
 		mScore.setText(String.valueOf(score.getScore()));
-		switch (score.getGameNum()) {
-		case 0: mBoardView.setImageResource(R.drawable.ic_menu_board_00);
-			break;
-		case 1: mBoardView.setImageResource(R.drawable.ic_menu_board_01);
-			break;
-		case 2: mBoardView.setImageResource(R.drawable.ic_menu_board_02);
-			break;
-		case 3: mBoardView.setImageResource(R.drawable.ic_menu_board_03);
-			break;
-		case 4: mBoardView.setImageResource(R.drawable.ic_menu_board_04);
-			break;
-		case 5: mBoardView.setImageResource(R.drawable.ic_menu_board);
-			break;
-		case 6: mBoardView.setImageResource(R.drawable.ic_menu_board_06);
-			break;
-		}
+		mBoardView.setImageBitmap(boards[score.getGameNum()]);
 		mPegView.setImageBitmap(pegs[score.getPegNum()]);
 		}catch(Exception e){
 			Log.d("Senku Exception-->", e.getMessage());
