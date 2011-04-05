@@ -13,19 +13,19 @@
             android:gravity="center"
             android:singleLine="true"
             android:textColor="#ffffffff"            
-            android:textSize="16sp"/>
+            android:textSize="12sp"/>
             
         <TextView android:id="@+id/score_pegs"
             android:gravity="center"
             android:singleLine="true"
             android:textColor="#ffffffff"
-            android:textSize="16sp"/>
+            android:textSize="12sp"/>
             
         <TextView android:id="@+id/score_score"
             android:gravity="center"
             android:singleLine="true"
             android:textColor="#ffffffff"
-            android:textSize="16sp"/>    
+            android:textSize="12sp"/>    
             
         <ImageView android:id="@+id/score_board"
             android:gravity="center"

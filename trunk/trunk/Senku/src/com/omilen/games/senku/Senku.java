@@ -8,7 +8,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,6 +52,8 @@ public class Senku extends Activity  implements OnKeyListener {
     private StoreProperties instanceProp = null;
     private int selectedGame = 5;
     private int selectedPeg = 0;
+    protected static Bitmap[] littlePegIcons = null;
+    protected static Bitmap[] littleBoardIcons = null;
        
     /** Called when the activity is first created. */
     @Override
@@ -168,6 +174,31 @@ public class Senku extends Activity  implements OnKeyListener {
     @Override
 	public boolean onTouchEvent(MotionEvent event) {
 		return mSenkuThread.doTouch(event);
+	}
+    
+    private void scaleIconsForScoreDialog(){
+    	if(littleBoardIcons == null && littlePegIcons == null){
+			Resources res = this.getResources();
+			littleBoardIcons = new Bitmap[7];
+			littleBoardIcons[0] = BitmapFactory.decodeResource(res,R.drawable.ic_menu_board_00);
+			littleBoardIcons[1] = BitmapFactory.decodeResource(res,R.drawable.ic_menu_board_01);
+			littleBoardIcons[2] = BitmapFactory.decodeResource(res,R.drawable.ic_menu_board_02);
+			littleBoardIcons[3] = BitmapFactory.decodeResource(res,R.drawable.ic_menu_board_03);
+			littleBoardIcons[4] = BitmapFactory.decodeResource(res,R.drawable.ic_menu_board_04);
+			littleBoardIcons[5] = BitmapFactory.decodeResource(res,R.drawable.ic_menu_board);
+			littleBoardIcons[6] = BitmapFactory.decodeResource(res,R.drawable.ic_menu_board_06);
+			int length = (int) (littleBoardIcons[0].getWidth()*0.6);
+			for(int i=0;i<littleBoardIcons.length;i++){
+				littleBoardIcons[i] = Bitmap.createScaledBitmap(littleBoardIcons[i], length,length, true);
+			}
+			//pegs
+			littlePegIcons = Senku.this.mSenkuThread.getPegImages().clone();
+			length = (int) (littlePegIcons[0].getWidth()*0.6);
+			for(int i=0;i<littlePegIcons.length;i++){
+				littlePegIcons[i] = Bitmap.createScaledBitmap(littlePegIcons[i], length,length, true);
+			}
+    	}
+		
 	}
         
 	/********* CLASSES PRIVADAS *************/
@@ -348,12 +379,16 @@ public class Senku extends Activity  implements OnKeyListener {
         ScoresListener listener = new ScoresListener();
         List<ScoreItem> scoreAux = ScoreUtil.getInstance(this).getAllScores();             
         Collections.sort(scoreAux);
-        listView.setAdapter(new HighScoreListAdapter(this, scoreAux,Senku.this.mSenkuThread.getPegImages()));
+        this.scaleIconsForScoreDialog();
+        listView.setAdapter(new HighScoreListAdapter(this, scoreAux,littlePegIcons,littleBoardIcons));
         /*********************************/
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.drawable.ic_menu_hiscores);
         
-        builder.setTitle(R.string.scores_title);
+        getResources().getDisplayMetrics();
+		if(getResources().getDisplayMetrics().densityDpi != DisplayMetrics.DENSITY_LOW){        
+	        builder.setIcon(R.drawable.ic_menu_hiscores);        
+	        builder.setTitle(R.string.scores_title);
+        }
         builder.setCancelable(true);
         builder.setView(layout);
         

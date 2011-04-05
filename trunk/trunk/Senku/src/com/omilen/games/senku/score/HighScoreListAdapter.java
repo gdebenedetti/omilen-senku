@@ -14,17 +14,19 @@ import com.omilen.games.senku.R;
 public class HighScoreListAdapter extends ArrayAdapter<ScoreItem> {
     
 	protected Bitmap[] pegs = null;
+	protected Bitmap[] boards = null;
 	
-	public HighScoreListAdapter(Context context, List<ScoreItem> scores, Bitmap[] ppegs) {
+	public HighScoreListAdapter(Context context, List<ScoreItem> scores, Bitmap[] ppegs, Bitmap[] pboards) {
     	super(context, R.layout.high_score_list_item, R.id.score_score, scores);
     	this.pegs = ppegs;
+    	this.boards = pboards;
     }
     
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
     	HighScoreListItem listItem;
     	ScoreItem item = (ScoreItem) getItem(position);
-    	HighScoreListItem.setBitmap(pegs);
+    	HighScoreListItem.setBitmap(pegs,boards);
     	if (view == null) {
     		LayoutInflater factory = LayoutInflater.from(getContext());
     		listItem = (HighScoreListItem) factory.inflate(
