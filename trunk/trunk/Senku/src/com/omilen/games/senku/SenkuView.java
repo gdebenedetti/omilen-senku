@@ -384,10 +384,10 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 	                    	if(finalCount!=1)
 	                    		sounds.playSound(SenkuSoundPool.SOUND_GAMEOVER);
 	                    	else
-	                    		sounds.playSound(SenkuSoundPool.SOUND_WIN);
-		                    if(ScoreUtil.getInstance(mContext).updateScores(finalCount, 1,1,1)){
+	                    		sounds.playSound(SenkuSoundPool.SOUND_WIN);	                    	
+		                    if(ScoreUtil.getInstance(mContext).updateScores(game.getCountOfFichas(), game.getScore(), game.getCurrentPegType(), game.getCurrentGameType())){
 		                    	//the score was added
-		                    	str = str+"\n"+res.getText(R.string.new_high_score);
+		                    	str = str+"\n"+res.getText(R.string.new_high_score)+": \n"+String.valueOf(game.getScore());
 		                    }		                    
 		                    alreadySetScore = true;
 	                    }
@@ -425,38 +425,43 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             	if(width>height){
             		lengthGrilla=height;
             	}
-            	if(lengthGrilla>MAX_GRILL_LENGTH){
+            	if(lengthGrilla>=MAX_GRILL_LENGTH){
             		lengthGrilla = MAX_GRILL_LENGTH;
+            		this.percent = 1;
+            	}else{
+            		this.percent = (float) (lengthGrilla*1.0 / MAX_GRILL_LENGTH*1.0 );	
+            		
             	}
-            	this.percent = (float) (lengthGrilla*1.0 / MAX_GRILL_LENGTH*1.0 );
-            	
                 this.startX = (width  - lengthGrilla) /2;
                 this.startY = (height - lengthGrilla)/2;
                 
                 cellLength  = lengthGrilla/7;
                 lengthFicha  = (int)Math.round(mPegs[0].getWidth()*percent);
                 lengthSombra = (int)Math.round(mSombraFicha[0].getWidth()*percent);
-               
+                               
                 mBackgroundImage = Bitmap.createScaledBitmap(mBackgroundImage, width, height, true);
-                mBoard[0] = Bitmap.createScaledBitmap(mBoard[0], lengthGrilla, lengthGrilla, true);
-                mBoard[1] = Bitmap.createScaledBitmap(mBoard[1], lengthGrilla, lengthGrilla, true);
-                mBoard[2] = Bitmap.createScaledBitmap(mBoard[2], lengthGrilla, lengthGrilla, true);
+                if(lengthGrilla<MAX_GRILL_LENGTH){
+	                mBoard[0] = Bitmap.createScaledBitmap(mBoard[0], lengthGrilla, lengthGrilla, true);
+	                mBoard[1] = Bitmap.createScaledBitmap(mBoard[1], lengthGrilla, lengthGrilla, true);
+	                mBoard[2] = Bitmap.createScaledBitmap(mBoard[2], lengthGrilla, lengthGrilla, true);
+	                
+	                for(int i=0;i<mPegs.length;i++){
+	                	mPegs[i] = Bitmap.createScaledBitmap(mPegs[i], lengthFicha, lengthFicha, true);
+	                }
+	                mAuxPegs[0] = Bitmap.createScaledBitmap(mAuxPegs[0], lengthFicha, lengthFicha, true);
+	                mAuxPegs[5] = Bitmap.createScaledBitmap(mAuxPegs[5], lengthFicha, lengthFicha, true);
+	                mAuxPegs[6] = Bitmap.createScaledBitmap(mAuxPegs[6], lengthFicha, lengthFicha, true);
+	                
+	                for(int i=0;i<mSombraFicha.length;i++){
+	                	mSombraFicha[i] = Bitmap.createScaledBitmap(mSombraFicha[i], lengthSombra, lengthSombra, true);
+	                }
+	                
+	                int halfAnim = (int)Math.round((this.mCursor.length+1.0) /2.0);
+	                for(int i=0; i<halfAnim;i++){
+	                	mCursor[i] = Bitmap.createScaledBitmap(mCursor[i], (int)cellLength, (int)cellLength, true);
+	                }
+                }
                 mFondoCarteles = Bitmap.createScaledBitmap(mFondoCarteles, (int)(lengthGrilla*0.90), (int)(lengthGrilla*0.90), true);
-                for(int i=0;i<mPegs.length;i++){
-                	mPegs[i] = Bitmap.createScaledBitmap(mPegs[i], lengthFicha, lengthFicha, true);
-                }
-                mAuxPegs[0] = Bitmap.createScaledBitmap(mAuxPegs[0], lengthFicha, lengthFicha, true);
-                mAuxPegs[5] = Bitmap.createScaledBitmap(mAuxPegs[5], lengthFicha, lengthFicha, true);
-                mAuxPegs[6] = Bitmap.createScaledBitmap(mAuxPegs[6], lengthFicha, lengthFicha, true);
-                
-                for(int i=0;i<mSombraFicha.length;i++){
-                	mSombraFicha[i] = Bitmap.createScaledBitmap(mSombraFicha[i], lengthSombra, lengthSombra, true);
-                }
-                
-                int halfAnim = (int)Math.round((this.mCursor.length+1.0) /2.0);
-                for(int i=0; i<halfAnim;i++){
-                	mCursor[i] = Bitmap.createScaledBitmap(mCursor[i], (int)cellLength, (int)cellLength, true);
-                }                
                 mCursor[3] = mCursor[2];
                 mCursor[4] = mCursor[1];               
                 //Set the positions                                                
