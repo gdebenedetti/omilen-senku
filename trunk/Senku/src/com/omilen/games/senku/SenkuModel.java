@@ -15,6 +15,7 @@ public class SenkuModel implements Cloneable {
 	protected int currentPegType = 0;
 	protected int pegcount = -1;
 	protected int score = 0;
+	protected int acumulatedScore = 0;
 	protected boolean selected = false;
 	/*Backup Atributes*/
 	protected int[][] grillaPrevia = null;
@@ -74,6 +75,7 @@ public class SenkuModel implements Cloneable {
 		}
 		pegcount = -1;
 		score = 0;
+		acumulatedScore = 0;
 		currentKeyX = 3;
 		currentKeyY = 3;
 		selected = false;		
@@ -134,6 +136,7 @@ public class SenkuModel implements Cloneable {
 		this.grilla[this.currentKeyX][this.currentKeyY-2] = 1;
 		this.selected = false;		
 		this.currentKeyY = this.currentKeyY-2;
+		this.acumulatedScore += SenkuPegs.getInstance().getPegs()[this.currentPegType].getScoreValue();
 		return true;
 	}
 	public boolean eatEast() {
@@ -148,6 +151,7 @@ public class SenkuModel implements Cloneable {
 		this.grilla[this.currentKeyX-2][this.currentKeyY] = 1;
 		this.selected = false;		
 		this.currentKeyX = this.currentKeyX-2;
+		this.acumulatedScore += SenkuPegs.getInstance().getPegs()[this.currentPegType].getScoreValue();
 		return true;
 	}
 	public boolean eatWest() {
@@ -162,6 +166,7 @@ public class SenkuModel implements Cloneable {
 		this.grilla[this.currentKeyX+2][this.currentKeyY] = 1;
 		this.selected = false;		
 		this.currentKeyX = this.currentKeyX+2;
+		this.acumulatedScore += SenkuPegs.getInstance().getPegs()[this.currentPegType].getScoreValue();
 		return true;
 		
 	}
@@ -177,6 +182,7 @@ public class SenkuModel implements Cloneable {
 		this.grilla[this.currentKeyX][this.currentKeyY+2] = 1;
 		this.selected = false;		
 		this.currentKeyY = this.currentKeyY+2;
+		this.acumulatedScore += SenkuPegs.getInstance().getPegs()[this.currentPegType].getScoreValue();
 		return true;
 	}
 	
@@ -310,10 +316,10 @@ public class SenkuModel implements Cloneable {
 	public int getScore(){
 		if(this.pegcount == -1){
 			this.getCountOfFichas();
-		}		
-		int restedpegs = SenkuGames.BOARD_TOTAL_PEGS[this.currentGameType] - this.pegcount; 
+		}
 		this.score = (int) ((1.0/(this.pegcount*1.0))*SenkuGames.BOARD_SCORE[this.currentGameType]);
-		this.score += restedpegs*SenkuPegs.getInstance().getPegs()[this.currentPegType].getScoreValue();
+		this.score += this.acumulatedScore;
+		this.acumulatedScore=0;
 		return this.score;
 	}
 	
@@ -331,6 +337,7 @@ public class SenkuModel implements Cloneable {
 			this.currentKeyY = this.currentKeyYPrevia;
 			this.selected = this.selectedPrevia;
 			this.grillaPrevia = null;
+			this.acumulatedScore -= (2*SenkuPegs.getInstance().getPegs()[this.currentPegType].getScoreValue());
 			return true;
 		}
 		
@@ -369,6 +376,7 @@ public class SenkuModel implements Cloneable {
 		map.putInt("CURRENT_PEG_TYPE", this.currentPegType);
 		map.putInt("CURRENT_PEG_COUNT", this.pegcount);
 		map.putInt("CURRENT_SCORE", this.score);
+		map.putInt("ACUMULATED_SCORE", this.acumulatedScore);
 		map.putBoolean("SELECTED", this.selected);
 		return map;		
 	}
@@ -386,6 +394,7 @@ public class SenkuModel implements Cloneable {
 			this.currentPegType = savedState.getInt("CURRENT_PEG_TYPE");
 			this.pegcount = savedState.getInt("CURRENT_PEG_COUNT");
 			this.score = savedState.getInt("CURRENT_SCORE");
+			this.acumulatedScore = savedState.getInt("ACUMULATED_SCORE");
 			this.selected = savedState.getBoolean("SELECTED");        
     }
 

@@ -29,6 +29,39 @@ public class SenkuPegs{
 		}
 	}
 	
+	
+	public String unLockPegs(int gameType,int pegCount){
+	
+		if(pegCount>4 || gameType==0){ return "";}
+		
+		switch(gameType){
+			case 1: //PLUS
+					if(pegCount==1) return PEGS[1].codeName;	
+				break;
+			case 2: //HOME
+					if(pegCount==2) return PEGS[1].codeName;
+					if(pegCount==1) return PEGS[2].codeName;
+				break;
+			case 3://PYRAM
+					if(pegCount==2) return PEGS[2].codeName;
+					if(pegCount==1) return PEGS[3].codeName;
+				break;
+			case 4://DIAMON
+					if(pegCount==2) return PEGS[3].codeName;
+					if(pegCount==1) return PEGS[4].codeName;
+				break;
+			case 5://Normal
+					if(pegCount==4) return PEGS[2].codeName;
+					if(pegCount==3) return PEGS[3].codeName;
+					if(pegCount==2) return PEGS[4].codeName;
+					if(pegCount==1) return PEGS[5].codeName;
+				break;
+			case 6:
+				break;
+		}
+		return "";
+	}
+	
 	public Peg[] getPegs(){
 		return this.PEGS;
 	}
