@@ -318,8 +318,7 @@ public class SenkuModel implements Cloneable {
 			this.getCountOfFichas();
 		}
 		this.score = (int) ((1.0/(this.pegcount*1.0))*SenkuGames.BOARD_SCORE[this.currentGameType]);
-		this.score += this.acumulatedScore;
-		this.acumulatedScore=0;
+		this.score += this.acumulatedScore;		
 		return this.score;
 	}
 	

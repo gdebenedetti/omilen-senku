@@ -58,7 +58,7 @@ public class ScoreItem implements Comparable<ScoreItem>{
 
 	@Override
 	public int compareTo(ScoreItem another) {
-		if(another.getScore()>this.score)
+		if(another.getScore()<=this.score)
 			return -1;
 		else
 			return 1;	
