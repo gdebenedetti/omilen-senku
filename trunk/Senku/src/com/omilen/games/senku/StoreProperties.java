@@ -1,3 +1,9 @@
+/*!
+ * Copyright 2010-2011, Omilen IT Solutions
+ * licensed under Apache Version 2.0, http://www.apache.org/licenses/
+ * http://www.omilenitsolutions.com/
+ * Author: Juan Manuel Rodríguez
+ */
 package com.omilen.games.senku;
 
 import java.io.DataInputStream;

@@ -1,10 +1,16 @@
+/*!
+ * Copyright 2010-2011, Omilen IT Solutions
+ * licensed under Apache Version 2.0, http://www.apache.org/licenses/
+ * http://www.omilenitsolutions.com/
+ * Author: Juan Manuel Rodríguez
+ */
 package com.omilen.games.senku;
 
 
 public class SenkuPegs{
 	
 	public static final int NUMBER_OF_PEGS = 8;
-	public static final String MASTER_PHRASE = "omilen";
+	public static final String MASTER_PHRASE = "OMILEN";
 	//plastic    => 10   // Default
 	//wood       => 20   // 1 Plus board || 2 Home board
 	//silver     => 50   // 1 Home Board || 2 pyramid || 4 normal || 4 European death board
