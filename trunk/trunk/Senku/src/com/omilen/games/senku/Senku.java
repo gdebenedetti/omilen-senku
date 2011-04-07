@@ -12,6 +12,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
@@ -145,6 +146,7 @@ public class Senku extends Activity  implements OnKeyListener {
                 break;
             case MENU_UNDO: 
             	mSenkuThread.doUndo();
+            	callFacebookAutopost();
             	break;
             case MENU_SCORES:
             	showHighScoreListDialog();
@@ -206,6 +208,17 @@ public class Senku extends Activity  implements OnKeyListener {
 			}
     	}
 		
+	}
+    
+    public void callFacebookAutopost() {
+        Intent i = new Intent();
+        i.setClassName("com.omilen.social",
+                       "com.omilen.social.FacebookAutoPost");
+        
+        Bundle bundle = new Bundle();
+        bundle.putString("PALABRA","Chanchos");           
+        i.putExtras(bundle);           
+        startActivity(i);
 	}
         
 	/********* CLASSES PRIVADAS *************/
