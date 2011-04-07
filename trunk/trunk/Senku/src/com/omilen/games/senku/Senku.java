@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.omilen.games.senku.SenkuPegs.Peg;
 import com.omilen.games.senku.SenkuView.SenkuThread;
 import com.omilen.games.senku.score.HighScoreListAdapter;
 import com.omilen.games.senku.score.ScoreItem;
@@ -48,12 +49,12 @@ public class Senku extends Activity  implements OnKeyListener {
     private SenkuThread mSenkuThread;
 
     /** A handle to the View in which the game is running. */
-    private SenkuView mSenkuView;
-    private StoreProperties instanceProp = null;
+    private SenkuView mSenkuView;    
     private int selectedGame = 5;
     private int selectedPeg = 0;
     protected static Bitmap[] littlePegIcons = null;
     protected static Bitmap[] littleBoardIcons = null;
+    protected String masterKeyPhrase = "";
        
     /** Called when the activity is first created. */
     @Override
@@ -70,7 +71,7 @@ public class Senku extends Activity  implements OnKeyListener {
 
         // give the SenkuView a handle to the TextView used for messages
         mSenkuView.setTextView((TextView) findViewById(R.id.text));
-        instanceProp = StoreProperties.getInstance(this);
+        StoreProperties.setContext(this);
         
         if (savedInstanceState == null) {
             // we were just launched: set up a new game
@@ -82,25 +83,25 @@ public class Senku extends Activity  implements OnKeyListener {
        
         //set the current-Options
         
-        final String sound = instanceProp.getProperty("sound");
+        final String sound = StoreProperties.getInstance().getProperty("sound");
         if(sound.compareTo("1")==0){
     		mSenkuThread.turnOnSound();
         }else{    
         	mSenkuThread.turnOffSound();
         }
     	
-        final String gameStr = instanceProp.getProperty("currentGame");
+        final String gameStr = StoreProperties.getInstance().getProperty("currentGame");
         if(gameStr!=null){
         	this.selectedGame = Integer.valueOf(gameStr);
         }
         
-		if (instanceProp.getProperty("currentPeg") != null) {
+		if (StoreProperties.getInstance().getProperty("currentPeg") != null) {
 			try {
-				final String[] pegStr = instanceProp.getProperty("currentPeg")
+				final String[] pegStr = StoreProperties.getInstance().getProperty("currentPeg")
 						.split("-");
 				if (SenkuPegs.getInstance().getPegs()[Integer
 						.valueOf(pegStr[0])].getCodeName().equals(pegStr[1])
-						&& instanceProp.getProperty(pegStr[1]).equals("1")) {
+						&& StoreProperties.getInstance().getProperty(pegStr[1]).equals("1")) {
 					this.selectedPeg = Integer.valueOf(pegStr[0]);
 				}
 			} catch (Exception e) {
@@ -354,7 +355,7 @@ public class Senku extends Activity  implements OnKeyListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             switch (whichButton) {
                 case AlertDialog.BUTTON2: {
-                	instanceProp.setProperty("currentGame", String.valueOf(selectedGame));
+                	StoreProperties.getInstance().setProperty("currentGame", String.valueOf(selectedGame));
                     return;
                 }
             }
@@ -365,7 +366,7 @@ public class Senku extends Activity  implements OnKeyListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             switch (whichButton) {
                 case AlertDialog.BUTTON2: {                	
-                	instanceProp.setProperty("currentPeg", String.valueOf(selectedPeg)+"-"+SenkuPegs.getInstance().getPegs()[selectedPeg].getCodeName());
+                	StoreProperties.getInstance().setProperty("currentPeg", String.valueOf(selectedPeg)+"-"+SenkuPegs.getInstance().getPegs()[selectedPeg].getCodeName());
                     return;
                 }
             }
@@ -411,25 +412,37 @@ public class Senku extends Activity  implements OnKeyListener {
         builder.setView(layout);
         final ImageView imageView = (ImageView) layout.findViewById(R.id.peg_image);
         PegDialogListener pegListener = new PegDialogListener(imageView);
-                       
-        final RadioButton buttonBoard00 = (RadioButton) layout.findViewById(R.id.radioPeg0);
-        final RadioButton buttonBoard01 = (RadioButton) layout.findViewById(R.id.radioPeg1);
-        final RadioButton buttonBoard02 = (RadioButton) layout.findViewById(R.id.radioPeg2);
-        final RadioButton buttonBoard03 = (RadioButton) layout.findViewById(R.id.radioPeg3);
-        final RadioButton buttonBoard04 = (RadioButton) layout.findViewById(R.id.radioPeg4);
-        final RadioButton buttonBoard05 = (RadioButton) layout.findViewById(R.id.radioPeg5);
-        final RadioButton buttonBoard06 = (RadioButton) layout.findViewById(R.id.radioPeg6);
-        final RadioButton buttonBoard07 = (RadioButton) layout.findViewById(R.id.radioPeg7);        
-        buttonBoard00.setOnClickListener(pegListener);
-        buttonBoard01.setOnClickListener(pegListener);
-        buttonBoard02.setOnClickListener(pegListener);
-        buttonBoard03.setOnClickListener(pegListener);
-        buttonBoard04.setOnClickListener(pegListener);
-        buttonBoard05.setOnClickListener(pegListener);
-        buttonBoard06.setOnClickListener(pegListener);
-        buttonBoard07.setOnClickListener(pegListener);
-       
-        String selected = instanceProp.getProperty("currentPeg");
+                 
+        RadioButton[] pegButtons = new RadioButton[8];
+        pegButtons[0] = (RadioButton) layout.findViewById(R.id.radioPeg0);
+        pegButtons[1] = (RadioButton) layout.findViewById(R.id.radioPeg1);
+        pegButtons[2] = (RadioButton) layout.findViewById(R.id.radioPeg2);
+        pegButtons[3] = (RadioButton) layout.findViewById(R.id.radioPeg3);
+        pegButtons[4] = (RadioButton) layout.findViewById(R.id.radioPeg4);
+        pegButtons[5] = (RadioButton) layout.findViewById(R.id.radioPeg5);
+        pegButtons[6] = (RadioButton) layout.findViewById(R.id.radioPeg6);
+        pegButtons[7] = (RadioButton) layout.findViewById(R.id.radioPeg7);
+        Peg[] PEGS = SenkuPegs.getInstance().getPegs();
+        
+                
+        for(int i=0;i<pegButtons.length-1;i++){
+        	pegButtons[i].setOnClickListener(pegListener);
+        	String aux = StoreProperties.getInstance().getProperty(PEGS[i].getCodeName());
+        	if(aux==null || !aux.equals("1")){
+        		pegButtons[i].setEnabled(false);        		
+        	}else{
+        		pegButtons[i].setEnabled(true);
+        	}
+        }
+        /***********/
+        String aux2 = StoreProperties.getInstance().getProperty(PEGS[7].getCodeName());
+    	if(aux2==null || !aux2.equals("1")){
+    		pegButtons[7].setVisibility(View.INVISIBLE);        		
+    	}else{
+    		pegButtons[7].setVisibility(View.VISIBLE);
+    	}
+               
+        String selected = StoreProperties.getInstance().getProperty("currentPeg");
         if(selected == null){
         	selected = "00";
         }else{
@@ -446,24 +459,8 @@ public class Senku extends Activity  implements OnKeyListener {
         
         int selectedPegAux = Integer.parseInt(selected);
         imageView.setImageBitmap(Senku.this.mSenkuThread.getPegImage(selectedPegAux));
-        switch (selectedPegAux) {
-		case 0:	buttonBoard00.setChecked(true);		
-			break;
-		case 1:	buttonBoard01.setChecked(true);		
-		    break;
-		case 2:	buttonBoard02.setChecked(true);		
-			break;
-		case 3:	buttonBoard03.setChecked(true);		
-			break;
-		case 4:	buttonBoard04.setChecked(true);		
-			break;
-		case 5:	buttonBoard05.setChecked(true);		
-			break;  
-		case 6:	buttonBoard06.setChecked(true);		
-			break;
-		default:
-			break;
-		}
+        pegButtons[selectedPegAux].setChecked(true);
+        
         builder.show(); 
     }
     
@@ -496,7 +493,7 @@ public class Senku extends Activity  implements OnKeyListener {
         buttonBoard05.setOnClickListener(boardListener);
         buttonBoard06.setOnClickListener(boardListener);
         
-        String selected = instanceProp.getProperty("currentGame");
+        String selected = StoreProperties.getInstance().getProperty("currentGame");
         if(selected == null){
         	selected = "05";
         }
@@ -540,8 +537,8 @@ public class Senku extends Activity  implements OnKeyListener {
         layout.setBackgroundResource(R.drawable.background_dialogs);
         builder.setView(layout);
         
-        String sound = StoreProperties.getInstance(this).getProperty("sound");
-        String facebook = StoreProperties.getInstance(this).getProperty("facebook");
+        String sound = StoreProperties.getInstance().getProperty("sound");
+        String facebook = StoreProperties.getInstance().getProperty("facebook");
         
         final CheckBox checkSound = (CheckBox)  layout.findViewById(R.id.CheckBoxSound);
         checkSound.setChecked(sound.equals("1"));
@@ -568,9 +565,9 @@ public class Senku extends Activity  implements OnKeyListener {
 			@Override
 			public void onClick(View v) {				
 				if(checkFacebook.isChecked()){
-					instanceProp.setProperty("facebook", "1");					
+					StoreProperties.getInstance().setProperty("facebook", "1");					
 				}else{
-					instanceProp.setProperty("facebook", "0");					
+					StoreProperties.getInstance().setProperty("facebook", "0");					
 				}
 			}
         });
@@ -580,10 +577,10 @@ public class Senku extends Activity  implements OnKeyListener {
 			public void onClick(View v) {
 				
 				if(checkSound.isChecked()){
-					instanceProp.setProperty("sound", "1");
+					StoreProperties.getInstance().setProperty("sound", "1");
 					mSenkuThread.turnOnSound();
 				}else{
-					instanceProp.setProperty("sound", "0");
+					StoreProperties.getInstance().setProperty("sound", "0");
 					mSenkuThread.turnOffSound();
 				}
 				
