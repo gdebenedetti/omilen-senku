@@ -6,7 +6,9 @@
  */
 package com.omilen.games.senku;
 
+import com.omilen.games.senku.R;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -781,8 +783,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 			   synchronized (mSurfaceHolder) {				   
 				   return this.mPegs;
 			   }		
-		}
-		
+		}			
 		
     } //end thread
 
