@@ -114,7 +114,7 @@ public class ScoreUtil {
     	
     	Collections.sort(mScores);
     	ScoreItem a = mScores.get(mScores.size()-1);    	
-    	if(a.getScore()<score) return false;
+    	if(a.getScore()>score) return false;
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         java.util.Date date = new java.util.Date();

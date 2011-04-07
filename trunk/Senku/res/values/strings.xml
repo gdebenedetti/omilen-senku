@@ -69,6 +69,7 @@
 	<string name="help_dialog_title">How to Play</string>
 	<string name="help_dialog_msg">The object of the game is to leave only one peg.\n Select a peg that can jump over another to an empty space to "eat" the jumped one.\n\nUse the touchscreen to drag and drop pegs to empty spaces or move across the board using the phone pad and then press the center key of the pad to select a peg. Finally select a direction to "eat" using the phone pad.\nIf you can left just a few pegs (1,2 or 3) in each different board, new pegs will be available for get more score points.</string>
 
-
+	<string name="score">Score</string>
+	<string name="new_peg_available">New peg free!</string>
     <string name="senku_layout_text_text"></string>
 </resources>

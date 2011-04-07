@@ -425,7 +425,7 @@ public class Senku extends Activity  implements OnKeyListener {
         Peg[] PEGS = SenkuPegs.getInstance().getPegs();
         
                 
-        for(int i=0;i<pegButtons.length-1;i++){
+        for(int i=1;i<pegButtons.length-1;i++){ //Default is always enabled
         	pegButtons[i].setOnClickListener(pegListener);
         	String aux = StoreProperties.getInstance().getProperty(PEGS[i].getCodeName());
         	if(aux==null || !aux.equals("1")){

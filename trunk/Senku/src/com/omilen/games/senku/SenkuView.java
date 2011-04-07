@@ -104,6 +104,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 		private int cellLength = 0;
 		private int boardSelected = 0;
 		private int pegSelected = 0;
+		protected StringBuilder secretPhrase = new StringBuilder();
 		
         public SenkuThread(SurfaceHolder surfaceHolder, Context context,
                 Handler handler) {
@@ -192,6 +193,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         public void setCurrentPeg(int pegtype){
         	synchronized (mSurfaceHolder) {
         		this.pegSelected = pegtype;
+        		game.setCurrentPegType(pegtype);
         	}
         }
         
@@ -375,6 +377,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 	                    	case 4: str = str+"\n"+res.getText(R.string.regular); break;
 	                    	default: str = str+"\n"+res.getText(R.string.bad); break;
 						}
+	                    str = str+"\n"+res.getText(R.string.score)+": "+String.valueOf(game.getScore());
 	                    str = str+"\n"+res.getText(R.string.remaining_chips)+String.valueOf(finalCount);
 	                    //Check if the Score is high and add to the list
 	                    if(!alreadySetScore){
@@ -384,12 +387,13 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 	                    		sounds.playSound(SenkuSoundPool.SOUND_WIN);	                    	
 		                    if(ScoreUtil.getInstance(mContext).updateScores(game.getCountOfFichas(), game.getScore(), game.getCurrentPegType(), game.getCurrentGameType())){
 		                    	//the score was added
-		                    	str = str+"\n"+res.getText(R.string.new_high_score)+": \n"+String.valueOf(game.getScore());
+		                    	str = str+"\n"+res.getText(R.string.new_high_score);
 		                    }		                    
 		                    alreadySetScore = true;
 		                    String unlock = SenkuPegs.getInstance().unLockPegs(game.getCurrentGameType(), game.getCountOfFichas());
-		                    if(!unlock.equals("")){
+		                    if(!unlock.equals("") && StoreProperties.getInstance().getProperty(unlock)==null){
 		                    	StoreProperties.getInstance().setProperty(unlock, "1");
+		                    	str = str+"\n"+res.getText(R.string.new_peg_available);
 		                    }
 	                    }
 	                    
@@ -488,6 +492,43 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                 
             }
         }
+        
+        private void manageSecretPhrases(int keyCode){
+        	
+			switch (keyCode) {
+			case KeyEvent.KEYCODE_O:
+				this.secretPhrase.delete(0, secretPhrase.length() - 1);
+				this.secretPhrase.append('O');
+				break;
+			case KeyEvent.KEYCODE_M:
+				this.secretPhrase.append('M');
+				break;
+			case KeyEvent.KEYCODE_I:
+				this.secretPhrase.append('I');
+				break;
+			case KeyEvent.KEYCODE_L:
+				this.secretPhrase.append('L');
+				break;
+			case KeyEvent.KEYCODE_E:
+				this.secretPhrase.append('E');
+				break;
+			case KeyEvent.KEYCODE_N:
+				this.secretPhrase.append('N');
+				break;
+
+			default:
+				this.secretPhrase.delete(0, secretPhrase.length() - 1);
+				break;
+			}
+			if(this.secretPhrase.length()!=0){
+				String code = SenkuPegs.getInstance().unLockSpecialPegs(secretPhrase.toString());
+				if(StoreProperties.getInstance().getProperty(code)==null){
+					StoreProperties.getInstance().setProperty(code, "1");
+					sounds.playSound(SenkuSoundPool.SOUND_EAT);
+					sounds.playSound(SenkuSoundPool.SOUND_EAT);
+				}
+			}
+        }
      
         /**
          * Handles a key-down event.
@@ -498,11 +539,11 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
          */
         boolean doKeyDown(int keyCode, KeyEvent msg) {
         	
-            synchronized (mSurfaceHolder) {
-            	
+            synchronized (mSurfaceHolder) {            		
             		boolean eatSuccess = false;
             		boolean moveSuccess = false;
             		boolean returnValue = false;
+            		manageSecretPhrases(keyCode);
             	if(this.controlMode == MODE_TOUCH){
             			this.controlMode = MODE_CURSOR;
             			this.game.unSelect();
@@ -539,7 +580,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                       }
                       
                       if(eatSuccess){
-                    	   sounds.playSound(SenkuSoundPool.SOUND_EAT);            	   
+                    	   sounds.playSound(SenkuSoundPool.SOUND_EAT);
                        }else if(!moveSuccess){
                     	   if(returnValue){
            			        	   if(game.isSelected())
