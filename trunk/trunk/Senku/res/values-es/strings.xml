@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Senku</string>
+
+    <string name="menu_start">Iniciar Juego</string>
+    <string name="menu_undo">Deshacer</string>
+    <string name="menu_score">Puntajes</string>
+    <string name="menu_help">Cómo jugar</string>
+    <string name="menu_sound">Sonido</string>
+    <string name="menu_facebook">Post en Facebook</string>
+    <string name="menu_sound_on">Sonido encendido</string>
+    <string name="menu_sound_off">Sonido apagado</string>
+    <string name="menu_game_type">Tipo de Juego</string>
+    <string name="menu_peg_type">Fichas</string>
+    <string name="menu_options">Opciones</string>
+    
+    <string name="mode_ready">Senku\nPresione Arriba para Jugar</string>
+	<string name="mode_pause">Pausa</string>
+	<string name="mode_end2">Presione "Menu" y seleccione "Iniciar Juego" para\njugar nuevamente</string>
+	<string name="mode_loading">Cargando...</string>
+	
+	<string name="message_stopped">Detenido</string>
+	<string name="gameover">Juego Terminado</string>
+	<string name="youwin">¡Ganó!</string>
+	
+	<string name="perfect" >Juego: ¡¡¡Perfecto!!!</string>
+	<string name="veryGood">Juego: ¡Muy Bueno!</string>
+	<string name="good"    >Juego: Bueno</string>
+	<string name="regular" >Juego: Regular</string>
+	<string name="bad"     >Juego: Malo</string>
+	<string name="remaining_chips">fichas: </string>
+	
+	<string name="board_name_00">Flecha (muy fácil)</string>
+    <string name="board_name_01">Más (fácil)</string>
+    <string name="board_name_02">Hogar (moderado)</string>
+    <string name="board_name_03">Pirámide (difícil)</string>
+    <string name="board_name_04">Diamante (muy difícil)</string>
+    <string name="board_name_05">Normal (arduo)</string>
+    <string name="board_name_06">Muerte europea (el peor)</string>
+    
+    <string name="board_selected">Juego seleccionado:</string>
+    <string name="peg_selected">Ficha seleccionada:</string>
+    
+    <string name="peg_name_00">Plástico (10p)</string>
+    <string name="peg_name_01">Madera (20p)</string>
+    <string name="peg_name_02">Plata (50p)</string>
+    <string name="peg_name_03">Oro (100p)</string>
+    <string name="peg_name_04">Zafiro (250p)</string>
+    <string name="peg_name_05">Esmeralda (500p)</string>
+    <string name="peg_name_06">Diamante (1000p)</string>
+    <string name="peg_name_07">Bola Ocho (800p)</string>
+
+     <!-- HighScoreListActivity -->
+    <string name="scores_title">Mejores Puntajes</string>
+    <string name="name_header">Fecha</string>
+    <string name="chips_header">Fichas</string>
+    <string name="score_header">Puntaje</string>
+    <string name="board_header">Juego</string>
+    <string name="peg_header">Ficha</string>
+    <string name="menu_clear">Reiniciar puntajes</string>
+    <string name="delete_dialog_title">Reiniciar</string>
+    <string name="delete_dialog_msg">Se perderán todos los puntajes.</string>
+    <string name="dialog_yes">Sí</string>
+    <string name="dialog_no">Cancelar</string>
+    <string name="new_high_score">¡Nuevo puntaje!</string>
+    <string name="dialog_close">Cerrar</string>
+	<!--  Help -->
+	<string name="help_dialog_title">Cómo Jugar</string>
+	<string name="help_dialog_msg">El objetivo del juego es dejar una sola ficha.\n Seleccione una ficha que pueda saltar sobre otra hacia un espacio vacío para “comer” la ficha saltada.\n\n Utilice la pantalla táctil para arrastrar las fichas hacia los casilleros vacíos o muévase a través del tablero utilizando el pad del dispositivo y luego presione la tecla del centro para seleccionar una ficha. Finalmente seleccione una dirección hacia donde “comer” usando el pad nuevamente.\n\nSi logra dejar pocas fichas (1,2 ó 3) en los distintos tableros podrá liberar nuevas fichas que le darán más puntaje al jugar.</string>
+
+
+    <string name="senku_layout_text_text"></string>
+</resources>
