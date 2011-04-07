@@ -4,6 +4,7 @@ package com.omilen.games.senku;
 public class SenkuPegs{
 	
 	public static final int NUMBER_OF_PEGS = 8;
+	public static final String MASTER_PHRASE = "omilen";
 	//plastic    => 10   // Default
 	//wood       => 20   // 1 Plus board || 2 Home board
 	//silver     => 50   // 1 Home Board || 2 pyramid || 4 normal || 4 European death board
@@ -29,7 +30,12 @@ public class SenkuPegs{
 		}
 	}
 	
-	
+	public String unLockSpecialPegs(String phrase){
+		if(phrase.compareTo(MASTER_PHRASE)==0){
+			return PEGS[7].codeName;
+		}
+		return "";
+	}
 	public String unLockPegs(int gameType,int pegCount){
 	
 		if(pegCount>4 || gameType==0){ return "";}
@@ -56,7 +62,11 @@ public class SenkuPegs{
 					if(pegCount==2) return PEGS[4].codeName;
 					if(pegCount==1) return PEGS[5].codeName;
 				break;
-			case 6:
+			case 6://european Deadth
+					if(pegCount==4) return PEGS[2].codeName;
+					if(pegCount==3) return PEGS[3].codeName;
+					if(pegCount==2) return PEGS[4].codeName;
+					if(pegCount==1) return PEGS[6].codeName;
 				break;
 		}
 		return "";

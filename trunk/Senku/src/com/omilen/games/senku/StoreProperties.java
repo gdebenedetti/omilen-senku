@@ -18,19 +18,22 @@ public class StoreProperties {
   
     private static StoreProperties mInstance;
     private static Map<String,String> mproperties;
-    private static Context mContext;
+    private static Context mContext = null;
     
     private StoreProperties() {
     	mproperties = new HashMap<String, String>();
         loadProperties();
     }
     
-    public static StoreProperties getInstance(Context context) {
-        mContext = context;
+    public static StoreProperties getInstance() {        
         if (mInstance == null) {
             mInstance = new StoreProperties();
         }        
         return mInstance;
+    }
+    
+    public static void setContext(Context context){
+    	mContext = context;
     }
         
     private void loadProperties() {

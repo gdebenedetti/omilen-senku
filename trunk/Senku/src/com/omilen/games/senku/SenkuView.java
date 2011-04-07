@@ -120,20 +120,17 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             
             mPegs[0] 	= BitmapFactory.decodeResource(res,R.drawable.ficha_plastico_roja);
             mAuxPegs[0] = BitmapFactory.decodeResource(res,R.drawable.ficha_plastico_verde);
-            mPegs[1]    = BitmapFactory.decodeResource(res,R.drawable.ficha_madera);
-            mAuxPegs[1] = mPegs[1]; 
-            mPegs[2] 	= BitmapFactory.decodeResource(res,R.drawable.ficha_metalica);
-            mAuxPegs[2] = mPegs[2]; 
-            mPegs[3]	= BitmapFactory.decodeResource(res,R.drawable.ficha_oro);
-            mAuxPegs[3] = mPegs[3]; 
-            mPegs[4] 	= BitmapFactory.decodeResource(res,R.drawable.ficha_gema_azul);
-            mAuxPegs[4] = mPegs[4]; 
+            mPegs[1]    = BitmapFactory.decodeResource(res,R.drawable.ficha_madera);             
+            mPegs[2] 	= BitmapFactory.decodeResource(res,R.drawable.ficha_metalica);             
+            mPegs[3]	= BitmapFactory.decodeResource(res,R.drawable.ficha_oro);             
+            mPegs[4] 	= BitmapFactory.decodeResource(res,R.drawable.ficha_gema_azul);             
             mPegs[5] 	= BitmapFactory.decodeResource(res,R.drawable.ficha_gema_rosa);
             mAuxPegs[5] = BitmapFactory.decodeResource(res,R.drawable.ficha_gema_verde); 
             mPegs[6] 	= BitmapFactory.decodeResource(res,R.drawable.ficha_diam_red);
             mAuxPegs[6] = BitmapFactory.decodeResource(res,R.drawable.ficha_diam_green);
             mPegs[7] 	= BitmapFactory.decodeResource(res,R.drawable.ficha_bola_ocho);
-            mAuxPegs[7] = mPegs[7];
+            
+            
             
             
             mSombraFicha[0] = BitmapFactory.decodeResource(res,R.drawable.sombra_circular);
@@ -390,6 +387,10 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 		                    	str = str+"\n"+res.getText(R.string.new_high_score)+": \n"+String.valueOf(game.getScore());
 		                    }		                    
 		                    alreadySetScore = true;
+		                    String unlock = SenkuPegs.getInstance().unLockPegs(game.getCurrentGameType(), game.getCountOfFichas());
+		                    if(!unlock.equals("")){
+		                    	StoreProperties.getInstance().setProperty(unlock, "1");
+		                    }
 	                    }
 	                    
                     }else if (mMode == STATE_LOADING){
@@ -461,6 +462,11 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 	                	mCursor[i] = Bitmap.createScaledBitmap(mCursor[i], (int)cellLength, (int)cellLength, true);
 	                }
                 }
+                mAuxPegs[4] = mPegs[4];
+                mAuxPegs[3] = mPegs[3];
+                mAuxPegs[2] = mPegs[2];
+                mAuxPegs[1] = mPegs[1];
+                mAuxPegs[7] = mPegs[7];
                 mFondoCarteles = Bitmap.createScaledBitmap(mFondoCarteles, (int)(lengthGrilla*0.90), (int)(lengthGrilla*0.90), true);
                 mCursor[3] = mCursor[2];
                 mCursor[4] = mCursor[1];               
