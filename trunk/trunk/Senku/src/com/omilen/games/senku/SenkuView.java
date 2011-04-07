@@ -1,3 +1,9 @@
+/*!
+ * Copyright 2010-2011, Omilen IT Solutions
+ * licensed under Apache Version 2.0, http://www.apache.org/licenses/
+ * http://www.omilenitsolutions.com/
+ * Author: Juan Manuel Rodríguez
+ */
 package com.omilen.games.senku;
 
 import android.content.Context;
@@ -152,9 +158,10 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             mLinePaintBad = new Paint();
             mLinePaintBad.setAntiAlias(true);
             mLinePaintBad.setARGB(255, 120, 180, 0);
-            
+                        
             //Start the Sounds
-            sounds = new SenkuSoundPool(mContext);            
+            sounds = new SenkuSoundPool(mContext);
+            
            
         }
 
@@ -495,9 +502,16 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         
         private void manageSecretPhrases(int keyCode){
         	
+        	String code = SenkuPegs.getInstance().unLockSpecialPegs(secretPhrase.toString());
+        	if(StoreProperties.getInstance().getProperty(code)!=null){
+        		return;
+        	}
+        	
 			switch (keyCode) {
 			case KeyEvent.KEYCODE_O:
-				this.secretPhrase.delete(0, secretPhrase.length() - 1);
+				if(this.secretPhrase.length()!=0){
+					this.secretPhrase.delete(0,secretPhrase.length());
+				}
 				this.secretPhrase.append('O');
 				break;
 			case KeyEvent.KEYCODE_M:
@@ -515,18 +529,14 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 			case KeyEvent.KEYCODE_N:
 				this.secretPhrase.append('N');
 				break;
-
-			default:
-				this.secretPhrase.delete(0, secretPhrase.length() - 1);
-				break;
 			}
-			if(this.secretPhrase.length()!=0){
-				String code = SenkuPegs.getInstance().unLockSpecialPegs(secretPhrase.toString());
-				if(StoreProperties.getInstance().getProperty(code)==null){
+			code = SenkuPegs.getInstance().unLockSpecialPegs(secretPhrase.toString());				
+			if(code!=null && code.length()>0){
 					StoreProperties.getInstance().setProperty(code, "1");
 					sounds.playSound(SenkuSoundPool.SOUND_EAT);
 					sounds.playSound(SenkuSoundPool.SOUND_EAT);
-				}
+			}else if(secretPhrase.length()>100){
+				this.secretPhrase.delete(0,secretPhrase.length());
 			}
         }
      

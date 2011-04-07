@@ -1,3 +1,9 @@
+/*!
+ * Copyright 2010-2011, Omilen IT Solutions
+ * licensed under Apache Version 2.0, http://www.apache.org/licenses/
+ * http://www.omilenitsolutions.com/
+ * Author: Juan Manuel Rodríguez
+ */
 package com.omilen.games.senku;
 
 import java.util.Collections;
@@ -424,24 +430,22 @@ public class Senku extends Activity  implements OnKeyListener {
         pegButtons[7] = (RadioButton) layout.findViewById(R.id.radioPeg7);
         Peg[] PEGS = SenkuPegs.getInstance().getPegs();
         
-                
-        for(int i=1;i<pegButtons.length-1;i++){ //Default is always enabled
+        pegButtons[0].setOnClickListener(pegListener);        
+        for(int i=0;i<pegButtons.length;i++){ //Default is always enabled
         	pegButtons[i].setOnClickListener(pegListener);
-        	String aux = StoreProperties.getInstance().getProperty(PEGS[i].getCodeName());
-        	if(aux==null || !aux.equals("1")){
-        		pegButtons[i].setEnabled(false);        		
-        	}else{
-        		pegButtons[i].setEnabled(true);
-        	}
+			if (i != 0) {
+				String aux = StoreProperties.getInstance().getProperty(PEGS[i].getCodeName());
+				if (aux == null || !aux.equals("1")) {
+					pegButtons[i].setEnabled(false);
+					if(i==7){pegButtons[i].setVisibility(View.INVISIBLE);}
+				} else {
+					pegButtons[i].setEnabled(true);
+					if(i==7){pegButtons[i].setVisibility(View.VISIBLE);}
+				}
+			}
         }
         /***********/
-        String aux2 = StoreProperties.getInstance().getProperty(PEGS[7].getCodeName());
-    	if(aux2==null || !aux2.equals("1")){
-    		pegButtons[7].setVisibility(View.INVISIBLE);        		
-    	}else{
-    		pegButtons[7].setVisibility(View.VISIBLE);
-    	}
-               
+                       
         String selected = StoreProperties.getInstance().getProperty("currentPeg");
         if(selected == null){
         	selected = "00";
