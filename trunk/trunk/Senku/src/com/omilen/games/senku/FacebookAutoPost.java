@@ -1,6 +1,5 @@
-package com.omilen.social;
+package com.omilen.games.senku;
 
-import com.omilen.games.senku.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +11,8 @@ import com.facebook.android.Util;
 import com.facebook.stream.Session;
 import com.omilen.social.SessionEvents.AuthListener;
 import com.omilen.social.SessionEvents.LogoutListener;
+import com.omilen.social.LoginButton;
+import com.omilen.social.SessionEvents;
 
 
 public class FacebookAutoPost extends Activity {
