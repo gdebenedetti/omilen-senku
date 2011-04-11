@@ -71,7 +71,18 @@
 
 	<string name="score">Score</string>
 	<string name="app_facebook_autopost">Facebook Autopost</string>
-	<string name="login">Please Login on Facebook</string>
+	<string name="login">Please wait...</string>
 	<string name="new_peg_available">New peg free!</string>
     <string name="senku_layout_text_text"></string>
+    <string name="facebook_post_name">Omilen Android Senku</string>
+    <string name="facebook_post_description">Senku is simple addictive game for Android Devices, powered by Omilen IT Solutions</string>
+    <string name="facebook_post_caption">Senku</string>
+    <string name="facebook_please_wait">Please wait...</string>
+    <string name="facebook_post_00">Has unlocked a new peg made of</string>
+    <string name="facebook_post_01">for leave only</string>
+    <string name="facebook_post_02">on the board:</string>
+	<string name="facebook_post_03">And got</string>
+    <string name="facebook_post_04">points.</string>
+    
+    
 </resources>
