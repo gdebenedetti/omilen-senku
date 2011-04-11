@@ -212,8 +212,8 @@ public class Senku extends Activity  implements OnKeyListener {
     
     public void callFacebookAutopost() {
         Intent i = new Intent();
-        i.setClassName("com.omilen.social",
-                       "com.omilen.social.FacebookAutoPost");
+        i.setClassName("com.omilen.games.senku",
+                       "com.omilen.games.senku.FacebookAutoPost");
         
         Bundle bundle = new Bundle();
         bundle.putString("PALABRA","Chanchos");           

@@ -9,7 +9,7 @@
         <TextView android:layout_gravity="center" android:text="@string/board_selected" android:layout_height="wrap_content" android:id="@+id/textViewBoardSelected" android:layout_width="wrap_content" android:layout_marginLeft="10dip" android:textColor="#ffffffff" android:textSize="16sp">
         </TextView>
         <ImageView android:layout_height="wrap_content" android:id="@+id/board_image" 
-        android:src="@drawable/icon" android:layout_width="wrap_content" android:layout_marginLeft="10dip">
+        android:src="@drawable/ic_launcher_senku" android:layout_width="wrap_content" android:layout_marginLeft="10dip">
         </ImageView>
     
     </LinearLayout>

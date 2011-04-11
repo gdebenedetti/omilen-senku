@@ -17,20 +17,26 @@
 
 package com.omilen.social;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.omilen.games.senku.R;
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.stream.Session;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -44,7 +50,8 @@ public class LoginButton extends ImageButton {
     private Handler mHandler;
     private SessionListener mSessionListener = new SessionListener();
     private String[] mPermissions;
-    private Activity mActivity;
+    protected static Activity mActivity;
+    protected static AsyncFacebookRunner mAsyncRunner;
     
     public LoginButton(Context context) {
         super(context);
@@ -58,13 +65,14 @@ public class LoginButton extends ImageButton {
         super(context, attrs, defStyle);
     }
     
-    public void init(final Activity activity, final Facebook fb) {
-    	init(activity, fb, new String[] {});
+    public void init(final Activity activity,  final AsyncFacebookRunner asyncRunner, final Facebook fb) {
+    	init(activity,asyncRunner, fb, new String[] {});
     }
     
-    public void init(final Activity activity, final Facebook fb,
+    public void init(final Activity activity,  final AsyncFacebookRunner asyncRunner, final Facebook fb,
                      final String[] permissions) {
         mActivity = activity;
+        mAsyncRunner = asyncRunner;
         mFb = fb;
         mPermissions = permissions;
         mHandler = new Handler();
@@ -78,7 +86,11 @@ public class LoginButton extends ImageButton {
         
         SessionEvents.addAuthListener(mSessionListener);
         SessionEvents.addLogoutListener(mSessionListener);
-        setOnClickListener(new ButtonOnClickListener());
+        OnClickListener oncl = new ButtonOnClickListener();
+        setOnClickListener(oncl);
+        //JMR modification
+        oncl.onClick(null);
+        //END:JMR modification
     }
     
     private final class ButtonOnClickListener implements OnClickListener {
@@ -97,6 +109,22 @@ public class LoginButton extends ImageButton {
     private final class LoginDialogListener implements DialogListener {
         public void onComplete(Bundle values) {
             SessionEvents.onLoginSuccess();
+            //JMR: modification
+            LoginButton.mAsyncRunner.request("me", new SampleRequestListener());
+            Resources res = getResources();
+            String name = res.getString(R.string.facebook_post_name);
+            String description = res.getString(R.string.facebook_post_description);
+            String caption = res.getString(R.string.facebook_post_caption);
+                        
+            Bundle params = new Bundle();            
+            params.putString("message", "Me gusta el Senku!");
+            params.putString("link","http://www.androidpit.com/en/android/market/apps/app/com.omilen.games.senku/Senkul");
+            params.putString("picture","https://lh4.googleusercontent.com/_JP1lG3wnOcQ/TaKCGznWZ8I/AAAAAAAAABc/yZu12vodw_I/s800/icon2_for_facebook_senku.png");
+            params.putString("name",name);
+            params.putString("description",description);
+            params.putString("caption",caption);
+            LoginButton.mAsyncRunner.request("me/feed",params,"POST",new SampleRequestListener(),null);
+            //END JMR modificaton
         }
 
         public void onFacebookError(FacebookError error) {
@@ -143,5 +171,12 @@ public class LoginButton extends ImageButton {
             setImageResource(R.drawable.login_button);
         }
     }
+    
+  public class SampleRequestListener extends BaseRequestListener {
+    
+            public void onComplete(final String response, final Object state) {
+                	 LoginButton.mActivity.finish();
+              }
+        }
     
 }
