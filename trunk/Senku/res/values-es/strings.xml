@@ -16,7 +16,7 @@
     
     <string name="mode_ready">Senku\nPresione Arriba para Jugar</string>
 	<string name="mode_pause">Pausa</string>
-	<string name="mode_end2">Presione "Menu" y seleccione "Iniciar Juego" para\njugar nuevamente</string>
+	<string name="mode_end2">Presione "Menu" y \nseleccione "Iniciar Juego" para\njugar nuevamente</string>
 	<string name="mode_loading">Cargando...</string>
 	
 	<string name="message_stopped">Detenido</string>
@@ -41,14 +41,14 @@
     <string name="board_selected">Juego seleccionado:</string>
     <string name="peg_selected">Ficha seleccionada:</string>
     
-    <string name="peg_name_00">Plástico (10p)</string>
-    <string name="peg_name_01">Madera (20p)</string>
-    <string name="peg_name_02">Plata (50p)</string>
-    <string name="peg_name_03">Oro (100p)</string>
-    <string name="peg_name_04">Zafiro (250p)</string>
-    <string name="peg_name_05">Esmeralda (500p)</string>
-    <string name="peg_name_06">Diamante (1000p)</string>
-    <string name="peg_name_07">Bola Ocho (800p)</string>
+    <string name="peg_name_00">Plástico</string>
+    <string name="peg_name_01">Madera</string>
+    <string name="peg_name_02">Plata</string>
+    <string name="peg_name_03">Oro</string>
+    <string name="peg_name_04">Zafiro</string>
+    <string name="peg_name_05">Esmeralda</string>
+    <string name="peg_name_06">Diamante</string>
+    <string name="peg_name_07">Bola Ocho</string>
 
      <!-- HighScoreListActivity -->
     <string name="scores_title">Mejores Puntajes</string>
@@ -70,7 +70,7 @@
 
 	<string name="score">Puntaje</string>
 	<string name="app_facebook_autopost">Facebook Autopost</string>
-	<string name="login">por favor espere...</string>
+	<string name="login">Por favor espere\nmientras el mensaje es enviado\na su muro de facebook.</string>
 	<string name="new_peg_available">¡Nueva ficha libre!</string>
     <string name="senku_layout_text_text"></string>
     <string name="facebook_post_name">Omilen Android Senku</string>
@@ -82,5 +82,9 @@
     <string name="facebook_post_02">en el tablero:</string>
 	<string name="facebook_post_03">Y obtuvo</string>
     <string name="facebook_post_04">puntos.</string>
-    
+    <string name="facebook_post_special">liberó una ficha secreta especial llamada: bola ocho, La cual da 800 puntos en cada salto.</string>
+    <string name="postOnFacebook_dialog_title">Publicar en Facebook</string>
+    <string name="postOnFacebook_dialog_msg">¿Habilitar la publicación en facebook?</string>
+    <string name="dialogfb_yes">Sí</string>
+    <string name="dialogfb_no">No</string>
 </resources>

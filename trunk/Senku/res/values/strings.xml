@@ -16,7 +16,7 @@
     
     <string name="mode_ready">Senku\nPress Up To Play</string>
 	<string name="mode_pause">Paused</string>	
-	<string name="mode_end2">Press "Menu" and select "Start Game" to\nplay again</string>
+	<string name="mode_end2">Press "Menu" and\nselect "Start Game"\nto play again</string>
 	<string name="mode_loading">Loading...</string>
 	
 	<string name="message_stopped">Stopped</string>
@@ -41,14 +41,14 @@
     <string name="board_selected">Game selected:</string>
     <string name="peg_selected">Peg selected:</string>
     
-    <string name="peg_name_00">Plastic (10p)</string>
-    <string name="peg_name_01">Wood (20p)</string>
-    <string name="peg_name_02">Silver (50p)</string>
-    <string name="peg_name_03">Gold (100p)</string>
-    <string name="peg_name_04">Sapphire (250p)</string>
-    <string name="peg_name_05">Emerald (500p)</string>
-    <string name="peg_name_06">Diamond (1000p)</string>
-    <string name="peg_name_07">Eight ball (800p)</string>
+    <string name="peg_name_00">Plastic</string>
+    <string name="peg_name_01">Wood</string>
+    <string name="peg_name_02">Silver</string>
+    <string name="peg_name_03">Gold</string>
+    <string name="peg_name_04">Sapphire</string>
+    <string name="peg_name_05">Emerald</string>
+    <string name="peg_name_06">Diamond</string>
+    <string name="peg_name_07">Eight ball</string>
 
      <!-- HighScoreListActivity -->
     <string name="scores_title">High Scores</string>
@@ -71,18 +71,22 @@
 
 	<string name="score">Score</string>
 	<string name="app_facebook_autopost">Facebook Autopost</string>
-	<string name="login">Please wait...</string>
-	<string name="new_peg_available">New peg free!</string>
+	<string name="login">Please wait\nwhile the message is sent\nto your facebook wall.</string>
+	<string name="new_peg_available">New peg unlocked!</string>
     <string name="senku_layout_text_text"></string>
     <string name="facebook_post_name">Omilen Android Senku</string>
     <string name="facebook_post_description">Senku is simple addictive game for Android Devices, powered by Omilen IT Solutions</string>
     <string name="facebook_post_caption">Senku</string>
     <string name="facebook_please_wait">Please wait...</string>
-    <string name="facebook_post_00">Has unlocked a new peg made of</string>
-    <string name="facebook_post_01">for leave only</string>
-    <string name="facebook_post_02">on the board:</string>
+    <string name="facebook_post_00">Has unlocked a new peg made of </string>
+    <string name="facebook_post_01"> for leave only </string>
+    <string name="facebook_post_02"> on the board: </string>
 	<string name="facebook_post_03">And got</string>
     <string name="facebook_post_04">points.</string>
+    <string name="facebook_post_special">unlocked a secret special peg called: eight ball. Which gives 800 score points in each jump</string>
     
-    
+    <string name="postOnFacebook_dialog_title">Post on Facebook</string>
+    <string name="postOnFacebook_dialog_msg">Enable facebook post?</string>
+    <string name="dialogfb_yes">Yes</string>
+    <string name="dialogfb_no">No</string>
 </resources>

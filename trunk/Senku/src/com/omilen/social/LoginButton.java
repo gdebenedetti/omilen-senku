@@ -17,18 +17,6 @@
 
 package com.omilen.social;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.omilen.games.senku.R;
-import com.facebook.android.AsyncFacebookRunner;
-import com.facebook.android.DialogError;
-import com.facebook.android.Facebook;
-import com.facebook.android.FacebookError;
-import com.facebook.android.Util;
-import com.facebook.android.Facebook.DialogListener;
-import com.facebook.stream.Session;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -36,11 +24,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
-
+import com.facebook.android.AsyncFacebookRunner;
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
+import com.facebook.android.FacebookError;
+import com.facebook.android.Facebook.DialogListener;
+import com.facebook.stream.Session;
+import com.omilen.games.senku.R;
 import com.omilen.social.SessionEvents.AuthListener;
 import com.omilen.social.SessionEvents.LogoutListener;
 
@@ -52,6 +45,7 @@ public class LoginButton extends ImageButton {
     private String[] mPermissions;
     protected static Activity mActivity;
     protected static AsyncFacebookRunner mAsyncRunner;
+    protected static String message;
     
     public LoginButton(Context context) {
         super(context);
@@ -65,14 +59,15 @@ public class LoginButton extends ImageButton {
         super(context, attrs, defStyle);
     }
     
-    public void init(final Activity activity,  final AsyncFacebookRunner asyncRunner, final Facebook fb) {
-    	init(activity,asyncRunner, fb, new String[] {});
+    public void init(final Activity activity,  final AsyncFacebookRunner asyncRunner,final String pmessage, final Facebook fb) {
+    	init(activity,asyncRunner,pmessage, fb, new String[] {});
     }
     
-    public void init(final Activity activity,  final AsyncFacebookRunner asyncRunner, final Facebook fb,
+    public void init(final Activity activity,  final AsyncFacebookRunner asyncRunner,final String pmessage, final Facebook fb,
                      final String[] permissions) {
         mActivity = activity;
         mAsyncRunner = asyncRunner;
+        message = pmessage;
         mFb = fb;
         mPermissions = permissions;
         mHandler = new Handler();
@@ -117,7 +112,7 @@ public class LoginButton extends ImageButton {
             String caption = res.getString(R.string.facebook_post_caption);
                         
             Bundle params = new Bundle();            
-            params.putString("message", "Me gusta el Senku!");
+            params.putString("message", LoginButton.message);
             params.putString("link","http://www.androidpit.com/en/android/market/apps/app/com.omilen.games.senku/Senkul");
             params.putString("picture","https://lh4.googleusercontent.com/_JP1lG3wnOcQ/TaKCGznWZ8I/AAAAAAAAABc/yZu12vodw_I/s800/icon2_for_facebook_senku.png");
             params.putString("name",name);

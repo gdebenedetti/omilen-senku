@@ -2,7 +2,7 @@
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"  
 	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:background="#A0ffffff"
+	android:layout_height="fill_parent" android:background="@drawable/fondo"
 	android:gravity="center_horizontal">
 
     <com.omilen.social.LoginButton
@@ -12,13 +12,17 @@
         android:layout_height="wrap_content" 
         android:layout_margin="30dp"
         android:visibility="invisible"/>
-
-	<TextView android:id="@+id/txt" 
+    <LinearLayout android:id="@+id/linearLayout1" 
+    android:layout_height="wrap_content" 
+    android:layout_width="fill_parent"
+    android:orientation="horizontal">
+	<ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ProgressBarFacebookPost" android:indeterminate="true" android:indeterminateBehavior="cycle"></ProgressBar>    
+    <TextView android:id="@+id/txt" 
         android:text="@string/login"
         android:textColor="#ff000000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 		/>
-		
-<ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ProgressBarFacebookPost" android:indeterminate="true" android:indeterminateBehavior="cycle"></ProgressBar>
+    </LinearLayout>
+<Button android:text="Close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/FacebookButtonClose" android:visibility="invisible"></Button>
 </LinearLayout>

@@ -41,7 +41,7 @@ public class StoreProperties {
     public static void setContext(Context context){
     	mContext = context;
     }
-        
+            
     private void loadProperties() {
     	
     	File f = new File(PROPERTIES_FILE);
@@ -85,7 +85,7 @@ public class StoreProperties {
             fout = mContext.openFileOutput(PROPERTIES_FILE, Context.MODE_PRIVATE);
             DataOutputStream out = new DataOutputStream(fout);
             out.writeChars("sound=1\n");
-            out.writeChars("facebook=1\n");
+            out.writeChars("facebook=-1\n");
             mproperties.put("sound", "1");
             mproperties.put("facebook", "-1"); //not defined
                 

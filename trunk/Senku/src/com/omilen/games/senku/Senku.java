@@ -88,8 +88,7 @@ public class Senku extends Activity  implements OnKeyListener {
         	mSenkuThread.restoreState(savedInstanceState);           
         }
        
-        //set the current-Options
-        
+        //set the current-Options        
         final String sound = StoreProperties.getInstance().getProperty("sound");
         if(sound.compareTo("1")==0){
     		mSenkuThread.turnOnSound();
@@ -145,8 +144,7 @@ public class Senku extends Activity  implements OnKeyListener {
                 mSenkuThread.doStart();
                 break;
             case MENU_UNDO: 
-            	mSenkuThread.doUndo();
-            	callFacebookAutopost();
+            	mSenkuThread.doUndo();            	
             	break;
             case MENU_SCORES:
             	showHighScoreListDialog();
@@ -210,15 +208,20 @@ public class Senku extends Activity  implements OnKeyListener {
 		
 	}
     
-    public void callFacebookAutopost() {
-        Intent i = new Intent();
-        i.setClassName("com.omilen.games.senku",
-                       "com.omilen.games.senku.FacebookAutoPost");
-        
-        Bundle bundle = new Bundle();
-        bundle.putString("PALABRA","Chanchos");           
-        i.putExtras(bundle);           
-        startActivity(i);
+    public void callFacebookAutopost(String message) {
+    	
+    	int facebookpost = Integer.valueOf(StoreProperties.getInstance().getProperty("facebook"));
+    	    	
+    	if(facebookpost != 0){
+	        Intent i = new Intent();
+	        i.setClassName("com.omilen.games.senku",
+	                       "com.omilen.games.senku.FacebookAutoPost");
+	        
+	        Bundle bundle = new Bundle();
+	        bundle.putString("message",message);           
+	        i.putExtras(bundle);           
+	        startActivity(i);
+    	}
 	}
         
 	/********* CLASSES PRIVADAS *************/
@@ -236,6 +239,9 @@ public class Senku extends Activity  implements OnKeyListener {
             showHighScoreListDialog();
         }
     }
+    
+    
+    
     private class ScoresListener implements OnClickListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             switch (whichButton) {
@@ -445,6 +451,8 @@ public class Senku extends Activity  implements OnKeyListener {
         
         pegButtons[0].setOnClickListener(pegListener);        
         for(int i=0;i<pegButtons.length;i++){ //Default is always enabled
+        	
+        	pegButtons[i].setText(pegButtons[i].getText()+" ("+String.valueOf(PEGS[i].getScoreValue())+" p.)");
         	pegButtons[i].setOnClickListener(pegListener);
 			if (i != 0) {
 				String aux = StoreProperties.getInstance().getProperty(PEGS[i].getCodeName());
@@ -620,6 +628,9 @@ public class Senku extends Activity  implements OnKeyListener {
 
         builder.show();
     }
+    
+   
+    
     private void showHelpDialog() {
     	HelpListener listener = new HelpListener();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
