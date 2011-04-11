@@ -6,9 +6,8 @@
  */
 package com.omilen.games.senku;
 
-import com.omilen.games.senku.R;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +24,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.omilen.games.senku.FacebookAutoPost.ConfirmPostOnFacebookListener;
+import com.omilen.games.senku.SenkuPegs.Peg;
 import com.omilen.games.senku.score.ScoreUtil;
 
 
@@ -138,10 +139,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             mPegs[6] 	= BitmapFactory.decodeResource(res,R.drawable.ficha_diam_red);
             mAuxPegs[6] = BitmapFactory.decodeResource(res,R.drawable.ficha_diam_green);
             mPegs[7] 	= BitmapFactory.decodeResource(res,R.drawable.ficha_bola_ocho);
-            
-            
-            
-            
+                        
             mSombraFicha[0] = BitmapFactory.decodeResource(res,R.drawable.sombra_circular);
             mSombraFicha[1] = BitmapFactory.decodeResource(res,R.drawable.sombra_pentagonal);
             mSombraFicha[2] = BitmapFactory.decodeResource(res,R.drawable.sombra_diam);
@@ -164,7 +162,6 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             //Start the Sounds
             sounds = new SenkuSoundPool(mContext);
             
-           
         }
 
         /**
@@ -386,23 +383,26 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 	                    	case 4: str = str+"\n"+res.getText(R.string.regular); break;
 	                    	default: str = str+"\n"+res.getText(R.string.bad); break;
 						}
-	                    str = str+"\n"+res.getText(R.string.score)+": "+String.valueOf(game.getScore());
+	                    int score = game.getScore();
+	                    str = str+"\n"+res.getText(R.string.score)+": "+String.valueOf(score);
 	                    str = str+"\n"+res.getText(R.string.remaining_chips)+String.valueOf(finalCount);
 	                    //Check if the Score is high and add to the list
 	                    if(!alreadySetScore){
 	                    	if(finalCount!=1)
 	                    		sounds.playSound(SenkuSoundPool.SOUND_GAMEOVER);
 	                    	else
-	                    		sounds.playSound(SenkuSoundPool.SOUND_WIN);	                    	
-		                    if(ScoreUtil.getInstance(mContext).updateScores(game.getCountOfFichas(), game.getScore(), game.getCurrentPegType(), game.getCurrentGameType())){
+	                    		sounds.playSound(SenkuSoundPool.SOUND_WIN);
+	                    	int pegcount = game.getCountOfFichas();
+		                    if(ScoreUtil.getInstance(mContext).updateScores(pegcount, score, game.getCurrentPegType(), game.getCurrentGameType())){
 		                    	//the score was added
 		                    	str = str+"\n"+res.getText(R.string.new_high_score);
 		                    }		                    
 		                    alreadySetScore = true;
-		                    String unlock = SenkuPegs.getInstance().unLockPegs(game.getCurrentGameType(), game.getCountOfFichas());
+		                    String unlock = SenkuPegs.getInstance().unLockPegs(game.getCurrentGameType(), pegcount);
 		                    if(!unlock.equals("") && StoreProperties.getInstance().getProperty(unlock)==null){
 		                    	StoreProperties.getInstance().setProperty(unlock, "1");
 		                    	str = str+"\n"+res.getText(R.string.new_peg_available);
+		                    	postOnFacebook(unlock,pegcount,score,game.getCurrentGameType());
 		                    }
 	                    }
 	                    
@@ -429,7 +429,67 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        /* Callback invoked when the surface dimensions change. */
+        private void postOnFacebook(String unlockcode, int pegcount, int score, int boardGameIndex) {
+        	int unlockedpeg = -1;
+        	StringBuilder sb = new StringBuilder();
+        	Senku auxPointer = (Senku) mContext;
+        	Peg[] PEGS = SenkuPegs.getInstance().getPegs();
+			for(int i=0; i < PEGS.length;i++){
+				if(PEGS[i].getCodeName().compareTo(unlockcode)==0){
+					unlockedpeg = i;
+					break;
+				}
+			}
+			if(unlockedpeg==-1){
+				return;
+			}
+			//make message:
+			Resources res = mContext.getResources();
+			
+			if(unlockedpeg != 7){
+				int pegResource = 0;
+				int boardResource = 0;
+				switch(unlockedpeg){
+					case 1: pegResource = R.string.peg_name_01; break;
+					case 2: pegResource = R.string.peg_name_02; break;
+					case 3: pegResource = R.string.peg_name_03; break;
+					case 4: pegResource = R.string.peg_name_04; break;
+					case 5: pegResource = R.string.peg_name_05; break;
+					case 6: pegResource = R.string.peg_name_06; break;
+				}			
+				if(pegResource==0){return;}
+				
+				switch(boardGameIndex){
+					case 0: boardResource = R.string.board_name_00; break;
+					case 1: boardResource = R.string.board_name_01; break;
+					case 2: boardResource = R.string.board_name_02; break;
+					case 3: boardResource = R.string.board_name_03; break;
+					case 4: boardResource = R.string.board_name_04; break;
+					case 5: boardResource = R.string.board_name_05; break;
+					case 6: boardResource = R.string.board_name_06; break;
+				}
+				if(boardResource==0){return;}
+				
+				sb.append(res.getString(R.string.facebook_post_00));			
+				sb.append(" "+res.getString(pegResource)+" ");
+				sb.append(res.getString(R.string.facebook_post_01));
+				sb.append(" "+String.valueOf(pegcount)+" ");
+				sb.append(res.getString(R.string.facebook_post_02));
+				sb.append(" "+res.getString(boardResource));
+				sb.append(". ");
+				sb.append(res.getString(R.string.facebook_post_03));
+				sb.append(" "+String.valueOf(score)+" ");
+				sb.append(res.getString(R.string.facebook_post_04));
+							
+				
+				auxPointer.callFacebookAutopost(sb.toString());
+			}else{
+				
+				auxPointer.callFacebookAutopost(res.getString(R.string.facebook_post_special));
+			}
+		}
+
+		/* Callback invoked when the surface dimensions change. */
         public void setSurfaceSize(int width, int height) {
             // synchronized to make sure these all change atomically
             synchronized (mSurfaceHolder) {
@@ -537,6 +597,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 					StoreProperties.getInstance().setProperty(code, "1");
 					sounds.playSound(SenkuSoundPool.SOUND_EAT);
 					sounds.playSound(SenkuSoundPool.SOUND_EAT);
+					postOnFacebook(code,0,0,game.getCurrentGameType());
 			}else if(secretPhrase.length()>100){
 				this.secretPhrase.delete(0,secretPhrase.length());
 			}
@@ -783,7 +844,19 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 			   synchronized (mSurfaceHolder) {				   
 				   return this.mPegs;
 			   }		
-		}			
+		}
+		
+		 private void showConfirmPostOnFacebookDialog() {
+		        AlertDialog.Builder builder = new AlertDialog.
+		        builder.setTitle(R.string.postOnFacebook_dialog_title);
+		        builder.setIcon(android.R.drawable.ic_dialog_alert);
+		        builder.setCancelable(false);
+		        builder.setPositiveButton(R.string.dialogfb_yes, new ConfirmPostOnFacebookListener());
+		        builder.setNegativeButton(R.string.dialogfb_no,  new ConfirmPostOnFacebookListener());
+		        builder.setMessage(R.string.postOnFacebook_dialog_msg);
+
+		        builder.show();
+		    }
 		
     } //end thread
 

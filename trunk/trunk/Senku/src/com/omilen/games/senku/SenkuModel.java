@@ -307,16 +307,18 @@ public class SenkuModel implements Cloneable {
 	}
 	
 	public int getCountOfFichas(){
-		int count = 0;
-		for(int i=0;i<ANCHO;i++){
-			for(int j=0;j<LARGO;j++){				
-				if(this.grilla[i][j] == 1){
-					count++;
+		
+			int count = 0;
+			for(int i=0;i<ANCHO;i++){
+				for(int j=0;j<LARGO;j++){				
+					if(this.grilla[i][j] == 1){
+						count++;
+					}
 				}
 			}
-		}
-		pegcount = count;
-		return count;
+			pegcount = count;
+		
+		return pegcount;
 	}
 	
 	public int getScore(){
