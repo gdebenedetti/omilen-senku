@@ -1,8 +1,6 @@
 package com.omilen.games.senku;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -42,15 +40,6 @@ public class FacebookAutoPost extends Activity implements OnClickListener {
 
         if (APP_ID == null) {
             Util.showAlert(this, "Warning", "Facebook Applicaton ID must be specified before running this code");
-        }
-        StoreProperties.setContext(this);
-        int facebookPost =Integer.valueOf(StoreProperties.getInstance().getProperty("facebook")); 
-        if(facebookPost==-1){
-        	showConfirmPostOnFacebookDialog();
-        	facebookPost =Integer.valueOf(StoreProperties.getInstance().getProperty("facebook"));
-        }
-        if(facebookPost == 0){
-        	this.finish();
         }
         
         setContentView(R.layout.facebook);
@@ -117,23 +106,5 @@ public class FacebookAutoPost extends Activity implements OnClickListener {
 		
 	}
 
-	private class ConfirmPostOnFacebookListener implements android.content.DialogInterface.OnClickListener {
 
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			switch (which) {
-			case AlertDialog.BUTTON1: {				
-				StoreProperties.getInstance().setProperty("facebook", "1");
-				return;
-			}
-			case AlertDialog.BUTTON2: {				
-				StoreProperties.getInstance().setProperty("facebook", "0");
-				return;
-			}
-			}
-
-		}
-    	
-    
-    }
 }

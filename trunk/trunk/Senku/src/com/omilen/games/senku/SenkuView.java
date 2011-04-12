@@ -8,6 +8,7 @@ package com.omilen.games.senku;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,7 +25,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.omilen.games.senku.FacebookAutoPost.ConfirmPostOnFacebookListener;
 import com.omilen.games.senku.SenkuPegs.Peg;
 import com.omilen.games.senku.score.ScoreUtil;
 
@@ -114,6 +114,9 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 		private int boardSelected = 0;
 		private int pegSelected = 0;
 		protected StringBuilder secretPhrase = new StringBuilder();
+		
+		//attribute used by the PostToFacebookfunction
+		protected String phrasetoPostOnFacebook = null;
 		
         public SenkuThread(SurfaceHolder surfaceHolder, Context context,
                 Handler handler) {
@@ -431,8 +434,19 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 
         private void postOnFacebook(String unlockcode, int pegcount, int score, int boardGameIndex) {
         	int unlockedpeg = -1;
-        	StringBuilder sb = new StringBuilder();
+        	int facebookPostEnabled = Integer.valueOf(StoreProperties.getInstance().getProperty("facebook"));
+        	if(facebookPostEnabled == 0){
+        		return;
+        	}
+        	
         	Senku auxPointer = (Senku) mContext;
+        	if(unlockcode == null && this.phrasetoPostOnFacebook!=null){
+        		auxPointer.callFacebookAutopost(phrasetoPostOnFacebook);
+        		return;
+        	}
+        	
+        	StringBuilder sb = new StringBuilder();
+        	
         	Peg[] PEGS = SenkuPegs.getInstance().getPegs();
 			for(int i=0; i < PEGS.length;i++){
 				if(PEGS[i].getCodeName().compareTo(unlockcode)==0){
@@ -481,12 +495,16 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 				sb.append(" "+String.valueOf(score)+" ");
 				sb.append(res.getString(R.string.facebook_post_04));
 							
-				
-				auxPointer.callFacebookAutopost(sb.toString());
+				phrasetoPostOnFacebook = sb.toString();		
 			}else{
-				
-				auxPointer.callFacebookAutopost(res.getString(R.string.facebook_post_special));
-			}
+				phrasetoPostOnFacebook = res.getString(R.string.facebook_post_special);				
+			}			
+			
+        	if(facebookPostEnabled == -1){ //estado no determinado || undefined state
+        		showConfirmPostOnFacebookDialog();
+        		return;
+        	}
+			auxPointer.callFacebookAutopost(phrasetoPostOnFacebook);
 		}
 
 		/* Callback invoked when the surface dimensions change. */
@@ -847,7 +865,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		
 		 private void showConfirmPostOnFacebookDialog() {
-		        AlertDialog.Builder builder = new AlertDialog.
+		        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 		        builder.setTitle(R.string.postOnFacebook_dialog_title);
 		        builder.setIcon(android.R.drawable.ic_dialog_alert);
 		        builder.setCancelable(false);
@@ -991,6 +1009,26 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             } catch (InterruptedException e) {
             }
         }
+    }
+    
+	private class ConfirmPostOnFacebookListener implements android.content.DialogInterface.OnClickListener {
+
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			switch (which) {
+			case AlertDialog.BUTTON1: {				
+				StoreProperties.getInstance().setProperty("facebook", "1");		
+				return;
+			}
+			case AlertDialog.BUTTON2: {				
+				StoreProperties.getInstance().setProperty("facebook", "0");
+				return;
+			}
+			}
+
+		}
+    	
+    
     }
 	
 }
