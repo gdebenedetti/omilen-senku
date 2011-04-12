@@ -18,16 +18,16 @@ import android.widget.ArrayAdapter;
 import com.omilen.games.senku.R;
 
 public class HighScoreListAdapter extends ArrayAdapter<ScoreItem> {
-    
+
 	protected Bitmap[] pegs = null;
 	protected Bitmap[] boards = null;
-	
+
 	public HighScoreListAdapter(Context context, List<ScoreItem> scores, Bitmap[] ppegs, Bitmap[] pboards) {
     	super(context, R.layout.high_score_list_item, R.id.score_score, scores);
     	this.pegs = ppegs;
     	this.boards = pboards;
     }
-    
+
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
     	HighScoreListItem listItem;
@@ -43,10 +43,8 @@ public class HighScoreListAdapter extends ArrayAdapter<ScoreItem> {
     		} else {
     			return view;
     		}
-    	}
-    	
+    	}	
     	listItem.init(item);
-    	
     	return listItem;
     }
 }

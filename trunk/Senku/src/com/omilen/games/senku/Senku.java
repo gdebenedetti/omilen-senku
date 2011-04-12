@@ -98,29 +98,26 @@ public class Senku extends Activity  implements OnKeyListener {
     	
         final String gameStr = StoreProperties.getInstance().getProperty("currentGame");
         if(gameStr!=null){
-        	this.selectedGame = Integer.valueOf(gameStr);
+        	this.selectedGame = Integer.valueOf(gameStr).intValue();
         }
         
 		if (StoreProperties.getInstance().getProperty("currentPeg") != null) {
 			try {
 				final String[] pegStr = StoreProperties.getInstance().getProperty("currentPeg")
 						.split("-");
-				if (SenkuPegs.getInstance().getPegs()[Integer
-						.valueOf(pegStr[0])].getCodeName().equals(pegStr[1])
+				 Peg[] auxPegArray =  SenkuPegs.getInstance().getPegs();
+				 int auxIndex = Integer.valueOf(pegStr[0]).intValue(); 
+				if (auxPegArray[auxIndex].getCodeName().equals(pegStr[1])
 						&& StoreProperties.getInstance().getProperty(pegStr[1]).equals("1")) {
-					this.selectedPeg = Integer.valueOf(pegStr[0]);
+					this.selectedPeg = auxIndex;
 				}
 			} catch (Exception e) {
 				this.selectedPeg = 0;
 			}
 		}
         	
-        if (savedInstanceState == null) {
-	        if(gameStr!=null){
-	        	 mSenkuThread.doStart(selectedGame);
-	        }else{
-	        	 mSenkuThread.doStart();
-	        }
+        if (savedInstanceState == null) {	       
+	       	 mSenkuThread.doStart(this.selectedGame,this.selectedPeg);	        
         }
     }
     
@@ -209,17 +206,17 @@ public class Senku extends Activity  implements OnKeyListener {
 	}
     
     public void callFacebookAutopost(String message) {
-    	
     	int facebookpost = Integer.valueOf(StoreProperties.getInstance().getProperty("facebook"));
-    	    	
+    	
     	if(facebookpost != 0){
 	        Intent i = new Intent();
 	        i.setClassName("com.omilen.games.senku",
 	                       "com.omilen.games.senku.FacebookAutoPost");
-	        
-	        Bundle bundle = new Bundle();
-	        bundle.putString("message",message);           
-	        i.putExtras(bundle);           
+
+	        Bundle bundle = new Bundle();	        
+	        bundle.putString("message",message);
+	        bundle.putInt("postEnabled",facebookpost);
+	        i.putExtras(bundle);
 	        startActivity(i);
     	}
 	}
@@ -239,9 +236,7 @@ public class Senku extends Activity  implements OnKeyListener {
             showHighScoreListDialog();
         }
     }
-    
-    
-    
+        
     private class ScoresListener implements OnClickListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             switch (whichButton) {
@@ -616,7 +611,7 @@ public class Senku extends Activity  implements OnKeyListener {
         builder.show();
         
     }
-    
+           
     private void showConfirmDeleteDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.delete_dialog_title);

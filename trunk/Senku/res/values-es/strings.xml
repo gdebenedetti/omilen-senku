@@ -70,13 +70,13 @@
 
 	<string name="score">Puntaje</string>
 	<string name="app_facebook_autopost">Facebook Autopost</string>
-	<string name="login">Por favor espere\nmientras el mensaje es enviado\na su muro de facebook.</string>
+	<string name="login">Por favor espere...</string>
 	<string name="new_peg_available">¡Nueva ficha libre!</string>
     <string name="senku_layout_text_text"></string>
     <string name="facebook_post_name">Omilen Android Senku</string>
     <string name="facebook_post_description">Senku es un juego simple y adictivo para dispositivos Android, desarrollado por Omilen IT Solutions</string>
     <string name="facebook_post_caption">Senku</string>
-    <string name="facebook_please_wait">por favor espere...</string>
+    <string name="facebook_please_wait">Por favor espere\nEl mensaje está siendo enviado\na su muro de facebook.</string>
     <string name="facebook_post_00">A liberado una nueva ficha hecha de</string>
     <string name="facebook_post_01">por dejar solo</string>
     <string name="facebook_post_02">en el tablero:</string>
