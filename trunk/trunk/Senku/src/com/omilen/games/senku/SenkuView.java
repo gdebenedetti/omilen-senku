@@ -6,9 +6,7 @@
  */
 package com.omilen.games.senku;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -54,6 +53,8 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         public static final String PEG_SELECTED = "PEG_SELECTED";
         
         public static final int MAX_GRILL_LENGTH = 480;
+        public static final int MAX_PEG_LENGTH = 55;
+        public static final int MAX_CURSOR_LENGTH = 65;
 //        public static final double PERCENT_OF_PEG = 0.17;
 //        public static final double PERCENT_OF_CURSOR = 0.08;
         
@@ -117,6 +118,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 		
 		//attribute used by the PostToFacebookfunction
 		protected String phrasetoPostOnFacebook = null;
+		protected boolean surfaceResized = false;
 		
         public SenkuThread(SurfaceHolder surfaceHolder, Context context,
                 Handler handler) {
@@ -170,12 +172,15 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         /**
          * Starts the game
          */
-        public void doStart(int gameType) {
+        public void doStart(int gameType, int pegType) {
             synchronized (mSurfaceHolder) {
             	setState(STATE_RUNNING);
             	alreadySetScore = false;
             	if(gameType>=0 && gameType<SenkuGames.GAME_TYPES){
-            		game.setCurrentGameType(gameType);
+            		this.setCurrentGame(gameType);            		
+            	}
+            	if(pegType>=0 && pegType<SenkuPegs.NUMBER_OF_PEGS){
+            		this.setCurrentPeg(pegType);
             	}
             	game.start();
             }
@@ -183,7 +188,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         
         public void doStart() {
             synchronized (mSurfaceHolder) {
-            	doStart(-1);
+            	doStart(-1,-1);
             }
         }
         
@@ -236,14 +241,14 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         public synchronized void restoreState(Bundle savedState) {
             
             synchronized (mSurfaceHolder) {
-            	setState(STATE_PAUSE);               
+            	setState(STATE_PAUSE);
                 alreadySetScore = savedState.getBoolean(ALREADY_SET_SCORE);
-                this.sounds.setSoundOn(savedState.getBoolean(SOUND_ON));        
+                this.sounds.setSoundOn(savedState.getBoolean(SOUND_ON));     
                 this.finalCount = savedState.getInt(FINAL_COUNT);
                 this.boardSelected = savedState.getInt(BOARD_SELECTED);
                 this.controlMode   = savedState.getInt(CONTROL_MODE);
                 this.pegSelected   = savedState.getInt(PEG_SELECTED);
-                game.restoreState(savedState);                
+                game.restoreState(savedState);
                 setState(STATE_RUNNING);
             }
         }
@@ -274,8 +279,12 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                         if (mMode == STATE_RUNNING){
                         	checkStatus();
                         }
-                        doDraw(c);
+                        if(surfaceResized){
+                        	doDraw(c);
+                        }
                     }
+                }catch(Exception e){
+                	Log.d("Senku", e.getMessage());
                 } finally {
                     // do this in a finally so that if an exception is thrown
                     // during the above, we don't leave the Surface in an
@@ -440,11 +449,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         	}
         	
         	Senku auxPointer = (Senku) mContext;
-        	if(unlockcode == null && this.phrasetoPostOnFacebook!=null){
-        		auxPointer.callFacebookAutopost(phrasetoPostOnFacebook);
-        		return;
-        	}
-        	
+        	        	
         	StringBuilder sb = new StringBuilder();
         	
         	Peg[] PEGS = SenkuPegs.getInstance().getPegs();
@@ -498,12 +503,8 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 				phrasetoPostOnFacebook = sb.toString();		
 			}else{
 				phrasetoPostOnFacebook = res.getString(R.string.facebook_post_special);				
-			}			
+			}
 			
-        	if(facebookPostEnabled == -1){ //estado no determinado || undefined state
-        		showConfirmPostOnFacebookDialog();
-        		return;
-        	}
 			auxPointer.callFacebookAutopost(phrasetoPostOnFacebook);
 		}
 
@@ -511,6 +512,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         public void setSurfaceSize(int width, int height) {
             // synchronized to make sure these all change atomically
             synchronized (mSurfaceHolder) {
+            	if(surfaceResized) return;
             	int currentMode = this.mMode;
             	setState(STATE_LOADING);
             	lengthGrilla  = width;
@@ -520,16 +522,18 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
             	if(lengthGrilla>=MAX_GRILL_LENGTH){
             		lengthGrilla = MAX_GRILL_LENGTH;
             		this.percent = 1;
+            		lengthFicha  = MAX_PEG_LENGTH;
+                    lengthSombra = MAX_CURSOR_LENGTH;
             	}else{
-            		this.percent = (float) (lengthGrilla*1.0 / MAX_GRILL_LENGTH*1.0 );	
-            		
+            		this.percent = (float) (lengthGrilla*1.0 / MAX_GRILL_LENGTH*1.0 );
+            		lengthFicha  = (int)Math.round(mPegs[0].getWidth()*percent);
+                    lengthSombra = (int)Math.round(mSombraFicha[0].getWidth()*percent);            		
             	}
                 this.startX = (width  - lengthGrilla) /2;
                 this.startY = (height - lengthGrilla)/2;
                 
                 cellLength  = lengthGrilla/7;
-                lengthFicha  = (int)Math.round(mPegs[0].getWidth()*percent);
-                lengthSombra = (int)Math.round(mSombraFicha[0].getWidth()*percent);
+               
                                
                 mBackgroundImage = Bitmap.createScaledBitmap(mBackgroundImage, width, height, true);
                 if(lengthGrilla<MAX_GRILL_LENGTH){
@@ -573,10 +577,8 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                 }
            	 	
                 corrimientoAlSeleccionar = (int)Math.round(20.0*percent);
-                
-                
+                surfaceResized=true;
                 setState(currentMode);
-                
             }
         }
         
@@ -709,8 +711,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         /**
          * Draws 
          */
-        private void doDraw(Canvas canvas) {
-          
+        private void doDraw(Canvas canvas) {        	
         	boolean gameSelected = game.isSelected();
         	int currentX = game.getCurrentKeyX();
         	int currentY = game.getCurrentKeyY();
@@ -864,17 +865,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 			   }		
 		}
 		
-		 private void showConfirmPostOnFacebookDialog() {
-		        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-		        builder.setTitle(R.string.postOnFacebook_dialog_title);
-		        builder.setIcon(android.R.drawable.ic_dialog_alert);
-		        builder.setCancelable(false);
-		        builder.setPositiveButton(R.string.dialogfb_yes, new ConfirmPostOnFacebookListener());
-		        builder.setNegativeButton(R.string.dialogfb_no,  new ConfirmPostOnFacebookListener());
-		        builder.setMessage(R.string.postOnFacebook_dialog_msg);
-
-		        builder.show();
-		    }
+		
 		
     } //end thread
 
@@ -973,7 +964,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
     	try{
     		thread.setRunning(true);
     		thread.start();
-    	}catch(Exception e){    		 
+    	}catch(Exception e){
     		 thread = new SenkuThread(holder, mContext, new Handler() {
     	            @Override
     	            public void handleMessage(Message m) {
@@ -987,8 +978,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
      		 if(savedState != null)
      			 thread.restoreState(this.savedState);
      		 else
-     			 thread.doStart();	
-    		 
+     			 thread.doStart();
     	}
     }
 
@@ -1011,24 +1001,6 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
     
-	private class ConfirmPostOnFacebookListener implements android.content.DialogInterface.OnClickListener {
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			switch (which) {
-			case AlertDialog.BUTTON1: {				
-				StoreProperties.getInstance().setProperty("facebook", "1");		
-				return;
-			}
-			case AlertDialog.BUTTON2: {				
-				StoreProperties.getInstance().setProperty("facebook", "0");
-				return;
-			}
-			}
-
-		}
-    	
-    
-    }
+	
 	
 }
