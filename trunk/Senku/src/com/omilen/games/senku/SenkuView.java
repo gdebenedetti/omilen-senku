@@ -526,8 +526,8 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                     lengthSombra = MAX_CURSOR_LENGTH;
             	}else{
             		this.percent = (float) (lengthGrilla*1.0 / MAX_GRILL_LENGTH*1.0 );
-            		lengthFicha  = (int)Math.round(mPegs[0].getWidth()*percent);
-                    lengthSombra = (int)Math.round(mSombraFicha[0].getWidth()*percent);            		
+            		lengthFicha  = (int)Math.round(MAX_PEG_LENGTH*percent);
+                    lengthSombra = (int)Math.round(MAX_CURSOR_LENGTH*percent);            		
             	}
                 this.startX = (width  - lengthGrilla) /2;
                 this.startY = (height - lengthGrilla)/2;
@@ -536,7 +536,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                
                                
                 mBackgroundImage = Bitmap.createScaledBitmap(mBackgroundImage, width, height, true);
-                if(lengthGrilla<MAX_GRILL_LENGTH){
+               // if(lengthGrilla<MAX_GRILL_LENGTH){
 	                mBoard[0] = Bitmap.createScaledBitmap(mBoard[0], lengthGrilla, lengthGrilla, true);
 	                mBoard[1] = Bitmap.createScaledBitmap(mBoard[1], lengthGrilla, lengthGrilla, true);
 	                mBoard[2] = Bitmap.createScaledBitmap(mBoard[2], lengthGrilla, lengthGrilla, true);
@@ -556,7 +556,7 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
 	                for(int i=0; i<halfAnim;i++){
 	                	mCursor[i] = Bitmap.createScaledBitmap(mCursor[i], (int)cellLength, (int)cellLength, true);
 	                }
-                }
+               // }
                 mAuxPegs[4] = mPegs[4];
                 mAuxPegs[3] = mPegs[3];
                 mAuxPegs[2] = mPegs[2];
