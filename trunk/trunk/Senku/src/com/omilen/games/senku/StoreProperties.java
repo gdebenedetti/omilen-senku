@@ -6,13 +6,13 @@
  */
 package com.omilen.games.senku;
 
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,7 +22,7 @@ import android.content.Context;
 public class StoreProperties {
     private static final String PROPERTIES_FILE = "properties_senku.txt";
   
-    private static StoreProperties mInstance;
+    private static StoreProperties instance = null;
     private static Map<String,String> mproperties;
     private static Context mContext = null;
     
@@ -32,10 +32,10 @@ public class StoreProperties {
     }
     
     public static StoreProperties getInstance() {        
-        if (mInstance == null) {
-            mInstance = new StoreProperties();
+        if (instance == null) {
+        	instance = new StoreProperties();
         }        
-        return mInstance;
+        return instance;
     }
     
     public static void setContext(Context context){
@@ -44,89 +44,131 @@ public class StoreProperties {
             
     private void loadProperties() {
     	
-    	File f = new File(PROPERTIES_FILE);
-    	if(!f.exists()){    		
+    	if(!fileExists(PROPERTIES_FILE)){
     		createPropertiesFile();
     		return;
     	}
-      
-        FileInputStream fin = null;
-        try {
-            fin = mContext.openFileInput(PROPERTIES_FILE);
-            DataInputStream in = new DataInputStream(fin);
-            String line = in.readLine();
-            while(line!=null){            	
-            	String[] arrayAux = line.split("=");
-            	mproperties.put(arrayAux[0], arrayAux[1]);
-                line = in.readLine();
-            }
-        } catch(FileNotFoundException fnfe) {
-        	createPropertiesFile();
-        } catch(IOException ioe) {
-        } finally {
-            if (fin != null) {
-                try {
-                    fin.close();                    
-                    try{
-                    	f = new File(PROPERTIES_FILE);
-                    	f.delete();
-                    }catch (Exception e) {
-                    		
-					}
-                } catch(IOException ioe) {       
-                }
-            }
-        }
+
+//        FileInputStream fin = null;
+//        DataInputStream in = null;
+//        try {
+//            fin = mContext.openFileInput(PROPERTIES_FILE);            
+//            in = new DataInputStream(fin);            
+//            String line = in.readLine();
+//            while(line!=null){            	
+//            	String[] arrayAux = line.split("=");
+//            	mproperties.put(arrayAux[0], arrayAux[1]);
+//                line = in.readLine();
+//            }
+//        } catch(FileNotFoundException fnfe) {
+//        	createPropertiesFile();
+//        } catch(IOException ioe) {
+//        } finally {
+//            if (fin != null) {
+//                try {
+//                    fin.close();                    
+//                    in.close();
+//                } catch(IOException ioe) {       
+//                }
+//            }
+//        }
+    	 InputStream instream = null;
+    	 InputStreamReader inputreader = null;
+	     BufferedReader buffreader = null; 
+		try {
+			instream = mContext.openFileInput(PROPERTIES_FILE);
+			// if file the available for reading
+    	    if (instream!=null) {
+    	      // prepare the file for reading
+    	      inputreader = new InputStreamReader(instream);
+    	      buffreader = new BufferedReader(inputreader);
+    	 
+    	      String line;    	      
+			  line = buffreader.readLine();			  
+    	      // read every line of the file into the line-variable, on line at the time
+    	      while (line != null) {
+    	        // do something with the settings from the file
+    	    		String[] arrayAux = line.split("=");
+                	mproperties.put(arrayAux[0], arrayAux[1]);
+                	line = buffreader.readLine();
+    	      }
+    	    }
+		} catch (FileNotFoundException e) {
+			createPropertiesFile();
+		} catch (IOException e) {
+			createPropertiesFile();
+		}finally{
+			try {
+				if (buffreader != null) {
+					buffreader.close();
+				}
+				if (inputreader != null) {
+					inputreader.close();
+				}
+				if (instream != null) {
+					instream.close();
+				}
+			} catch (IOException e) {
+
+			}
+	    	 
+		}
+    	 
+    	    
+    	
     }
     
     private void createPropertiesFile() {
-        FileOutputStream fout = null;
-        try {
-            fout = mContext.openFileOutput(PROPERTIES_FILE, Context.MODE_PRIVATE);
-            DataOutputStream out = new DataOutputStream(fout);
-            out.writeChars("sound=1\n");
-            out.writeChars("facebook=-1\n");
-            mproperties.put("sound", "1");
-            mproperties.put("facebook", "-1"); //not defined
-                
-        } catch(IOException ioe) {
-        } finally {
-            if (fout != null) {
-                try {
-                    fout.close();
-                } catch(IOException ioe) {
-                }
-            }
-        }
+    	mproperties.put("sound", "1");
+        mproperties.put("facebook", "-1");
+        saveProperties();
     }
    
     public String getProperty(String key) {
         return mproperties.get(key);
     }
-        
-    public boolean setProperty(String key, String value) {
     
-    	mproperties.put(key, value);
-           
-        FileOutputStream fout = null;
+    public boolean saveProperties(){
+    	
+    	FileOutputStream fout = null;
+    	DataOutputStream out = null;
 	    try {
 	        fout = mContext.openFileOutput(PROPERTIES_FILE, Context.MODE_PRIVATE);
-	        DataOutputStream out = new DataOutputStream(fout);
+	        out = new DataOutputStream(fout);
 	        Iterator<String> it =  mproperties.keySet().iterator();	        
 	        while(it.hasNext()){
 	        	String aux = it.next();
-	        	out.writeChars(aux+"="+mproperties.get(aux)+"\n");
+	        	out.writeBytes(aux+"="+mproperties.get(aux)+"\n");	        	
 	        }	
 	    } catch(IOException ioe) {
 	    } finally {
 	        if(fout != null) {
 	            try {
+	            	out.close();
 	                fout.close();
 	            } catch(IOException ioe) {
 	            }
 	        }
 	    }
 	    return true;
+    	
+    }
+    
+    public static boolean fileExists(String file) {
+
+        String[] filenames = mContext.fileList();
+        for (String name : filenames) {
+          if (name.equals(file)) {
+            return true;
+          }
+        }
+
+        return false;
+    }
+        
+    public boolean setProperty(String key, String value) {    
+    	mproperties.put(key, value);        
+	    return saveProperties();
         
     }    
 }

@@ -564,8 +564,8 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                 mAuxPegs[7] = mPegs[7];
                 mFondoCarteles = Bitmap.createScaledBitmap(mFondoCarteles, (int)(lengthGrilla*0.90), (int)(lengthGrilla*0.90), true);
                 mCursor[3] = mCursor[2];
-                mCursor[4] = mCursor[1];               
-                //Set the positions                                                
+                mCursor[4] = mCursor[1];
+                //Set the positions                                           
                 long cellBorder   = Math.round((cellLength-lengthFicha)/2.0); //Math.round(cellLength *PERCENT_OF_PEG);
                 //long shadowBorder = Math.round((cellLength-lengthSombra)/2.0);// Math.round(cellLength *PERCENT_OF_CURSOR);
                 //long cursorBorder = Math.round((cellLength-lengthCursor)/2.0);
