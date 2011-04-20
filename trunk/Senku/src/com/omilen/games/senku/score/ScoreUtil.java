@@ -8,7 +8,6 @@ package com.omilen.games.senku.score;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -51,17 +50,17 @@ public class ScoreUtil {
     }
     
     private void loadScores() {
-    	
-    	File f = new File(SCORE_FILE);
-    	if(!f.exists()){    		
+    	    	
+    	if(!fileExists(SCORE_FILE)){    		
     		createScoreFile();
     		return;
     	}
       
         FileInputStream fin = null;
+        DataInputStream in = null;
         try {
             fin = mContext.openFileInput(SCORE_FILE);
-            DataInputStream in = new DataInputStream(fin);
+            in = new DataInputStream(fin);
             for (int i = 0; i < MAX_SCORE_ENTRIES; i++) {
             	String line = in.readLine();
             	String[] arrayAux = line.split(";");
@@ -69,35 +68,32 @@ public class ScoreUtil {
             			Integer.parseInt(arrayAux[2]),Integer.parseInt(arrayAux[3]),
             			Integer.parseInt(arrayAux[4])
             	);
-                mScores.add(si);                
-            }
+                mScores.add(si);
+            }            
         } catch(FileNotFoundException fnfe) {
             createScoreFile();
         } catch(IOException ioe) {
         } finally {
-            if (fin != null) {
-                try {
-                    fin.close();                    
-                    try{
-                    	f = new File(SCORE_FILE);
-                    	f.delete();
-                    }catch (Exception e) {
-                    		
+            if (fin != null) {                
+                    try {						
+						in.close();
+						fin.close();
+					} catch (IOException e) {					
+						e.printStackTrace();
 					}
-                } catch(IOException ioe) {       
-                }
             }
         }
     }
     
     private void createScoreFile() {
         FileOutputStream fout = null;
+        DataOutputStream out = null;
         int len        = MAX_SCORE_ENTRIES;
         try {
             fout = mContext.openFileOutput(SCORE_FILE, Context.MODE_PRIVATE);
-            DataOutputStream out = new DataOutputStream(fout);
+            out = new DataOutputStream(fout);
             for (int i = 0; i < len; i++) {
-                out.writeChars("no date yet;32\n");
+                out.writeChars("no date yet;26;32;0;0\n");
                 ScoreItem si = new ScoreItem("no date yet", 26,32,0,0);
                 mScores.add(si);                
             }
@@ -106,6 +102,7 @@ public class ScoreUtil {
             if (fout != null) {
                 try {
                     fout.close();
+                    out.close();
                 } catch(IOException ioe) {
                 }
             }
@@ -155,5 +152,17 @@ public class ScoreUtil {
 	    }
 	    return true;
         
-    }    
+    }
+    
+    public static boolean fileExists(String file) {
+
+        String[] filenames = mContext.fileList();
+        for (String name : filenames) {
+          if (name.equals(file)) {
+            return true;
+          }
+        }
+
+        return false;
+    }
 }
