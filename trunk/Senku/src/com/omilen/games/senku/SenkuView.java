@@ -261,11 +261,11 @@ public class SenkuView extends SurfaceView implements SurfaceHolder.Callback {
                 if (mMode == STATE_RUNNING) setState(STATE_PAUSE);
             }
         }
-                
+
         /**
          * Resumes from a pause.
          */
-        public void unpause() {            
+        public void unpause() {
             setState(STATE_RUNNING);
         }
         

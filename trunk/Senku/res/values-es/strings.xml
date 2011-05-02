@@ -23,7 +23,8 @@
 	<string name="gameover">Juego Terminado</string>
 	<string name="youwin">¡Ganó!</string>
 	
-	<string name="perfect" >Juego: ¡¡¡Perfecto!!!</string>
+    
+	<string name="perfect" >Juego: ¡¡Perfecto!!</string>
 	<string name="veryGood">Juego: ¡Muy Bueno!</string>
 	<string name="good"    >Juego: Bueno</string>
 	<string name="regular" >Juego: Regular</string>
@@ -31,7 +32,7 @@
 	<string name="remaining_chips">fichas: </string>
 	
 	<string name="board_name_00">Flecha (muy fácil)</string>
-    <string name="board_name_01">Más (fácil)</string>
+    <string name="board_name_01">Cruz (fácil)</string>
     <string name="board_name_02">Hogar (moderado)</string>
     <string name="board_name_03">Pirámide (difícil)</string>
     <string name="board_name_04">Diamante (muy difícil)</string>
@@ -77,12 +78,12 @@
     <string name="facebook_post_description">Senku es un juego simple y adictivo para dispositivos Android, desarrollado por Omilen IT Solutions</string>
     <string name="facebook_post_caption">Senku</string>
     <string name="facebook_please_wait">Por favor espere\nEl mensaje está siendo enviado\na su muro de facebook.</string>
-    <string name="facebook_post_00">A liberado una nueva ficha hecha de</string>
+    <string name="facebook_post_00">ha liberado una nueva ficha hecha de</string>
     <string name="facebook_post_01">por dejar solo</string>
     <string name="facebook_post_02">en el tablero:</string>
 	<string name="facebook_post_03">Y obtuvo</string>
     <string name="facebook_post_04">puntos.</string>
-    <string name="facebook_post_special">liberó una ficha secreta especial llamada: bola ocho, La cual da 800 puntos en cada salto.</string>
+    <string name="facebook_post_special">liberó una ficha secreta especial llamada: bola ocho, la cual otorga 800 puntos en cada salto.</string>
     <string name="postOnFacebook_dialog_title">Publicar en Facebook</string>
     <string name="postOnFacebook_dialog_msg">¿Habilitar la publicación en facebook?</string>
     <string name="dialogfb_yes">Sí</string>

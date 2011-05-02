@@ -26,7 +26,7 @@ public class FacebookAutoPost extends Activity implements OnClickListener {
 
     // Your Facebook Application ID must be set before running this example
     // See http://www.facebook.com/developers/createapp.php
-    public static final String APP_ID = "123736441033967";
+    public static final String APP_ID = "";
 
     private LoginButton mLoginButton;
     private TextView mText;

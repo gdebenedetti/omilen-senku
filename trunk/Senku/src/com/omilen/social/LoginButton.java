@@ -113,7 +113,7 @@ public class LoginButton extends ImageButton {
                         
             Bundle params = new Bundle();            
             params.putString("message", LoginButton.message);
-            params.putString("link","http://www.androidpit.com/en/android/market/apps/app/com.omilen.games.senku/Senkul");
+            params.putString("link","https://market.android.com/details?id=com.omilen.games.senku");
             params.putString("picture","https://lh4.googleusercontent.com/_JP1lG3wnOcQ/TaKCGznWZ8I/AAAAAAAAABc/yZu12vodw_I/s800/icon2_for_facebook_senku.png");
             params.putString("name",name);
             params.putString("description",description);

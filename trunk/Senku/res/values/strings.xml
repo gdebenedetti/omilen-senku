@@ -31,7 +31,7 @@
 	<string name="remaining_chips">pegs: </string>
 	
 	<string name="board_name_00">Arrow (very easy)</string>
-    <string name="board_name_01">Plus (easy)</string>
+    <string name="board_name_01">Cross (easy)</string>
     <string name="board_name_02">Home (medium)</string>
     <string name="board_name_03">Pyramid (difficult)</string>
     <string name="board_name_04">Diamond (very difficult)</string>
@@ -77,9 +77,9 @@
     <string name="facebook_post_name">Omilen Android Senku</string>
     <string name="facebook_post_description">Senku is simple addictive game for Android Devices, powered by Omilen IT Solutions</string>
     <string name="facebook_post_caption">Senku</string>
-    <string name="facebook_please_wait">Please wait.\nThe message is being sent\nto your facebook wall.</string>
-    <string name="facebook_post_00">Has unlocked a new peg made of </string>
-    <string name="facebook_post_01"> for leave only </string>
+    <string name="facebook_please_wait">Please wait.\nThe message is being sent\nto your Facebook wall.</string>
+    <string name="facebook_post_00">has unlocked a new peg made of </string>
+    <string name="facebook_post_01"> for leaving only </string>
     <string name="facebook_post_02"> on the board: </string>
 	<string name="facebook_post_03">And got</string>
     <string name="facebook_post_04">points.</string>

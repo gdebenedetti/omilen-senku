@@ -6,12 +6,13 @@
  */
 package com.omilen.games.senku.score;
 
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
 import android.content.Context;
 
 public class ScoreUtil {
-    private static final String SCORE_FILE = "scores_senku.txt";
+    private static final String SCORE_FILE = "scores_senku2.txt";
     public static final int MAX_SCORE_ENTRIES = 6; //Max 6 users
 
     private static ScoreUtil mInstance;
@@ -56,32 +57,42 @@ public class ScoreUtil {
     		return;
     	}
       
-        FileInputStream fin = null;
-        DataInputStream in = null;
-        try {
-            fin = mContext.openFileInput(SCORE_FILE);
-            in = new DataInputStream(fin);
-            for (int i = 0; i < MAX_SCORE_ENTRIES; i++) {
-            	String line = in.readLine();
-            	String[] arrayAux = line.split(";");
-            	ScoreItem si = new ScoreItem(arrayAux[0], Integer.parseInt(arrayAux[1]),
-            			Integer.parseInt(arrayAux[2]),Integer.parseInt(arrayAux[3]),
-            			Integer.parseInt(arrayAux[4])
-            	);
-                mScores.add(si);
-            }            
+    	InputStream instream 		  = null;
+    	InputStreamReader inputreader = null;
+	    BufferedReader buffreader 	  = null; 
+        try {            
+            instream = mContext.openFileInput(SCORE_FILE);
+            if (instream!=null) {
+            	 inputreader = new InputStreamReader(instream);
+            	 buffreader = new BufferedReader(inputreader);    	    
+            	 String line;
+            	 line = buffreader.readLine();
+            	 while (line != null && line.length()!=0) {
+            		 String[] arrayAux = line.split(";");
+            		 ScoreItem si = new ScoreItem(arrayAux[0], Integer.parseInt(arrayAux[1]),
+            				 			Integer.parseInt(arrayAux[2]),Integer.parseInt(arrayAux[3]),Integer.parseInt(arrayAux[4]));
+            		 mScores.add(si);
+            		 line = buffreader.readLine();
+            	 }            	
+            }
         } catch(FileNotFoundException fnfe) {
             createScoreFile();
         } catch(IOException ioe) {
+        	createScoreFile();
         } finally {
-            if (fin != null) {                
-                    try {						
-						in.close();
-						fin.close();
-					} catch (IOException e) {					
-						e.printStackTrace();
-					}
-            }
+        	try {
+				if (buffreader != null) {
+					buffreader.close();
+				}
+				if (inputreader != null) {
+					inputreader.close();
+				}
+				if (instream != null) {
+					instream.close();
+				}
+			} catch (IOException e) {
+
+			}	    	
         }
     }
     
@@ -93,7 +104,7 @@ public class ScoreUtil {
             fout = mContext.openFileOutput(SCORE_FILE, Context.MODE_PRIVATE);
             out = new DataOutputStream(fout);
             for (int i = 0; i < len; i++) {
-                out.writeChars("no date yet;26;32;0;0\n");
+                out.writeBytes("no date yet;26;32;0;0\n");
                 ScoreItem si = new ScoreItem("no date yet", 26,32,0,0);
                 mScores.add(si);                
             }
@@ -135,7 +146,7 @@ public class ScoreUtil {
 	        ScoreItem aux;
 	        while(it.hasNext()){
 	        	aux = it.next();	        	 
-	        	out.writeChars(aux.getDate()+";"+
+	        	out.writeBytes(aux.getDate()+";"+
 	        			       String.valueOf(aux.getPegs())+";"+
 	        			       String.valueOf(aux.getScore())+";"+
 	        			       String.valueOf(aux.getGameNum())+";"+
@@ -150,8 +161,7 @@ public class ScoreUtil {
 	            }
 	        }
 	    }
-	    return true;
-        
+	    return true;        
     }
     
     public static boolean fileExists(String file) {
