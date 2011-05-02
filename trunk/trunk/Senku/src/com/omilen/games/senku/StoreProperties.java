@@ -20,7 +20,7 @@ import java.util.Map;
 import android.content.Context;
 
 public class StoreProperties {
-    private static final String PROPERTIES_FILE = "properties_senku.txt";
+    private static final String PROPERTIES_FILE = "properties_senku2.txt";
   
     private static StoreProperties instance = null;
     private static Map<String,String> mproperties;
@@ -48,30 +48,6 @@ public class StoreProperties {
     		createPropertiesFile();
     		return;
     	}
-
-//        FileInputStream fin = null;
-//        DataInputStream in = null;
-//        try {
-//            fin = mContext.openFileInput(PROPERTIES_FILE);            
-//            in = new DataInputStream(fin);            
-//            String line = in.readLine();
-//            while(line!=null){            	
-//            	String[] arrayAux = line.split("=");
-//            	mproperties.put(arrayAux[0], arrayAux[1]);
-//                line = in.readLine();
-//            }
-//        } catch(FileNotFoundException fnfe) {
-//        	createPropertiesFile();
-//        } catch(IOException ioe) {
-//        } finally {
-//            if (fin != null) {
-//                try {
-//                    fin.close();                    
-//                    in.close();
-//                } catch(IOException ioe) {       
-//                }
-//            }
-//        }
     	 InputStream instream = null;
     	 InputStreamReader inputreader = null;
 	     BufferedReader buffreader = null; 
@@ -81,12 +57,12 @@ public class StoreProperties {
     	    if (instream!=null) {
     	      // prepare the file for reading
     	      inputreader = new InputStreamReader(instream);
-    	      buffreader = new BufferedReader(inputreader);
-    	 
-    	      String line;    	      
-			  line = buffreader.readLine();			  
+    	      buffreader = new BufferedReader(inputreader);    	    
+    	      String line;
+			  line = buffreader.readLine();
+			  			  
     	      // read every line of the file into the line-variable, on line at the time
-    	      while (line != null) {
+    	      while (line != null && line.length()!=0) {
     	        // do something with the settings from the file
     	    		String[] arrayAux = line.split("=");
                 	mproperties.put(arrayAux[0], arrayAux[1]);
@@ -110,17 +86,13 @@ public class StoreProperties {
 				}
 			} catch (IOException e) {
 
-			}
-	    	 
+			}	    	 
 		}
-    	 
-    	    
-    	
     }
     
     private void createPropertiesFile() {
     	mproperties.put("sound", "1");
-        mproperties.put("facebook", "-1");
+        mproperties.put("facebook", "1");
         saveProperties();
     }
    

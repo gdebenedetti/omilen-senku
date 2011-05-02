@@ -44,13 +44,13 @@ import com.omilen.games.senku.score.ScoreUtil;
 
 public class Senku extends Activity  implements OnKeyListener {
 	
-	private static final int MENU_START   = 0;
-	private static final int MENU_UNDO    = 1;
-	private static final int MENU_SCORES  = 2;
-	private static final int MENU_HELP  = 3;
+	private static final int MENU_START      = 0;
+	private static final int MENU_UNDO       = 1;
+	private static final int MENU_SCORES  	 = 2;
+	private static final int MENU_HELP    	 = 3;
 	private static final int MENU_GAME_TYPE  = 6;
-	private static final int MENU_PEG_TYPE  = 7;
-	private static final int MENU_OPTIONS  = 8;
+	private static final int MENU_PEG_TYPE   = 7;
+	private static final int MENU_OPTIONS    = 8;
 		
 	/** A handle to the thread that's actually running the animation. */
     private SenkuThread mSenkuThread;
@@ -62,6 +62,7 @@ public class Senku extends Activity  implements OnKeyListener {
     protected static Bitmap[] littlePegIcons = null;
     protected static Bitmap[] littleBoardIcons = null;
     protected String masterKeyPhrase = "";
+    protected boolean lostFocus = false;
        
     /** Called when the activity is first created. */
     @Override
@@ -73,12 +74,7 @@ public class Senku extends Activity  implements OnKeyListener {
 
         setContentView(R.layout.senku_layout);
 
-        mSenkuView = (SenkuView) findViewById(R.id.senku);
-        mSenkuThread = mSenkuView.getThread();
-
-        // give the SenkuView a handle to the TextView used for messages
-        mSenkuView.setTextView((TextView) findViewById(R.id.text));
-        StoreProperties.setContext(this);
+        initReferences();
         
         if (savedInstanceState == null) {
             // we were just launched: set up a new game
@@ -108,7 +104,7 @@ public class Senku extends Activity  implements OnKeyListener {
 				 Peg[] auxPegArray =  SenkuPegs.getInstance().getPegs();
 				 int auxIndex = Integer.valueOf(pegStr[0]).intValue(); 
 				if (auxPegArray[auxIndex].getCodeName().equals(pegStr[1])
-						&& StoreProperties.getInstance().getProperty(pegStr[1]).equals("1")) {
+						&& (pegStr[1].equals(auxPegArray[0].getCodeName()) || StoreProperties.getInstance().getProperty(pegStr[1]).equals("1"))) {
 					this.selectedPeg = auxIndex;
 				}
 			} catch (Exception e) {
@@ -179,6 +175,23 @@ public class Senku extends Activity  implements OnKeyListener {
 	public boolean onTouchEvent(MotionEvent event) {
 		return mSenkuThread.doTouch(event);
 	}
+
+    public void initReferences(){
+        mSenkuView = (SenkuView) findViewById(R.id.senku);
+        mSenkuThread = mSenkuView.getThread();
+        // give the SenkuView a handle to the TextView used for messages
+        mSenkuView.setTextView((TextView) findViewById(R.id.text));
+        StoreProperties.setContext(this);
+    }
+    
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+    	super.onWindowFocusChanged(hasFocus);
+    	if(lostFocus){    		 
+    		initReferences();
+    	}
+    	this.lostFocus = !hasFocus;
+    }
     
     private void scaleIconsForScoreDialog(){
     	if(littleBoardIcons == null && littlePegIcons == null){
@@ -227,16 +240,16 @@ public class Senku extends Activity  implements OnKeyListener {
                     
         }
     }
-    
+
     private class ConfirmDeleteListener implements OnClickListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             if (whichButton == AlertDialog.BUTTON1) {
-                ScoreUtil.getInstance(Senku.this).clearScores();                
+                ScoreUtil.getInstance(Senku.this).clearScores();
             }
             showHighScoreListDialog();
         }
     }
-        
+
     private class ScoresListener implements OnClickListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             switch (whichButton) {
@@ -244,72 +257,72 @@ public class Senku extends Activity  implements OnKeyListener {
                     showConfirmDeleteDialog();
                     return;
                 }
-                case AlertDialog.BUTTON2: {       
+                case AlertDialog.BUTTON2: {
                     return;
                 }
             }
         }
     }
-    
+
     private class PegDialogListener implements View.OnClickListener {
-    
+
     	protected ImageView imageView = null;
-    	
+
     	public PegDialogListener(ImageView image){
     		super();
-    		this.imageView = image;    		
+    		this.imageView = image;
     	}
-    	
+
     	@Override
 		public void onClick(View v) {
-    	switch (v.getId()) {
-		case R.id.radioPeg0:
-			selectedPeg = 0;
-			break;
-		case R.id.radioPeg1:
-			selectedPeg = 1;
-			break;
-		case R.id.radioPeg2:
-			selectedPeg = 2;				
-			break;
-		case R.id.radioPeg3:
-			selectedPeg = 3;				
-			break;
-		case R.id.radioPeg4:
-			selectedPeg = 4;				
-			break;
-		case R.id.radioPeg5:
-			selectedPeg = 5;				
-			break;
-		case R.id.radioPeg6:
-			selectedPeg = 6;				
-			break;		
-		case R.id.radioPeg7:
-			selectedPeg = 7;				
-			break;			
-		default:
-			break;
-		}
-    	imageView.setImageBitmap(Senku.this.mSenkuThread.getPegImage(selectedPeg));
-    	mSenkuThread.setCurrentPeg(selectedPeg);
-    	
+			switch (v.getId()) {
+			case R.id.radioPeg0:
+				selectedPeg = 0;
+				break;
+			case R.id.radioPeg1:
+				selectedPeg = 1;
+				break;
+			case R.id.radioPeg2:
+				selectedPeg = 2;
+				break;
+			case R.id.radioPeg3:
+				selectedPeg = 3;
+				break;
+			case R.id.radioPeg4:
+				selectedPeg = 4;
+				break;
+			case R.id.radioPeg5:
+				selectedPeg = 5;
+				break;
+			case R.id.radioPeg6:
+				selectedPeg = 6;
+				break;
+			case R.id.radioPeg7:
+				selectedPeg = 7;
+				break;
+			default:
+				break;
+			}
+			imageView.setImageBitmap(Senku.this.mSenkuThread
+					.getPegImage(selectedPeg));
+			mSenkuThread.setCurrentPeg(selectedPeg);
     	}
     }
-    
+
     private class BoardDialogListener implements View.OnClickListener {
 
     	protected ImageView image = null;
-    	    	
+
     	public BoardDialogListener(ImageView image){
     		super();
-    		this.image = image;    		
+    		this.image = image;
     	}
-    	
+
     	@Override
 		public void onClick(View v) {
-			
+
 			mSenkuThread = mSenkuView.getThread();
-	        	        
+
 			switch (v.getId()) {
 			case R.id.ButtonBoard00:
 				//instanceProp.setProperty("currentGame", "00");
@@ -352,25 +365,23 @@ public class Senku extends Activity  implements OnKeyListener {
 				selectedGame=6;
 				mSenkuThread.setCurrentGame(6);
 				image.setImageResource(R.drawable.ic_menu_board_06);
-				break;		
+				break;
 			default:
 				break;
 			}
-
 		}
-    	
     }
    
     private class HelpListener implements OnClickListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             switch (whichButton) {
-                case AlertDialog.BUTTON1: {                  
+                case AlertDialog.BUTTON1: {
                     return;
                 }
             }
         }
     }
-    
+
     private class BoardCloseListener implements OnClickListener {
         public void onClick(DialogInterface dialog, int whichButton ) {
             switch (whichButton) {
